@@ -1,0 +1,33 @@
+services:
+  database:
+    image: postgres
+    container_name: movie-theater-db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=felyppe
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=movie-theater
+    volumes:
+      - movie-theater-data:/data/postgres
+    networks:
+      - movie-theater
+  backend:
+    build: ./backend
+    image: felyppe/movie-theater-backend
+    container_name: movie-theater-backend
+    ports:
+      - 3333:3333
+    volumes:
+      - ./backend:/usr/app
+      - /usr/app/node_modules
+    networks:
+      - movie-theater
+    depends_on:
+      - database
+
+volumes:
+  movie-theater-data:
+
+networks:
+  movie-theater:
