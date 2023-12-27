@@ -15,6 +15,11 @@ enum ROLE {
   ADMIN
 }
 
+enum SEX {
+  M
+  F
+}
+
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
@@ -22,30 +27,34 @@ model User {
   full_name     String
   social_name   String?
   cpf           String   @unique
-  sex           String
+  sex           SEX
   date_of_birth DateTime
   role          ROLE     @default(USER)
   created_at    DateTime @default(now())
 
-  city    City @relation(fields: [city_id], references: [id])
-  city_id Int
+  cellphone    Cellphone @relation(fields: [cellphone_id], references: [id])
+  cellphone_id String    @unique
 
-  state       State      @relation(fields: [state_id], references: [id])
-  state_id    Int
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
+
+  state    State  @relation(fields: [state_id], references: [id])
+  state_id String
 
   @@map("users")
 }
 
 model Cellphone {
-  id     Int    @id @default(autoincrement())
+  id     String @id @default(uuid())
   ddd    String
   number String
+  User   User[]
 
   @@map("cellphones")
 }
 
 model State {
-  id     Int    @id @default(autoincrement())
+  id     String @id @default(uuid())
   name   String @unique
   cities City[]
   users  User[]
@@ -54,10 +63,10 @@ model State {
 }
 
 model City {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(uuid())
   name     String @unique
   state    State  @relation(fields: [state_id], references: [id])
-  state_id Int
+  state_id String
   users    User[]
 
   @@map("cities")

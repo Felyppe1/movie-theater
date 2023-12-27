@@ -15,6 +15,6 @@ export class CreateUserController {
 
         await this.createUserUseCase.execute(data)
 
-        return response.send(201)
+        return response.sendStatus(201)
     }
 }
