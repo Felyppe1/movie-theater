@@ -1,11 +1,11 @@
 import { Router, request } from "express";
-import createUserController from '../modules/users/useCases/createUser'
+import { makeCreateUserController } from "../controllers/factories/makeCreateUserController";
 // TODO: Factory vs Facade Pattern
 
 export const usersRoutes = Router() 
 
 usersRoutes.post('/', (request, response) => {
-    return createUserController().handle(request, response)
+    return makeCreateUserController().handle(request, response)
 })
 
 usersRoutes.post('/teste', (request, response) => {

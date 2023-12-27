@@ -1,7 +1,7 @@
-import { AppError } from "../../../../errors/AppError";
-import { prisma } from "../../../../lib/prisma";
-import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { AppError } from "../errors/AppError";
+import { prisma } from "../lib/prisma";
+import { ICreateUserDTO } from "./dtos/ICreateUserDTO";
+import { IUsersRepository } from "../repositories/IUsersRepository";
 
 export class CreateUserUseCase {
     private usersRepository: IUsersRepository
