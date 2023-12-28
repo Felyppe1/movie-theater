@@ -75,10 +75,12 @@ model City {
 }
 
 model MovieTheater {
-  id     String @id @default(uuid())
-  name   String @unique
-  street String
-  number String
+  id         String   @id @default(uuid())
+  name       String   @unique
+  street     String
+  number     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   state    State  @relation(fields: [state_id], references: [id])
   state_id String
@@ -104,11 +106,11 @@ model Seat {
   exists Boolean
   type   String
 
-  room   Room   @relation(fields: [room_id], references: [id])
+  room    Room   @relation(fields: [room_id], references: [id])
   room_id String
 }
 
 model Technology {
-  id String @id @default(uuid())
+  id   String @id @default(uuid())
   name String @unique
 }
