@@ -2,67 +2,17 @@ import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
 import { Button } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
+import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 type MovieTheater = {
   id: string
   name: string
-  address: string
+  street: string
+  number: string
+  updated_at: Date
 }
-
-const movieTheaters: MovieTheater[] = [
-    {
-        id: '1',
-        name: 'Cineplex',
-        address: '123 Main Street',
-    },
-    {
-        id: '2',
-        name: 'MegaCinema',
-        address: '456 Oak Avenue',
-    },
-    {
-        id: '3',
-        name: 'Star Cinemas',
-        address: '789 Pine Lane',
-    },
-    {
-        id: '4',
-        name: 'Silver Screens',
-        address: '101 Broadway',
-    },
-    {
-        id: '5',
-        name: 'Golden Theatre',
-        address: '202 Elm Street',
-    },
-    {
-        id: '6',
-        name: 'Dream Cinemas',
-        address: '303 Maple Avenue',
-    },
-    {
-        id: '7',
-        name: 'Sunset Movies',
-        address: '404 Cedar Lane',
-    },
-    {
-        id: '8',
-        name: 'City Center Cinemas',
-        address: '505 Spruce Street',
-    },
-    {
-        id: '9',
-        name: 'Prestige Theatres',
-        address: '606 Pine Lane',
-    },
-    {
-        id: '10',
-        name: 'Royal Cineworld',
-        address: '707 Oak Avenue',
-    }
-]
 
 const columns: ColumnDef<MovieTheater>[] = [
   {
@@ -88,11 +38,40 @@ const columns: ColumnDef<MovieTheater>[] = [
   },
   {
     accessorKey: 'address',
-    header: 'Endereço'
+    header: 'Endereço',
+    cell: ({ row }) => {
+      return <h1>{row.original.street}, Lote {row.original.number}</h1>
+    }
+  },
+  {
+    accessorKey: 'updated_at',
+    header: 'Modificado em'
   }
 ]
 
 export function AdminMovieTheaterList() {
+  const [movieTheaters, setMovieTheaters] = useState([] as MovieTheater[])
+
+  useEffect(() => {
+    fetch('http://localhost:3333/movie-theaters', {
+      method: 'GET'
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw (response.status)
+        }
+
+        return response.json()
+      })
+      .then(data => {
+        console.log(data)
+        setMovieTheaters(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [])
+
   return (
     <>
       <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' />
