@@ -6,6 +6,7 @@ import { WebLayout } from "./layouts/WebLayout";
 import { Login } from "./pages/Login";
 import { AdminMovieTheaterList } from "./pages/AdminMovieTheaterList";
 import { AdminMovieTheaterDetail } from "./pages/AdminMovieTheaterDetail";
+import { AdminMovieTheaterAdd } from "./pages/AdminMovieTheaterAdd";
 
 export function Router() {
     return (
@@ -21,7 +22,8 @@ export function Router() {
             <Route path="admin/" element={<AdminLayout />} >
                 <Route index element={<Admin />} />
                 <Route path='movie-theater/' element={<AdminMovieTheaterList />} />
-                <Route path='movie-theater/:id' element={<AdminMovieTheaterDetail />} />
+                <Route path='movie-theater/:id/' element={<AdminMovieTheaterDetail />} />
+                <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
             </Route>
         </Routes>
     )

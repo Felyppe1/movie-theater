@@ -1,7 +1,8 @@
+import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
 import { Button } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
-import { FaArrowRightArrowLeft } from "react-icons/fa6";
+import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 type MovieTheater = {
@@ -93,27 +94,18 @@ const columns: ColumnDef<MovieTheater>[] = [
 
 export function AdminMovieTheaterList() {
   return (
-    <div>
-      <DataTable columns={columns} data={movieTheaters} />
-      {/* <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-      </div> */}
-    </div>
+    <>
+      <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' />
+      <div className='pt-[1.5rem]'>
+        <Button asChild>
+          <Link to='/admin/movie-theater/add'>
+            <FaPlus className='mr-2 h-4 w-4' />
+            Cadastrar  
+          </Link>
+        </Button>
+        <DataTable columns={columns} data={movieTheaters} />
+      </div>
+    </>
   )
 }
 
