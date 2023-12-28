@@ -45,7 +45,7 @@ model User {
 }
 
 model Cellphone {
-  id     String @id @default(uuid())
+  id     String  @id @default(uuid())
   ddd    String
   number String
   User   User[]
@@ -54,8 +54,9 @@ model Cellphone {
 }
 
 model State {
-  id           String         @id @default(uuid())
-  name         String         @unique
+  id   String @id @default(uuid())
+  name String @unique
+
   cities       City[]
   users        User[]
   MovieTheater MovieTheater[]
@@ -64,10 +65,12 @@ model State {
 }
 
 model City {
-  id           String         @id @default(uuid())
-  name         String         @unique
-  state        State          @relation(fields: [state_id], references: [id])
-  state_id     String
+  id   String @id @default(uuid())
+  name String @unique
+
+  state    State  @relation(fields: [state_id], references: [id])
+  state_id String
+
   users        User[]
   MovieTheater MovieTheater[]
 
@@ -87,7 +90,8 @@ model MovieTheater {
 
   city    City   @relation(fields: [city_id], references: [id])
   city_id String
-  Room    Room[]
+
+  Room       Room[]
 }
 
 model Room {
@@ -96,7 +100,9 @@ model Room {
 
   movieTheater    MovieTheater @relation(fields: [movieTheater_id], references: [id])
   movieTheater_id String
-  Seat            Seat[]
+
+  Seat Seat[]
+  Technology Technology[]
 }
 
 model Seat {
@@ -113,4 +119,6 @@ model Seat {
 model Technology {
   id   String @id @default(uuid())
   name String @unique
+
+  Room Room[]
 }

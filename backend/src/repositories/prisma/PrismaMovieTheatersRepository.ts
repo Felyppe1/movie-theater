@@ -19,7 +19,20 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
         updated_at: true
       }
     })
-
+    
     return movieTheaters
+  }
+
+  async findById(id: string): Promise<MovieTheater | null> {
+    const movieTheater = await prisma.movieTheater.findUnique({
+      where: {
+        id: id
+      },
+      include: {
+        Room: true
+      }
+    })
+    
+    return movieTheater
   }
 }
