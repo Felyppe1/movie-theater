@@ -54,20 +54,61 @@ model Cellphone {
 }
 
 model State {
-  id     String @id @default(uuid())
-  name   String @unique
-  cities City[]
-  users  User[]
+  id           String         @id @default(uuid())
+  name         String         @unique
+  cities       City[]
+  users        User[]
+  MovieTheater MovieTheater[]
 
   @@map("states")
 }
 
 model City {
-  id       String @id @default(uuid())
-  name     String @unique
-  state    State  @relation(fields: [state_id], references: [id])
-  state_id String
-  users    User[]
+  id           String         @id @default(uuid())
+  name         String         @unique
+  state        State          @relation(fields: [state_id], references: [id])
+  state_id     String
+  users        User[]
+  MovieTheater MovieTheater[]
 
   @@map("cities")
+}
+
+model MovieTheater {
+  id     String @id @default(uuid())
+  name   String @unique
+  street String
+  number String
+
+  state    State  @relation(fields: [state_id], references: [id])
+  state_id String
+
+  city    City   @relation(fields: [city_id], references: [id])
+  city_id String
+  Room    Room[]
+}
+
+model Room {
+  id     String @id @default(uuid())
+  number String
+
+  movieTheater    MovieTheater @relation(fields: [movieTheater_id], references: [id])
+  movieTheater_id String
+  Seat            Seat[]
+}
+
+model Seat {
+  id     Int     @id @default(autoincrement())
+  row    String
+  column String
+  exists Boolean
+  type   String
+
+  room   Room   @relation(fields: [room_id], references: [id])
+  room_id String
+}
+
+model Technology {
+  id String @id @default(uuid())
+  name String @unique
 }
