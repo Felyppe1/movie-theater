@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import { CreateUserUseCase } from "../../useCases/CreateUserUseCase";
-import { ICreateUserDTO } from "../../useCases/dtos/ICreateUserDTO";
-import { z } from "zod";
 
 export class CreateUserController {
     private createUserUseCase: CreateUserUseCase
