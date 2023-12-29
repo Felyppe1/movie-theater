@@ -1,8 +1,9 @@
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { RoomsSection } from "./RoomsSection"
 
-type RoomProps = {
+export type RoomProps = {
   name: string
 }
 
@@ -44,7 +45,7 @@ export function AdminMovieTheaterDetail() {
   return (
     <>
       <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} />
-      <h1>Cinema: {id}</h1>
+      <RoomsSection rooms={movieTheater?.Room} id={id} />
     </>
   )
 }

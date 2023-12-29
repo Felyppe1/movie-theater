@@ -7,6 +7,7 @@ import { Login } from "./pages/Login";
 import { AdminMovieTheaterList } from "./pages/AdminMovieTheaterList";
 import { AdminMovieTheaterDetail } from "./pages/AdminMovieTheaterDetail";
 import { AdminMovieTheaterAdd } from "./pages/AdminMovieTheaterAdd";
+import { AdminRoomAdd } from "./pages/AdminRoomAdd";
 
 export function Router() {
     return (
@@ -24,6 +25,7 @@ export function Router() {
                 <Route path='movie-theater/' element={<AdminMovieTheaterList />} />
                 <Route path='movie-theater/:id/' element={<AdminMovieTheaterDetail />} />
                 <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
+                <Route path='movie-theater/room/add/:id' element={<AdminRoomAdd />} />
             </Route>
         </Routes>
     )
