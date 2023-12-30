@@ -28,11 +28,16 @@ export function RoomsSection({ rooms, id }: RoomSectionProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium py-2">4</TableCell>
-            <TableCell className="py-2">250</TableCell>
-            <TableCell className="py-2">4</TableCell>
-          </TableRow>
+          {rooms?.map(room => {
+            return (
+              <TableRow key={room.id}>
+                <TableCell className="font-medium py-2">{room.number}</TableCell>
+                <TableCell className="py-2">{room._count.seats}</TableCell>
+                <TableCell className="py-2">0</TableCell>
+              </TableRow>
+            )
+          })}
+          
         </TableBody>
       </Table>
     </>

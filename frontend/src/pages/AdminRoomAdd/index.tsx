@@ -305,59 +305,64 @@ export function AdminRoomAdd() {
             </div>              
             <Button type='submit' size={'sm'} variant={'outline'}>Atualizar</Button>
           </form>
+            
+          <div className='flex items-center gap-x-[.5rem]'>
+            <span className='text-sm'>
+              0 selecionadas
+            </span>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline">Propriedade da cadeira</Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80">
+                <div className="grid gap-4">
+                  <Form {...form}>
+                    <form 
+                      onSubmit={alterSeatsForm.handleSubmit(handleSubmitAlterSeatsForm)}
+                      className='flex flex-col gap-y-[1rem]'  
+                    >
+                      <FormField
+                        control={alterSeatsForm.control}
+                        name="type"
+                        render={({ field }) => (
+                          <>
+                            <FormItem className='grid grid-cols-3 items-center gap-4'>
+                              <FormLabel>Tipo</FormLabel>
+                              <FormControl>
+                                <Input placeholder='Normal' {...field} className='col-span-2 h-8' />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          </>
+                        )}
+                      />
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline">Propriedade da cadeira</Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <div className="grid gap-4">
-                <Form {...form}>
-                  <form 
-                    onSubmit={alterSeatsForm.handleSubmit(handleSubmitAlterSeatsForm)}
-                    className='flex flex-col gap-y-[1rem]'  
-                  >
-                    <FormField
-                      control={alterSeatsForm.control}
-                      name="type"
-                      render={({ field }) => (
-                        <>
+                      <FormField
+                        control={alterSeatsForm.control}
+                        name="exists"
+                        render={({ field }) => (
                           <FormItem className='grid grid-cols-3 items-center gap-4'>
-                            <FormLabel>Tipo</FormLabel>
+                            <div>
+                              <FormLabel>Existe</FormLabel>
+                            </div>
                             <FormControl>
-                              <Input placeholder='Normal' {...field} className='col-span-2 h-8' />
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
                             </FormControl>
-                            <FormMessage />
                           </FormItem>
-                        </>
-                      )}
-                    />
+                        )}
+                      />
 
-                    <FormField
-                      control={alterSeatsForm.control}
-                      name="exists"
-                      render={({ field }) => (
-                        <FormItem className='grid grid-cols-3 items-center gap-4'>
-                          <div>
-                            <FormLabel>Existe</FormLabel>
-                          </div>
-                          <FormControl>
-                            <Switch
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
+                      <Button type='submit' variant={'outline'} size={'sm'}>Aplicar</Button>
+                    </form>
+                  </Form>
 
-                    <Button type='submit' variant={'outline'} size={'sm'}>Aplicar</Button>
-                  </form>
-                </Form>
-
-              </div>
-            </PopoverContent>
-          </Popover>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
 
         </div>
         <div className='w-fit max-w-[50rem] overflow-hidden my-[1rem]'>

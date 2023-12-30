@@ -4,7 +4,9 @@ import { useParams } from "react-router-dom"
 import { RoomsSection } from "./RoomsSection"
 
 export type RoomProps = {
-  name: string
+  id: string
+  number: string
+  _count: { seats: number }
 }
 
 type MovieTheaterProps = {

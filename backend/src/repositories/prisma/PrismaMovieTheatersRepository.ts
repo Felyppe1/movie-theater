@@ -29,7 +29,22 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
         id: id
       },
       include: {
-        Room: true
+        Room: {
+          select: {
+            id: true,
+            number: true,
+            _count: {
+              select: {
+                seats: {
+                  where: {
+                    exists: true
+                  }
+                }
+              }
+            }
+          }
+        }
+        
       }
     })
     
