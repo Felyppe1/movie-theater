@@ -6,11 +6,12 @@ import zod from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Switch } from "@/components/ui/switch"
+import { useFetch } from "@/hooks/useFetch"
 
 type Technology = {
   id: string
@@ -76,11 +77,18 @@ type AlterSeatsForm = zod.infer<typeof alterSeatsFormValidationSchema>
 
 
 export function AdminRoomAdd() {
-  const [movieTheater, setMovieTheater] = useState({} as MovieTheaterProps)
-  const [technologies, setTechnologies] = useState([] as Technology[])
-  const [columns, setColumns] = useState(0)
-
   const { id } = useParams()
+
+  const { data: movieTheater } = useFetch<MovieTheaterProps>(
+    `http://localhost:3333/movie-theaters/${id}`, { method: 'GET' }
+  )
+  const { data: technologies } = useFetch<Technology[]>(
+    `http://localhost:3333/technologies`, { method: 'GET' }
+  )
+
+  console.log(technologies)
+
+  const [columns, setColumns] = useState(0)
   
   const form = useForm({
     resolver: zodResolver(roomAddFormValidationSchema),
@@ -179,47 +187,9 @@ export function AdminRoomAdd() {
     }
   }
 
-  useEffect(() => {
-    fetch(`http://localhost:3333/movie-theaters/${id}`, {
-      method: 'GET'
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw (response.status)
-        }
-  
-        return response.json()
-      })
-      .then(data => {
-        setMovieTheater(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-      
-    fetch(`http://localhost:3333/technologies`, {
-      method: 'GET'
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw (response.status)
-        }
-  
-        return response.json()
-      })
-      .then(data => {
-        setTechnologies(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    
-    
-  }, [])
-
   return (
     <>
-      <AdminMainHeader h1='Cinemas' p={`Adicionar sala ao ${movieTheater.name}`} />
+      <AdminMainHeader h1='Cinemas' p={`Adicionar sala ao ${movieTheater?.name}`} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleRoomAddForm)} className='space-y-8 pt-[1.5rem]'>
           <FormField

@@ -1,8 +1,8 @@
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
 import { Button } from "@/components/ui/button"
+import { useFetch } from "@/hooks/useFetch";
 import { ColumnDef } from "@tanstack/react-table"
-import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
@@ -50,27 +50,9 @@ const columns: ColumnDef<MovieTheater>[] = [
 ]
 
 export function AdminMovieTheaterList() {
-  const [movieTheaters, setMovieTheaters] = useState([] as MovieTheater[])
-
-  useEffect(() => {
-    fetch('http://localhost:3333/movie-theaters', {
-      method: 'GET'
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw (response.status)
-        }
-
-        return response.json()
-      })
-      .then(data => {
-        console.log(data)
-        setMovieTheaters(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [])
+  const { data: movieTheaters } = useFetch<MovieTheater[]>(
+    'http://localhost:3333/movie-theaters', { method: 'GET' }
+  )
 
   return (
     <>
