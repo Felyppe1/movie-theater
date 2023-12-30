@@ -51,7 +51,7 @@ const seatValidationSchema = zod.object({
 const roomAddFormValidationSchema = zod.object({
   number: zod.string().min(1).max(3),
   technology: zod.array(zod.string()).min(1),
-  seats: zod.array(seatValidationSchema)
+  seats: zod.array(seatValidationSchema).min(1)
 })
 
 type RoomAddForm = zod.infer<typeof roomAddFormValidationSchema>
@@ -152,8 +152,36 @@ export function AdminRoomAdd() {
     form.setValue('seats', seats)
   }
 
-  function handleRoomAddForm(data: RoomAddForm) {
-    console.log(data)
+  function handleRoomAddForm({ technology, seats, ...data }: RoomAddForm) {
+    const formData = {
+      ...data,
+      movie_theater_id: id,
+      Technology: technology,
+      Seat: seats
+    }
+
+    console.log(formData)
+
+    fetch('http://localhost:3333/rooms', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw (response.statusText)
+        }
+
+        return response.json()
+      })
+      .then(responseData => {
+        console.log('Sala adicionada!')
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   useEffect(() => {
@@ -339,10 +367,10 @@ export function AdminRoomAdd() {
         </div>
         <div className='w-fit max-w-[50rem] overflow-hidden my-[1rem]'>
           <Form {...form}>
-            <form onSubmit={alterSeatsForm.handleSubmit(handleSubmitAlterSeatsForm)} className='grid gap-1' style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
-              {form.getValues().seats?.map(seat => (
+            <form onSubmit={alterSeatsForm.handleSubmit(handleSubmitAlterSeatsForm)} className='grid gap-1' style={{ gridTemplateColumns: `${(columns > 0) ? `repeat(${columns}, 1fr)` : ''}` }}>
+              {form.getValues().seats?.map((seat, index) => (
                 <FormField
-                  key={`${seat.row}${seat.column}`}
+                  key={`${seat.row}-${seat.column}-${index}`}
                   control={alterSeatsForm.control}
                   name="seats"
                   render={({ field }) => {
@@ -350,7 +378,7 @@ export function AdminRoomAdd() {
                     const isChecked = field.value?.some(selectedSeat => selectedSeat.row === seat.row && selectedSeat.column === seat.column)
 
                     return (
-                      <FormItem key={`${seat.row}${seat.column}`} className='space-y-0'>
+                      <FormItem className='space-y-0'>
                         <FormControl>
                           <Checkbox
                             hidden

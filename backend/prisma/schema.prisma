@@ -98,11 +98,13 @@ model Room {
   id     String @id @default(uuid())
   number String
 
-  movieTheater    MovieTheater @relation(fields: [movieTheater_id], references: [id])
-  movieTheater_id String
+  movieTheater    MovieTheater @relation(fields: [movie_theater_id], references: [id])
+  movie_theater_id String
 
-  Seat Seat[]
-  Technology Technology[]
+  seats Seat[]
+  technologies Technology[]
+
+  @@map("rooms")
 }
 
 model Seat {
@@ -112,13 +114,17 @@ model Seat {
   exists Boolean
   type   String
 
-  room    Room   @relation(fields: [room_id], references: [id])
+  room    Room   @relation(fields: [room_id], references: [id], onDelete: Cascade)
   room_id String
+
+  @@map("seats")
 }
 
 model Technology {
   id   String @id @default(uuid())
   name String @unique
 
-  Room Room[]
+  rooms Room[]
+
+  @@map("technologies")
 }
