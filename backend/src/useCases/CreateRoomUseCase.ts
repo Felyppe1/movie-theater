@@ -1,6 +1,6 @@
+import { AppError } from "../errors/AppError";
+import { ICreateRoomRequestDTO } from "../http/controllers/CreateRoomController";
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
-import { ITechnologiesRepository } from "../repositories/ITechnologiesRepository";
-import { ICreateRoomRequestDTO } from "./dtos/ICreateRoomDTO";
 
 export class CreateRoomUseCase {
   private roomsRepository: IRoomsRepository
@@ -10,6 +10,11 @@ export class CreateRoomUseCase {
   }
 
   async execute({ number, movie_theater_id, Technology, Seat }: ICreateRoomRequestDTO) {
+    const roomExists = await this.roomsRepository.findByNumber(number)
+    if (roomExists) {
+      throw new AppError('Número da sala já existe', 409)
+    }
+
     const newData = {
       number,
       movie_theater_id,

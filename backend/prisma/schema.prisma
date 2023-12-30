@@ -96,9 +96,9 @@ model MovieTheater {
 
 model Room {
   id     String @id @default(uuid())
-  number String
+  number String @unique
 
-  movieTheater    MovieTheater @relation(fields: [movie_theater_id], references: [id])
+  movieTheater    MovieTheater @relation(fields: [movie_theater_id], references: [id], onDelete: Cascade)
   movie_theater_id String
 
   seats Seat[]

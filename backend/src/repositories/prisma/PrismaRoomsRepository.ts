@@ -1,3 +1,4 @@
+import { Room } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 import { ICreateRoomRepositoryDTO, IRoomsRepository } from "../IRoomsRepository";
 
@@ -15,6 +16,15 @@ export class PrismaRoomsRepository implements IRoomsRepository {
         }
       }
     })
-    
+  }
+
+  async findByNumber(number: string): Promise<Room | null> {
+    const room = await prisma.room.findFirst({
+      where: {
+        number: number
+      }
+    })
+
+    return room
   }
 }

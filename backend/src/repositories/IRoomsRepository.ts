@@ -1,3 +1,5 @@
+import { Room } from "@prisma/client"
+
 interface Seat {
   row: string
   column: string
@@ -14,4 +16,5 @@ export interface ICreateRoomRepositoryDTO {
 
 export interface IRoomsRepository {
   create(data: ICreateRoomRepositoryDTO): Promise<void>
+  findByNumber(number: string): Promise<Room | null>
 }

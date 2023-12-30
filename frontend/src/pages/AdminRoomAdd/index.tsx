@@ -152,7 +152,7 @@ export function AdminRoomAdd() {
     form.setValue('seats', seats)
   }
 
-  function handleRoomAddForm({ technology, seats, ...data }: RoomAddForm) {
+  async function handleRoomAddForm({ technology, seats, ...data }: RoomAddForm) {
     const formData = {
       ...data,
       movie_theater_id: id,
@@ -160,28 +160,23 @@ export function AdminRoomAdd() {
       Seat: seats
     }
 
-    console.log(formData)
+    try {
+      const response = await fetch('http://localhost:3333/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
 
-    fetch('http://localhost:3333/rooms', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw (response.statusText)
-        }
+      const responseData = await response.json()
 
-        return response.json()
-      })
-      .then(responseData => {
-        console.log('Sala adicionada!')
-      })
-      .catch(error => {
-        console.log(error)
-      })
+      if (responseData.status === 409) {
+        return responseData.message
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
