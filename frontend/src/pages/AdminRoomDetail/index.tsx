@@ -3,14 +3,12 @@ import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { useFetch } from "@/hooks/useFetch"
 import { useParams } from "react-router-dom"
 
-
 type TechnologiesProps = {
   id: string
   name: string
 }
 
 type SeatProps = {
-  id: number
   row: string
   column: string
   exists: boolean
@@ -43,6 +41,7 @@ export function AdminRoomDetail() {
         selectedTechnologies={room.technologies}
         seats={room.seats}
         movie_theater_id={room.movie_theater_id}
+        room_id={room.id}
       />
       </>
     )}

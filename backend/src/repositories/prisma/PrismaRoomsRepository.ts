@@ -1,6 +1,6 @@
 import { Room } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
-import { ICreateRoomRepositoryDTO, IRoomsRepository } from "../IRoomsRepository";
+import { ICreateRoomRepositoryDTO, IRoomsRepository, IUpdateRoomRepositoryDTO } from "../IRoomsRepository";
 
 export class PrismaRoomsRepository implements IRoomsRepository {
   async create({ number, movie_theater_id, technologyIds, seats }: ICreateRoomRepositoryDTO): Promise<void> {
@@ -26,14 +26,17 @@ export class PrismaRoomsRepository implements IRoomsRepository {
       include: {
         seats: {
           select: {
-            id: true,
             row: true,
             column: true,
             exists: true,
             type: true
           }
         },
-        technologies: true
+        technologies: {
+          select: {
+            id: true
+          }
+        }
       }
     })
 
@@ -49,5 +52,27 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     })
 
     return room
+  }
+
+  async update({ id, number, seats, technologies }: IUpdateRoomRepositoryDTO): Promise<void> {
+    await prisma.room.update({
+      where: {
+        id: id
+      },
+      data: {
+        number,
+        technologies: {
+          set: technologies.map(technology => ({ id: technology.id }))
+        },
+        seats: {
+          deleteMany: {
+            room_id: id
+          },
+          createMany: {
+            data: seats
+          }
+        }
+      }
+    })
   }
 }

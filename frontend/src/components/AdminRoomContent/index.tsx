@@ -4,88 +4,57 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useFetch } from "@/hooks/useFetch"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import zod, { ZodString, ZodBoolean, ZodObject } from 'zod'
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
-
-const technologyValidationSchema = zod.object({
-  id: zod.string(),
-  name: zod.string().min(1)
-})
-type Technology = zod.infer<typeof technologyValidationSchema>
-
-
-const seatValidationSchema = zod.object({
-  id: zod.number().optional(),
-  row: zod.string().min(1),
-  column: zod.string().min(1),
-  exists: zod.boolean(),
-  type: zod.string().min(1),
-  selected: zod.boolean().optional()
-});
-export type SeatProps = zod.infer<typeof seatValidationSchema>
-
-
-const roomAddFormValidationSchema = zod.object({
-  number: zod.string().min(1).max(3),
-  technology: zod.array(technologyValidationSchema).min(1),
-  seats: zod.array(seatValidationSchema).min(1)
-})
-export type RoomAddForm = zod.infer<typeof roomAddFormValidationSchema>
+import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 
 
 interface AdminRoomContentProps {
   number?: string,
-  selectedTechnologies?: Technology[]
+  selectedTechnologies?: TechnologyProps[]
   seats?: Omit<SeatProps, 'selected'>[],
   movie_theater_id: string
+  room_id?: string
 }
 
-export function AdminRoomContent({ number, selectedTechnologies, seats, movie_theater_id }: AdminRoomContentProps) {
-  const { data: technologies } = useFetch<Technology[]>(
+export function AdminRoomContent({ number = '', selectedTechnologies = [], seats = [], movie_theater_id, room_id }: AdminRoomContentProps) {
+  const { data: technologies } = useFetch<TechnologyProps[]>(
     `http://localhost:3333/technologies`, { method: 'GET' }
   )
 
-  const form = useForm<RoomAddForm>({
-    resolver: zodResolver(roomAddFormValidationSchema),
-    defaultValues: {
-      number,
-      technology: selectedTechnologies,
-      seats
-    }
+  const { form } = useAdminRoomViewForm({
+    number, 
+    seats,
+    technologies: selectedTechnologies
   })
 
-  console.log(form.formState.errors)
-
-  form.watch('seats')
-
-  async function handleRoomAddForm({ technology, seats, ...data }: RoomAddForm) {
-    const formData = {
-      ...data,
+  async function handleRoomAddForm({ technologies, seats, ...formData }: AddRoomForm) {
+    const cleanedData = {
+      ...formData,
       movie_theater_id,
-      Technology: technology,
-      Seat: seats?.map(({ selected, ...seat }) => seat)
+      technologies,
+      seats: seats?.map(({ selected, ...seat }) => seat),
+      id: room_id ? room_id : ''
     }
 
-    console.log(formData)
-    // try {
-    //   const response = await fetch('http://localhost:3333/rooms', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(formData)
-    //   })
+    console.log(cleanedData)
 
-    //   const responseData = await response.json()
+    try {
+      const response = await fetch(`http://localhost:3333/rooms/${room_id ?? ''}`, {
+        method: room_id ? 'PUT' : 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cleanedData)
+      })
 
-    //   if (responseData.status === 409) {
-    //     return responseData.message
-    //   }
-    // } catch (err) {
-    //   console.log(err)
-    // }
+      const responseData = await response.json()
+
+      if (responseData.status === 409) {
+        return responseData.message
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
   
   return (
@@ -121,7 +90,7 @@ export function AdminRoomContent({ number, selectedTechnologies, seats, movie_th
             <FormField
               key={technology.id}
               control={form.control}
-              name="technology"
+              name="technologies"
               render={({ field }) => {
                 return (
                   <FormItem
@@ -130,7 +99,7 @@ export function AdminRoomContent({ number, selectedTechnologies, seats, movie_th
                   >
                     <FormControl>
                       <Checkbox
-                        checked={field.value.some(tech => tech.id === technology.id)}
+                        checked={field.value?.some(tech => tech.id === technology.id)}
                         onCheckedChange={(checked) => {
                           return checked
                             ? field.onChange([...field.value, technology])
