@@ -12,17 +12,12 @@ import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Switch } from "@/components/ui/switch"
 import { useFetch } from "@/hooks/useFetch"
+import { IoCloseOutline } from "react-icons/io5";
+
 
 type Technology = {
   id: string
   name: string
-}
-
-type Seat = {
-  row: string
-  column: string
-  exists: boolean
-  type: string
 }
 
 export type Room = {
@@ -47,14 +42,16 @@ const seatValidationSchema = zod.object({
   column: zod.string().min(1),
   exists: zod.boolean(),
   type: zod.string(),
+  selected: zod.boolean()
 });
+type SeatProps = zod.infer<typeof seatValidationSchema>
+
 
 const roomAddFormValidationSchema = zod.object({
   number: zod.string().min(1).max(3),
   technology: zod.array(zod.string()).min(1),
   seats: zod.array(seatValidationSchema).min(1)
 })
-
 type RoomAddForm = zod.infer<typeof roomAddFormValidationSchema>
 
 
@@ -62,18 +59,14 @@ const seatsNumberFormValidationSchema = zod.object({
   rows: zod.number().min(0).max(40),
   columns: zod.number().min(0).max(30)
 })
-
 type SeatsNumberForm = zod.infer<typeof seatsNumberFormValidationSchema>
 
 
-const alterSeatsFormValidationSchema = zod.object({
-  seats: zod.array(seatValidationSchema),
+const seatPropsFormValidationSchema = zod.object({
   exists: zod.boolean(),
   type: zod.string(),
 })
-
-type AlterSeatsForm = zod.infer<typeof alterSeatsFormValidationSchema>
-
+type SeatPropsForm = zod.infer<typeof seatPropsFormValidationSchema>
 
 
 export function AdminRoomAdd() {
@@ -86,16 +79,15 @@ export function AdminRoomAdd() {
     `http://localhost:3333/technologies`, { method: 'GET' }
   )
 
-  console.log(technologies)
-
   const [columns, setColumns] = useState(0)
-  
-  const form = useForm({
+  const [selectedSeatIndexes, setSelectedSeatIndexes] = useState([] as number[])
+
+  const form = useForm<RoomAddForm>({
     resolver: zodResolver(roomAddFormValidationSchema),
     defaultValues: {
       number: '',
       technology: [],
-      seats: [] as Seat[]
+      seats: [] 
     }
   })
 
@@ -109,40 +101,18 @@ export function AdminRoomAdd() {
     }
   })
 
-  const alterSeatsForm = useForm({
-    resolver: zodResolver(alterSeatsFormValidationSchema),
+  const seatPropsForm = useForm<SeatPropsForm>({
+    resolver: zodResolver(seatPropsFormValidationSchema),
     defaultValues: {
-      seats: [] as Seat[],
       exists: true,
       type: 'Normal'
     }
   })
 
-  function handleSubmitAlterSeatsForm({ seats, exists, type }: AlterSeatsForm) {
-    const alteredSeats = form.getValues().seats?.map(seat => {
-      const matchingSeat = seats?.find(alterSeat =>
-        alterSeat.row === seat.row && alterSeat.column === seat.column
-      )
-
-      if (matchingSeat) {
-        return {
-          ...seat,
-          type,
-          exists
-        }
-      }
-
-      return seat
-    })
-
-    form.setValue('seats', alteredSeats)
-    alterSeatsForm.setValue('seats', [])
-  }
-
   function handleSubmitSeatsNumberForm({ rows, columns }: SeatsNumberForm) {
     event.preventDefault()
 
-    let seats: Seat[] = []
+    let seats: SeatProps[] = []
     
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
@@ -151,7 +121,8 @@ export function AdminRoomAdd() {
           row: i.toString(),
           column: j.toString(),
           exists: true,
-          type: 'normal'
+          type: 'Normal',
+          selected: false
         })
       }
     }
@@ -160,12 +131,68 @@ export function AdminRoomAdd() {
     form.setValue('seats', seats)
   }
 
+  function handleSelectSeat(seat: SeatProps, index: number) {
+    setSelectedSeatIndexes(state => {
+      let newState
+      if (seat.selected) {
+        newState = state.filter(indx => indx != index)
+      } else {
+        newState = state.includes(index) ? state : [...state, index]
+      }
+
+      if (newState.length > 0) {
+        const areAllSeatsHidden = newState?.every(index => form.getValues().seats[index].exists == false)
+        if (areAllSeatsHidden) {
+          seatPropsForm.setValue('exists', false)
+        } else {
+          seatPropsForm.setValue('exists', true)
+        }
+      } else {
+        seatPropsForm.setValue('exists', true)
+      }
+
+      return newState
+    })
+
+    form.getValues().seats[index].selected = !seat.selected
+    form.setValue('seats', form.getValues().seats)
+  }
+
+  function handleRemoveAllSelectedSeats() {
+    selectedSeatIndexes.forEach(index => {
+      form.getValues().seats[index].selected = false
+      form.setValue('seats', form.getValues().seats)
+    })
+
+    seatPropsForm.setValue('exists', true)
+    setSelectedSeatIndexes([])
+  }
+
+  function handleSubmitSeatPropsForm({ exists, type }: SeatPropsForm) {
+    const alteredSeats = form.getValues().seats?.map(seat => {
+      if (seat.selected) {
+        return {
+          ...seat,
+          selected: false,
+          type,
+          exists
+        }
+      }
+
+      return seat
+    })
+
+    setSelectedSeatIndexes([])
+
+    form.setValue('seats', alteredSeats)
+  }
+
   async function handleRoomAddForm({ technology, seats, ...data }: RoomAddForm) {
     const formData = {
       ...data,
       movie_theater_id: id,
       Technology: technology,
-      Seat: seats
+      Seat: seats?.map(({ selected, ...seat }) => seat)
     }
 
     try {
@@ -254,7 +281,7 @@ export function AdminRoomAdd() {
       </Form>
 
       <div className='mt-[2rem]'>
-        <Label className='text-base'>Formato da sala</Label>
+        <Label className={`text-base`}>Formato da sala</Label>
         <div className='flex justify-between items-end' >
           <form onSubmit={seatsNumberForm.handleSubmit(handleSubmitSeatsNumberForm)} className='flex items-end gap-x-[1rem]'>
             <div>
@@ -276,10 +303,21 @@ export function AdminRoomAdd() {
             <Button type='submit' size={'sm'} variant={'outline'}>Atualizar</Button>
           </form>
             
-          <div className='flex items-center gap-x-[.5rem]'>
-            <span className='text-sm'>
-              0 selecionadas
-            </span>
+          <div className='flex items-center gap-x-[.25rem]'>
+            {selectedSeatIndexes.length > 0 &&
+              <>
+              <button 
+                onClick={handleRemoveAllSelectedSeats}
+                className='flex inline-flex items-center justify-center  whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground'
+              >
+                <IoCloseOutline style={{ fontSize: '1.25rem' }} />
+              </button>
+              <span className='text-sm'>
+                {selectedSeatIndexes.length} selecionadas
+              
+              </span>
+              </>
+            }
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline">Propriedade da cadeira</Button>
@@ -288,11 +326,11 @@ export function AdminRoomAdd() {
                 <div className="grid gap-4">
                   <Form {...form}>
                     <form 
-                      onSubmit={alterSeatsForm.handleSubmit(handleSubmitAlterSeatsForm)}
+                      onSubmit={seatPropsForm.handleSubmit(handleSubmitSeatPropsForm)}
                       className='flex flex-col gap-y-[1rem]'  
                     >
                       <FormField
-                        control={alterSeatsForm.control}
+                        control={seatPropsForm.control}
                         name="type"
                         render={({ field }) => (
                           <>
@@ -308,7 +346,7 @@ export function AdminRoomAdd() {
                       />
 
                       <FormField
-                        control={alterSeatsForm.control}
+                        control={seatPropsForm.control}
                         name="exists"
                         render={({ field }) => (
                           <FormItem className='grid grid-cols-3 items-center gap-4'>
@@ -336,51 +374,23 @@ export function AdminRoomAdd() {
 
         </div>
         <div className='w-fit max-w-[50rem] overflow-hidden my-[1rem]'>
-          <Form {...form}>
-            <form onSubmit={alterSeatsForm.handleSubmit(handleSubmitAlterSeatsForm)} className='grid gap-1' style={{ gridTemplateColumns: `${(columns > 0) ? `repeat(${columns}, 1fr)` : ''}` }}>
-              {form.getValues().seats?.map((seat, index) => (
-                <FormField
-                  key={`${seat.row}-${seat.column}-${index}`}
-                  control={alterSeatsForm.control}
-                  name="seats"
-                  render={({ field }) => {
-                    // TODO: use this: field.value?.includes(seat)
-                    const isChecked = field.value?.some(selectedSeat => selectedSeat.row === seat.row && selectedSeat.column === seat.column)
-
-                    return (
-                      <FormItem className='space-y-0'>
-                        <FormControl>
-                          <Checkbox
-                            hidden
-                            checked={isChecked}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, seat])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value.row !== seat.row || value.column !== seat.column
-                                    )
-                                  )
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel 
-                          className={`flex max-w-[1.5rem] w-[1.5rem] h-[1.5rem] rounded-sm cursor-pointer
-                          ${isChecked 
-                            ? 'bg-primary/60 hover:bg-primary/50' 
-                            : seat.exists 
-                              ? 'bg-primary hover:bg-primary/90'
-                              : 'bg-secondary hover:bg-secondary/70'}
-                          `}
-                        >
-                        </FormLabel>
-                      </FormItem>
-                    )
-                  }}
-                />
-              ))}
-            </form>
-          </Form>
+          <div className='grid gap-1' style={{ gridTemplateColumns: `${(columns > 0) ? `repeat(${columns}, 1fr)` : ''}` }}>
+            {form.getValues().seats?.map((seat, index) => {
+              return (
+                <button
+                  onClick={() => { handleSelectSeat(seat, index) }}
+                  key={`${seat.column}-${seat.row}`}
+                  className={`flex max-w-[1.5rem] w-[1.5rem] h-[1.5rem] rounded-sm cursor-pointer
+                    ${seat.selected
+                      ? 'bg-primary/60 hover:bg-primary/50' 
+                      : seat.exists 
+                        ? 'bg-primary hover:bg-primary/90'
+                        : 'bg-secondary hover:bg-secondary/70'}
+                    `}
+                ></button>
+              )
+            })}
+          </div>
 
           <div className='flex justify-center items-center h-[2rem] bg-primary radius text-primary-foreground mt-[2rem]'>
             {columns > 0 ? 'TELA' : '' }
