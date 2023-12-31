@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { RoomAddForm, SeatProps } from ".."
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { UseFormReturn, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import zod from 'zod'
@@ -28,7 +28,7 @@ interface AdminSeatsSectionProps {
   form: UseFormReturn<RoomAddForm>
 }
 
-export function AdminSeatsSection({ form }: AdminSeatsSectionProps) {
+export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
   const [columns, setColumns] = useState(0)
   const [selectedSeatIndexes, setSelectedSeatIndexes] = useState([] as number[])
   
@@ -39,6 +39,22 @@ export function AdminSeatsSection({ form }: AdminSeatsSectionProps) {
       columns: 0
     }
   })
+
+  useEffect(() => {
+    if (form) {
+      const columnSet = new Set()
+      const rowSet = new Set()
+      form.getValues().seats?.forEach(({ row, column }) => {
+        rowSet.add(row)
+        columnSet.add(column)
+      })
+
+      setColumns(columnSet.size)
+      seatsNumberForm.setValue('rows', rowSet.size)
+      seatsNumberForm.setValue('columns', columnSet.size)
+    }
+
+  }, [])
 
   const seatPropsForm = useForm<SeatPropsForm>({
     resolver: zodResolver(seatPropsFormValidationSchema),

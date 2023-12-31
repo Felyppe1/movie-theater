@@ -1,13 +1,16 @@
+import { AdminRoomContent } from "@/components/AdminRoomContent"
+import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { useFetch } from "@/hooks/useFetch"
 import { useParams } from "react-router-dom"
+
 
 type TechnologiesProps = {
   id: string
   name: string
 }
 
-type Seat = {
-  id: string
+type SeatProps = {
+  id: number
   row: string
   column: string
   exists: boolean
@@ -18,26 +21,31 @@ type RoomProps = {
   id: string
   number: string
   movie_theater_id: string
-  seats: Seat[]
+  seats: SeatProps[]
   technologies: TechnologiesProps[]
 }
 
 export function AdminRoomDetail() {
   const { id } = useParams()
 
-  const { data: room } = useFetch<RoomProps>(
+  const { data: room, isLoading } = useFetch<RoomProps>(
     `http://localhost:3333/rooms/${id}`,
     { method: 'GET' }
   )
 
-  const { data: technologies } = useFetch<TechnologiesProps[]>(
-    `http://localhost:3333/technologies`, { method: 'GET' }
-  )
-
   return (
     <>
-    <h1>{room.id}</h1>
-    <p>{room.number}</p>
+    <AdminMainHeader h1='Cinemas' p='Alterar sala de cinema' />
+    {!isLoading && (
+      <>
+      <AdminRoomContent
+        number={room.number}
+        selectedTechnologies={room.technologies}
+        seats={room.seats}
+        movie_theater_id={room.movie_theater_id}
+      />
+      </>
+    )}
     </>
   )
 }

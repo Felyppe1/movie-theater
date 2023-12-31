@@ -24,7 +24,15 @@ export class PrismaRoomsRepository implements IRoomsRepository {
         id: id
       },
       include: {
-        seats: true,
+        seats: {
+          select: {
+            id: true,
+            row: true,
+            column: true,
+            exists: true,
+            type: true
+          }
+        },
         technologies: true
       }
     })
