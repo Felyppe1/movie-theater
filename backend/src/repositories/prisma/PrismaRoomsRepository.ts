@@ -27,4 +27,15 @@ export class PrismaRoomsRepository implements IRoomsRepository {
 
     return room
   }
+
+  async findByNumberAndMovieTheater(number: string, movie_theater_id: string): Promise<Room | null> {
+    const room = await prisma.room.findFirst({
+      where: {
+        number,
+        movie_theater_id
+      }
+    })
+
+    return room
+  }
 }

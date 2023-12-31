@@ -96,7 +96,7 @@ model MovieTheater {
 
 model Room {
   id     String @id @default(uuid())
-  number String @unique
+  number String
 
   movieTheater    MovieTheater @relation(fields: [movie_theater_id], references: [id], onDelete: Cascade)
   movie_theater_id String

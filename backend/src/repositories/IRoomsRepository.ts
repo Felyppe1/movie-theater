@@ -17,4 +17,5 @@ export interface ICreateRoomRepositoryDTO {
 export interface IRoomsRepository {
   create(data: ICreateRoomRepositoryDTO): Promise<void>
   findByNumber(number: string): Promise<Room | null>
+  findByNumberAndMovieTheater(number: string, movie_theater_id: string): Promise<Room | null>
 }
