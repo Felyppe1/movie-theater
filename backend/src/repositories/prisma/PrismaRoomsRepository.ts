@@ -18,10 +18,14 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     })
   }
 
-  async findByNumber(number: string): Promise<Room | null> {
-    const room = await prisma.room.findFirst({
+  async findById(id: string): Promise<Room | null> {
+    const room = await prisma.room.findUnique({
       where: {
-        number: number
+        id: id
+      },
+      include: {
+        seats: true,
+        technologies: true
       }
     })
 

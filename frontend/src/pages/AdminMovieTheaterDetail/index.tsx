@@ -55,7 +55,11 @@ export function AdminMovieTheaterDetail() {
           {movieTheater?.Room?.map(room => {
             return (
               <TableRow key={room.id}>
-                <TableCell className="font-medium py-2">{room.number}</TableCell>
+                <TableCell className="font-medium py-2">
+                  <Link to={`/admin/movie-theater/room/detail/${room.id}`}>
+                    {room.number}
+                  </Link>
+                </TableCell>
                 <TableCell className="py-2">{room._count.seats}</TableCell>
                 <TableCell className="py-2">0</TableCell>
               </TableRow>
