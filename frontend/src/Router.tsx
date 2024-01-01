@@ -7,8 +7,8 @@ import { Login } from "./pages/Login";
 import { AdminMovieTheaterList } from "./pages/AdminMovieTheaterList";
 import { AdminMovieTheaterDetail } from "./pages/AdminMovieTheaterDetail";
 import { AdminMovieTheaterAdd } from "./pages/AdminMovieTheaterAdd";
-import { AdminRoomAdd } from "./pages/AdminRoomAdd";
 import { AdminRoomDetail } from "./pages/AdminRoomDetail";
+import { AdminRoomAdd } from "./pages/AdminRoomAdd";
 
 export function Router() {
     return (

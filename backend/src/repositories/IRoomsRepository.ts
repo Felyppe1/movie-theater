@@ -10,7 +10,7 @@ interface Seat {
 export interface ICreateRoomRepositoryDTO {
   number: string
   movie_theater_id: string
-  technologyIds: { id: string }[]
+  technologyIds: string[]
   seats: Seat[]
 }
 

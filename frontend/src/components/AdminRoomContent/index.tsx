@@ -33,8 +33,10 @@ export function AdminRoomContent({ number = '', selectedTechnologyIds = [], seat
       movie_theater_id,
       technologyIds,
       seats: seats?.map(({ selected, ...seat }) => seat),
-      id: room_id ? room_id : ''
+      id: room_id ?? undefined
     }
+
+    console.log('CLEANED DATA', cleanedData)
 
     try {
       const response = await fetch(`http://localhost:3333/rooms/${room_id ?? ''}`, {
@@ -46,6 +48,8 @@ export function AdminRoomContent({ number = '', selectedTechnologyIds = [], seat
       })
 
       const responseData = await response.json()
+
+      console.log(responseData)
 
       if (responseData.status === 409) {
         return responseData.message
@@ -90,7 +94,6 @@ export function AdminRoomContent({ number = '', selectedTechnologyIds = [], seat
               control={form.control}
               name="technologyIds"
               render={({ field }) => {
-                console.log(field.value)
                 return (
                   <FormItem
                     key={technology.id}

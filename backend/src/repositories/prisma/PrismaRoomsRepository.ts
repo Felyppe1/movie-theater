@@ -12,7 +12,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
           create: seats
         },
         technologies: {
-          connect: technologyIds
+          connect: technologyIds.map(technologyId => ({ id: technologyId }))
         }
       }
     })

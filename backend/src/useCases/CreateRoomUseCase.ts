@@ -9,20 +9,21 @@ export class CreateRoomUseCase {
     this.roomsRepository = roomsRepository
   }
 
-  async execute({ number, movie_theater_id, Technology, Seat }: ICreateRoomRequestDTO) {
+  async execute({ number, movie_theater_id, technologyIds, seats }: ICreateRoomRequestDTO) {
     const roomExists = await this.roomsRepository.findByNumberAndMovieTheater(number, movie_theater_id)
     
     if (roomExists) {
       throw new AppError('Número da sala já existe', 409)
     }
 
-    const newData = {
-      number,
-      movie_theater_id,
-      technologyIds: Technology.map(technology => { return { id: technology } }),
-      seats: Seat
-    }
+    // const newData = {
+    //   number,
+    //   movie_theater_id,
+    //   technologyIds: Technology.map(technology => { return { id: technology } }),
+    //   seats: Seat
+    // }
 
-    await this.roomsRepository.create(newData)
+    // await this.roomsRepository.create(newData)
+    await this.roomsRepository.create({ number, movie_theater_id, technologyIds, seats })
   }
 }

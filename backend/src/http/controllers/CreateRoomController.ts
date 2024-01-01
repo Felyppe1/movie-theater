@@ -12,8 +12,8 @@ const seatValidationSchema = zod.object({
 const createRoomRequestValidationSchema = zod.object({
   number: zod.string().min(1),
   movie_theater_id: zod.string().min(1),
-  Technology: zod.array(zod.string().min(1)),
-  Seat: zod.array(seatValidationSchema)
+  technologyIds: zod.array(zod.string().min(1)),
+  seats: zod.array(seatValidationSchema)
 })
 
 export type ICreateRoomRequestDTO = zod.infer<typeof createRoomRequestValidationSchema>
