@@ -22,7 +22,7 @@ export function AdminRoomView({
   seats = [], 
   movie_theater_id, room_id 
 }: AdminRoomViewProps) {
-  
+
   const { data: technologies } = useFetch<TechnologyProps[]>(
     `http://localhost:3333/technologies`, { method: 'GET' }
   )
@@ -42,8 +42,6 @@ export function AdminRoomView({
       id: room_id ?? undefined
     }
 
-    console.log('CLEANED DATA', cleanedData)
-
     try {
       const response = await fetch(`http://localhost:3333/rooms/${room_id ?? ''}`, {
         method: room_id ? 'PUT' : 'POST',
@@ -52,6 +50,25 @@ export function AdminRoomView({
         },
         body: JSON.stringify(cleanedData)
       })
+
+      const responseData = await response.json()
+
+      console.log(responseData)
+
+      if (responseData.status === 409) {
+        return responseData.message
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function handleDeleteRoom() {
+    try {
+      const response = await fetch(
+        `http://localhost:3333/rooms/${room_id}`,
+        { method: 'DELETE' }
+      )
 
       const responseData = await response.json()
 
@@ -134,8 +151,13 @@ export function AdminRoomView({
     </Form>
 
     <AdminRoomSeatsSection form={form} />
-
-    <Button type='submit' onClick={form.handleSubmit(handleRoomAddForm)} size={'lg'} className='mt-[3rem]'>Salvar</Button>
+    
+    <div className='flex gap-x-[1rem]'>
+      {room_id &&
+        <Button type='submit' onClick={handleDeleteRoom} size='lg' variant='destructive' className='mt-[3rem]'>Excluir</Button>
+      }
+      <Button type='submit' onClick={form.handleSubmit(handleRoomAddForm)} size='lg' className='mt-[3rem]'>Salvar</Button>
+    </div>
     </>
   )
 }

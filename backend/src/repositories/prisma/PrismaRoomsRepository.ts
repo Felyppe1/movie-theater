@@ -75,4 +75,10 @@ export class PrismaRoomsRepository implements IRoomsRepository {
       }
     })
   }
+
+  async delete(id: string): Promise<void> {
+    await prisma.room.delete({
+      where: { id }
+    })
+  }
 }

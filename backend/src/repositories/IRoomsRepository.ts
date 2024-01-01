@@ -27,4 +27,5 @@ export interface IRoomsRepository {
   findById(id: string): Promise<Room | null>
   findByNumberAndMovieTheater(number: string, movie_theater_id: string): Promise<Room | null>
   update(data: IUpdateRoomRepositoryDTO): Promise<void>
+  delete(id: string): Promise<void>
 }
