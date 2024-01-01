@@ -1,4 +1,4 @@
-import { AdminRoomContent } from "@/components/AdminRoomContent"
+import { AdminRoomView } from "@/components/AdminRoomView"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { useFetch } from "@/hooks/useFetch"
 import { useParams } from "react-router-dom"
@@ -31,7 +31,7 @@ export function AdminRoomDetail() {
     <AdminMainHeader h1='Cinemas' p='Alterar sala de cinema' />
     {!isLoading && (
       <>
-      <AdminRoomContent
+      <AdminRoomView
         number={room.number}
         selectedTechnologyIds={room.technologies?.map(technology => technology.id)}
         seats={room.seats}

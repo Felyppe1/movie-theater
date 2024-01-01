@@ -1,5 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
-import { AddRoomForm, SeatProps } from "../useAdminRoomViewForm";
+import { AddRoomForm, SeatProps } from "../../useAdminRoomViewForm";
 
 interface AdminRoomSeatsGridProps {
   addRoomForm: UseFormReturn<AddRoomForm>

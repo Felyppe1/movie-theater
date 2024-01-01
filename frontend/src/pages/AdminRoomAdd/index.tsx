@@ -1,4 +1,4 @@
-import { AdminRoomContent } from "@/components/AdminRoomContent";
+import { AdminRoomView } from "@/components/AdminRoomView";
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { useFetch } from "@/hooks/useFetch";
 import { useParams } from "react-router-dom";
@@ -30,7 +30,7 @@ export function AdminRoomAdd() {
   return (
     <>
       <AdminMainHeader h1='Cinemas' p={`Adicionar sala ao ${movieTheater?.name}`} />
-      <AdminRoomContent movie_theater_id={movieTheater.id} />
+      <AdminRoomView movie_theater_id={movieTheater.id} />
     </>
   )
 }

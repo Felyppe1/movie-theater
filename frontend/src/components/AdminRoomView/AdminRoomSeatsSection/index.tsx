@@ -4,9 +4,9 @@ import { useEffect, useState } from "react"
 import { UseFormReturn, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import zod from 'zod'
-import { AdminRoomSeatsNumberForm } from "../AdminRoomSeatsNumberForm"
-import { AdminRoomSeatsGrid } from "../AdminRoomSeatsGrid"
-import { AdminRoomSeatPropsForm } from "../AdminRoomSeatPropsForm"
+import { AdminRoomSeatsNumberForm } from "./AdminRoomSeatsNumberForm"
+import { AdminRoomSeatsGrid } from "./AdminRoomSeatsGrid"
+import { AdminRoomSeatPropsForm } from "./AdminRoomSeatPropsForm"
 import { AddRoomForm, SeatProps } from "../useAdminRoomViewForm"
 
 const seatsNumberFormValidationSchema = zod.object({

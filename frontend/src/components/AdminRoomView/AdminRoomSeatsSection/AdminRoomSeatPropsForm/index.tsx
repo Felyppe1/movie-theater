@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Switch } from "@/components/ui/switch"
 import { UseFormReturn } from "react-hook-form"
-import { AddRoomForm } from "../useAdminRoomViewForm"
+import { AddRoomForm } from "../../useAdminRoomViewForm"
 
 interface SeatPropsForm {
   type: string

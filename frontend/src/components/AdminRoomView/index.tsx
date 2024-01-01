@@ -8,7 +8,7 @@ import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
 import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 
 
-interface AdminRoomContentProps {
+interface AdminRoomViewProps {
   number?: string,
   selectedTechnologyIds?: string[]
   seats?: Omit<SeatProps, 'selected'>[],
@@ -16,7 +16,13 @@ interface AdminRoomContentProps {
   room_id?: string
 }
 
-export function AdminRoomContent({ number = '', selectedTechnologyIds = [], seats = [], movie_theater_id, room_id }: AdminRoomContentProps) {
+export function AdminRoomView({ 
+  number = '', 
+  selectedTechnologyIds = [], 
+  seats = [], 
+  movie_theater_id, room_id 
+}: AdminRoomViewProps) {
+  
   const { data: technologies } = useFetch<TechnologyProps[]>(
     `http://localhost:3333/technologies`, { method: 'GET' }
   )
