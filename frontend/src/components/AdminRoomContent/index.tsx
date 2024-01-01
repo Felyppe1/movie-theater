@@ -10,13 +10,13 @@ import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from ".
 
 interface AdminRoomContentProps {
   number?: string,
-  selectedTechnologies?: string[]
+  selectedTechnologyIds?: string[]
   seats?: Omit<SeatProps, 'selected'>[],
   movie_theater_id: string
   room_id?: string
 }
 
-export function AdminRoomContent({ number = '', selectedTechnologies = [], seats = [], movie_theater_id, room_id }: AdminRoomContentProps) {
+export function AdminRoomContent({ number = '', selectedTechnologyIds = [], seats = [], movie_theater_id, room_id }: AdminRoomContentProps) {
   const { data: technologies } = useFetch<TechnologyProps[]>(
     `http://localhost:3333/technologies`, { method: 'GET' }
   )
@@ -24,19 +24,17 @@ export function AdminRoomContent({ number = '', selectedTechnologies = [], seats
   const { form } = useAdminRoomViewForm({
     number, 
     seats,
-    technologies: selectedTechnologies
+    technologyIds: selectedTechnologyIds
   })
 
-  async function handleRoomAddForm({ technologies, seats, ...formData }: AddRoomForm) {
+  async function handleRoomAddForm({ technologyIds, seats, ...formData }: AddRoomForm) {
     const cleanedData = {
       ...formData,
       movie_theater_id,
-      technologies,
+      technologyIds,
       seats: seats?.map(({ selected, ...seat }) => seat),
       id: room_id ? room_id : ''
     }
-
-    console.log(cleanedData)
 
     try {
       const response = await fetch(`http://localhost:3333/rooms/${room_id ?? ''}`, {
@@ -90,7 +88,7 @@ export function AdminRoomContent({ number = '', selectedTechnologies = [], seats
             <FormField
               key={technology.id}
               control={form.control}
-              name="technologies"
+              name="technologyIds"
               render={({ field }) => {
                 console.log(field.value)
                 return (

@@ -21,18 +21,18 @@ export type SeatProps = zod.infer<typeof seatValidationSchema>
 
 const roomAddFormValidationSchema = zod.object({
   number: zod.string().min(1).max(5),
-  technologies: zod.array(zod.string().min(1)).min(1),
+  technologyIds: zod.array(zod.string().min(1)).min(1),
   seats: zod.array(seatValidationSchema).min(1)
 })
 export type AddRoomForm = zod.infer<typeof roomAddFormValidationSchema>
 
 
-export function useAdminRoomViewForm({ number = '', technologies = [], seats = [] }: AddRoomForm) {
+export function useAdminRoomViewForm({ number = '', technologyIds = [], seats = [] }: AddRoomForm) {
   const form = useForm({
     resolver: zodResolver(roomAddFormValidationSchema),
     defaultValues: {
       number,
-      technologies: technologies,
+      technologyIds,
       seats
     }
   })

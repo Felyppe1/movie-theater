@@ -54,7 +54,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     return room
   }
 
-  async update({ id, number, seats, technologies }: IUpdateRoomRepositoryDTO): Promise<void> {
+  async update({ id, number, seats, technologyIds }: IUpdateRoomRepositoryDTO): Promise<void> {
     await prisma.room.update({
       where: {
         id: id
@@ -62,7 +62,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
       data: {
         number,
         technologies: {
-          set: technologies.map(technology => ({ id: technology }))
+          set: technologyIds.map(technologyId => ({ id: technologyId }))
         },
         seats: {
           deleteMany: {

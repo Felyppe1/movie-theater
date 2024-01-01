@@ -33,7 +33,7 @@ export function AdminRoomDetail() {
       <>
       <AdminRoomContent
         number={room.number}
-        selectedTechnologies={room.technologies?.map(technology => technology.id)}
+        selectedTechnologyIds={room.technologies?.map(technology => technology.id)}
         seats={room.seats}
         movie_theater_id={room.movie_theater_id}
         room_id={room.id}

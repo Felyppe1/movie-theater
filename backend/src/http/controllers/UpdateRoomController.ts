@@ -11,7 +11,7 @@ const seatValidationSchema = zod.object({
 
 const updateRoomBodyRequestValidationSchema = zod.object({
   number: zod.string().min(1).max(5),
-  technologies: zod.array(zod.string().min(1)).min(1),
+  technologyIds: zod.array(zod.string().min(1)).min(1),
   seats: zod.array(seatValidationSchema).min(1),
   movie_theater_id: zod.string().min(1),
 })
