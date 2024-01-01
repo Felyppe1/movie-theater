@@ -62,7 +62,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
       data: {
         number,
         technologies: {
-          set: technologies.map(technology => ({ id: technology.id }))
+          set: technologies.map(technology => ({ id: technology }))
         },
         seats: {
           deleteMany: {

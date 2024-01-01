@@ -11,7 +11,6 @@ export class CreateRoomUseCase {
 
   async execute({ number, movie_theater_id, Technology, Seat }: ICreateRoomRequestDTO) {
     const roomExists = await this.roomsRepository.findByNumberAndMovieTheater(number, movie_theater_id)
-    console.log(roomExists)
     
     if (roomExists) {
       throw new AppError('Número da sala já existe', 409)

@@ -10,7 +10,7 @@ import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from ".
 
 interface AdminRoomContentProps {
   number?: string,
-  selectedTechnologies?: TechnologyProps[]
+  selectedTechnologies?: string[]
   seats?: Omit<SeatProps, 'selected'>[],
   movie_theater_id: string
   room_id?: string
@@ -92,6 +92,7 @@ export function AdminRoomContent({ number = '', selectedTechnologies = [], seats
               control={form.control}
               name="technologies"
               render={({ field }) => {
+                console.log(field.value)
                 return (
                   <FormItem
                     key={technology.id}
@@ -99,13 +100,13 @@ export function AdminRoomContent({ number = '', selectedTechnologies = [], seats
                   >
                     <FormControl>
                       <Checkbox
-                        checked={field.value?.some(tech => tech.id === technology.id)}
+                        checked={field.value?.some(tech => tech === technology.id)}
                         onCheckedChange={(checked) => {
                           return checked
-                            ? field.onChange([...field.value, technology])
+                            ? field.onChange([...field.value, technology.id])
                             : field.onChange(
                                 field.value?.filter(
-                                  (value) => value.id !== technology.id
+                                  (value) => value !== technology.id
                                 )
                               )
                         }}

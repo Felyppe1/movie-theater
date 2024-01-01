@@ -18,10 +18,7 @@ export interface IUpdateRoomRepositoryDTO {
   id: string
   number: string
   movie_theater_id: string
-  technologies: {
-    id: string
-    name?: string
-  }[]
+  technologies: string[]
   seats: Seat[]
 }
 

@@ -134,8 +134,6 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
 
       return seat
     })
-    console.log(alteredSeats)
-
 
     setSelectedSeatIndexes([])
 

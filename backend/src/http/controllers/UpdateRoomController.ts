@@ -2,11 +2,6 @@ import { Request, Response } from "express";
 import { UpdateRoomUseCase } from "../../useCases/UpdateRoomUseCase";
 import zod from 'zod'
 
-const technologyValidationSchema = zod.object({
-  id: zod.string().min(1),
-  name: zod.string().min(1).optional()
-})
-
 const seatValidationSchema = zod.object({
   row: zod.string().min(1),
   column: zod.string().min(1),
@@ -16,7 +11,7 @@ const seatValidationSchema = zod.object({
 
 const updateRoomBodyRequestValidationSchema = zod.object({
   number: zod.string().min(1).max(5),
-  technologies: zod.array(technologyValidationSchema).min(1),
+  technologies: zod.array(zod.string().min(1)).min(1),
   seats: zod.array(seatValidationSchema).min(1),
   movie_theater_id: zod.string().min(1),
 })
