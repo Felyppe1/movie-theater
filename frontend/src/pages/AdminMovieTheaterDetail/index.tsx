@@ -52,7 +52,7 @@ export function AdminMovieTheaterDetail() {
       <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} />
       
       <Button asChild>
-        <Link to={`/admin/movie-theater/room/add/${id}`} className='mt-[1rem]'>
+        <Link to={`/admin/movie-theater/${id}/room/add/`} className='mt-[1rem]'>
           Adicionar sala
         </Link>
       </Button>
@@ -71,7 +71,7 @@ export function AdminMovieTheaterDetail() {
             return (
               <TableRow key={room.id}>
                 <TableCell className="font-medium py-2">
-                  <Link to={`/admin/movie-theater/room/detail/${room.id}`}>
+                  <Link to={`/admin/movie-theater/room/${room.id}`}>
                     {room.number}
                   </Link>
                 </TableCell>

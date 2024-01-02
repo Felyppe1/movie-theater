@@ -8,6 +8,7 @@ import { AdminRoomSeatsNumberForm } from "./AdminRoomSeatsNumberForm"
 import { AdminRoomSeatsGrid } from "./AdminRoomSeatsGrid"
 import { AdminRoomSeatPropsForm } from "./AdminRoomSeatPropsForm"
 import { AddRoomForm, SeatProps } from "../useAdminRoomViewForm"
+import { Button } from "@/components/ui/button"
 
 const seatsNumberFormValidationSchema = zod.object({
   rows: zod.number().min(0).max(40),
@@ -152,15 +153,11 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
         <div className='flex items-center gap-x-[.25rem]'>
           {selectedSeatIndexes.length > 0 &&
             <>
-            <button 
-              onClick={handleRemoveAllSelectedSeats}
-              className='flex inline-flex items-center justify-center  whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground'
-            >
+            <Button onClick={handleRemoveAllSelectedSeats} size='tiny' variant='outline'>
               <IoCloseOutline style={{ fontSize: '1.25rem' }} />
-            </button>
+            </Button>
             <span className='text-sm'>
               {selectedSeatIndexes.length} selecionadas
-            
             </span>
             </>
           }

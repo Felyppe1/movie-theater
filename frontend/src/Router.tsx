@@ -26,8 +26,8 @@ export function Router() {
                 <Route path='movie-theater/' element={<AdminMovieTheaterList />} />
                 <Route path='movie-theater/:id/' element={<AdminMovieTheaterDetail />} />
                 <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
-                <Route path='movie-theater/room/add/:id' element={<AdminRoomAdd />} />
-                <Route path='movie-theater/room/detail/:id' element={<AdminRoomDetail />} />
+                <Route path='movie-theater/:id/room/add/' element={<AdminRoomAdd />} />
+                <Route path='movie-theater/room/:id/' element={<AdminRoomDetail />} />
             </Route>
         </Routes>
     )
