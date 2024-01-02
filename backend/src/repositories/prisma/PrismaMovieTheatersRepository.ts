@@ -50,4 +50,14 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     
     return movieTheater
   }
+
+  async findByName(name: string): Promise<MovieTheater | null> {
+    const movieTheater = await prisma.movieTheater.findUnique({
+      where: {
+        name
+      }
+    })
+
+    return movieTheater
+  }
 }

@@ -12,4 +12,5 @@ export interface IMovieTheatersRepository {
   create(data: Prisma.MovieTheaterUncheckedCreateInput): Promise<MovieTheater>
   getAll(): Promise<MovieTheaterSubset[]>
   findById(id: string): Promise<MovieTheater | null>
+  findByName(name: string): Promise<MovieTheater | null>
 }

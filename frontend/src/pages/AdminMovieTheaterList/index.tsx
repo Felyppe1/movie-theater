@@ -1,6 +1,7 @@
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
 import { Button } from "@/components/ui/button"
+import { Toaster } from "@/components/ui/toaster";
 import { useFetch } from "@/hooks/useFetch";
 import { ColumnDef } from "@tanstack/react-table"
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
@@ -56,6 +57,7 @@ export function AdminMovieTheaterList() {
 
   return (
     <>
+      <Toaster />
       <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' />
       <div className='pt-[1.5rem]'>
         <Button asChild>
