@@ -32,6 +32,6 @@ export class CreateRoomController {
 
     await this.createRoomUseCase.execute(data)
 
-    return response.sendStatus(201)
+    return response.status(201).send()
   }
 }

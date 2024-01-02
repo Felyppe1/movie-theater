@@ -39,6 +39,6 @@ export class UpdateRoomController {
     
     await this.updateRoomUseCase.execute(id, data)
 
-    return response.status(200)
+    return response.status(200).send()
   }
 }

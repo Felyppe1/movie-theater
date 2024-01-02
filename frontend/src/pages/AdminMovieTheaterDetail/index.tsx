@@ -2,9 +2,12 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 } from "@/components/ui/table"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { Button } from "@/components/ui/button"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { useFetch } from "@/hooks/useFetch"
 import { Link } from "react-router-dom"
+import { useEffect } from "react"
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 
 export type RoomProps = {
   id: string
@@ -31,9 +34,21 @@ export function AdminMovieTheaterDetail() {
     `http://localhost:3333/movie-theaters/${id}`,
     { method: 'GET' }
   )
+
+  const location = useLocation()
+  const { toast } = useToast()
+
+  useEffect(() => {
+    if (location.state?.messages) {
+      location.state?.messages?.map((message: { description: string, variant: 'success' | 'destructive' | 'default' }) => {
+        toast({ description: message.description, variant: message.variant })
+      })
+    }
+  }, [])
   
   return (
     <>
+      <Toaster />
       <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} />
       
       <Button asChild>

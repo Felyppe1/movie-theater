@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useFetch } from "@/hooks/useFetch"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
-import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
-
+import { SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
+import { useSubmitRoomForm } from "./useSubmitRoomForm"
+import { Toaster } from "../ui/toaster"
 
 interface AdminRoomViewProps {
   number?: string,
@@ -33,60 +34,14 @@ export function AdminRoomView({
     technologyIds: selectedTechnologyIds
   })
 
-  async function handleRoomAddForm({ technologyIds, seats, ...formData }: AddRoomForm) {
-    const cleanedData = {
-      ...formData,
-      movie_theater_id,
-      technologyIds,
-      seats: seats?.map(({ selected, ...seat }) => seat),
-      id: room_id ?? undefined
-    }
+  const { handleSubmitRoomForm, handleDeleteRoom, isLoading } = useSubmitRoomForm({ room_id, movie_theater_id })
 
-    try {
-      const response = await fetch(`http://localhost:3333/rooms/${room_id ?? ''}`, {
-        method: room_id ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cleanedData)
-      })
-
-      const responseData = await response.json()
-
-      console.log(responseData)
-
-      if (responseData.status === 409) {
-        return responseData.message
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  async function handleDeleteRoom() {
-    try {
-      const response = await fetch(
-        `http://localhost:3333/rooms/${room_id}`,
-        { method: 'DELETE' }
-      )
-
-      const responseData = await response.json()
-
-      console.log(responseData)
-
-      if (responseData.status === 409) {
-        return responseData.message
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  
-  return (
+  return ( 
     <>
+    <Toaster />
     <Form {...form}>
     <form 
-      onSubmit={form.handleSubmit(handleRoomAddForm)} 
+      onSubmit={form.handleSubmit(handleSubmitRoomForm)} 
       className='space-y-8 pt-[1.5rem]'
     >
       <FormField
@@ -154,9 +109,17 @@ export function AdminRoomView({
     
     <div className='flex gap-x-[1rem]'>
       {room_id &&
-        <Button type='submit' onClick={handleDeleteRoom} size='lg' variant='destructive' className='mt-[3rem]'>Excluir</Button>
+        <Button type='submit' onClick={handleDeleteRoom} disabled={isLoading} size='lg' variant='destructive' className='mt-[3rem]'>Excluir</Button>
       }
-      <Button type='submit' onClick={form.handleSubmit(handleRoomAddForm)} size='lg' className='mt-[3rem]'>Salvar</Button>
+      <Button 
+        type='submit' 
+        onClick={form.handleSubmit(handleSubmitRoomForm)} 
+        disabled={isLoading}
+        size='lg' 
+        className='mt-[3rem]'
+      >
+        Salvar
+      </Button>
     </div>
     </>
   )
