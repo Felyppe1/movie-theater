@@ -1,3 +1,4 @@
 node_modules
 movie-theater-schema.mwb
 .env
+seed.ts

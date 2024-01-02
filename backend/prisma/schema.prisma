@@ -66,7 +66,7 @@ model State {
 
 model City {
   id   String @id @default(uuid())
-  name String @unique
+  name String 
 
   state    State  @relation(fields: [state_id], references: [id])
   state_id String
