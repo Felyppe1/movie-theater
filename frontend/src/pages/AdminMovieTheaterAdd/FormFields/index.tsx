@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { MovieTheaterAddForm } from "../useMovieTheaterAddForm"
+import { env } from "@/env"
 
 type City = {
   id: string
@@ -25,7 +26,7 @@ export function FormFields({ form }: FormFieldsProps) {
   const [selectedState, setSelectedState] = useState({} as StatesProps | undefined)
 
   useEffect(() => {
-    const url = 'http://localhost:3333/places/'
+    const url = `${env.VITE_BACKEND_URL}/places/`
     const conf = {
       method: 'GET'
     }

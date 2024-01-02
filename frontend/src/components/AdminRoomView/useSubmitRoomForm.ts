@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { AddRoomForm } from "./useAdminRoomViewForm"
 import { useState } from "react"
 import { useToast } from "../ui/use-toast"
+import { env } from "@/env"
 
 type UseSubmitRoomFormProps = {
   room_id?: string
@@ -27,7 +28,7 @@ export function useSubmitRoomForm({ room_id, movie_theater_id }: UseSubmitRoomFo
     }
 
     try {
-      const response = await fetch(`http://localhost:3333/rooms/${room_id ?? ''}`, {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/rooms/${room_id ?? ''}`, {
         method: room_id ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -58,7 +59,7 @@ export function useSubmitRoomForm({ room_id, movie_theater_id }: UseSubmitRoomFo
 
     try {
       const response = await fetch(
-        `http://localhost:3333/rooms/${room_id}`,
+        `${env.VITE_BACKEND_URL}/rooms/${room_id}`,
         { method: 'DELETE' }
       )
 

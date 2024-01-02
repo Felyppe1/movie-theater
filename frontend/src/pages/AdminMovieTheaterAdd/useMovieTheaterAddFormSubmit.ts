@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { MovieTheaterAddForm } from './useMovieTheaterAddForm'
 import { useToast } from '@/components/ui/use-toast'
 import { useNavigate } from 'react-router-dom'
+import { env } from '@/env'
 
 
 export function useMovieTheaterAddFormSubmit() {
@@ -15,7 +16,7 @@ export function useMovieTheaterAddFormSubmit() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:3333/movie-theaters', { 
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters`, { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
