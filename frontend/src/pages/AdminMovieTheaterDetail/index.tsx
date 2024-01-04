@@ -2,12 +2,11 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 } from "@/components/ui/table"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { Button } from "@/components/ui/button"
-import { useLocation, useParams } from "react-router-dom"
-import { useFetch } from "@/hooks/useFetch"
+import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
-import { useEffect } from "react"
-import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
+import { useQuery } from "@tanstack/react-query"
+import { env } from "@/env"
 
 export type RoomProps = {
   id: string
@@ -30,23 +29,30 @@ type MovieTheaterProps = {
 export function AdminMovieTheaterDetail() {
   const { id } = useParams()
 
-  const { data: movieTheater } = useFetch<MovieTheaterProps>(
-    `http://localhost:3333/movie-theaters/${id}`,
-    { method: 'GET' }
-  )
+  const { data: movieTheater, status, error } = useQuery<MovieTheaterProps>({
+    queryKey: ['movieTheater', id],
+    queryFn: async ({ queryKey }) => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${queryKey[1]}`, { method: 'GET' })
+      
+      if (!response.ok) {
+        if (response.status === 409) {
+          const error = await response.json()
+          throw new Error(error.message)
+        }
 
-  const location = useLocation()
-  const { toast } = useToast()
-
-  useEffect(() => {
-    if (location.state?.messages) {
-      location.state?.messages?.map((message: { description: string, variant: 'success' | 'destructive' | 'default' }) => {
-        toast({ description: message.description, variant: message.variant })
-      })
-    }
-  }, [])
+        throw new Error('Algo deu errado')
+      }
   
-  return (
+      return response.json()
+    },
+    retry: false
+  })
+
+  return status === 'pending' ? (
+    <p>Carregando...</p>
+  ) : status === 'error' ? (
+    <p>{error.message}</p>
+  ) : (
     <>
       <Toaster />
       <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} />

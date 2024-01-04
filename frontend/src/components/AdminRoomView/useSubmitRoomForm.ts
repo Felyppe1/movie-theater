@@ -70,13 +70,8 @@ export function useSubmitRoomForm({ room_id, movie_theater_id }: UseSubmitRoomFo
         return
       }
 
-      navigate(`/admin/movie-theater/${movie_theater_id}`, {
-        state: {
-          messages: [{
-            description: `Sala excluída com sucesso`, variant: 'success'
-          }]
-        }
-      })
+      toast({ description: `Sala excluída com sucesso`, variant: 'success' })
+      navigate(`/admin/movie-theater/${movie_theater_id}`)
     } catch (err) {
       console.log(err)
     }

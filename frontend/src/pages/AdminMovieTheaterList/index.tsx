@@ -2,7 +2,8 @@ import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
 import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/toaster";
-import { useFetch } from "@/hooks/useFetch";
+import { env } from "@/env";
+import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table"
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -51,11 +52,29 @@ const columns: ColumnDef<MovieTheater>[] = [
 ]
 
 export function AdminMovieTheaterList() {
-  const { data: movieTheaters } = useFetch<MovieTheater[]>(
-    'http://localhost:3333/movie-theaters', { method: 'GET' }
-  )
+  const { data: movieTheaters, status, error } = useQuery<MovieTheater[]>({
+    queryKey: ['movieTheaters'],
+    queryFn: async () => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters`, { method: 'GET' })
+      
+      if (!response.ok) {
+        if (response.status === 409) {
+          const error = await response.json()
+          throw new Error(error.message)
+        }
 
-  return (
+        throw new Error('Algo deu errado')
+      }
+  
+      return response.json()
+    }
+  })
+
+  return status === 'pending' ? (
+    <p>Carregando...</p>
+  ) : status === 'error' ? (
+    <p>{error.message}</p>
+  ) : (
     <>
       <Toaster />
       <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' />

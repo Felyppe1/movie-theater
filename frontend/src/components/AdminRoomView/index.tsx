@@ -3,11 +3,12 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useFetch } from "@/hooks/useFetch"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
 import { SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 import { useSubmitRoomForm } from "./useSubmitRoomForm"
 import { Toaster } from "../ui/toaster"
+import { useQuery } from "@tanstack/react-query"
+import { env } from "@/env"
 
 interface AdminRoomViewProps {
   number?: string,
@@ -24,9 +25,18 @@ export function AdminRoomView({
   movie_theater_id, room_id 
 }: AdminRoomViewProps) {
 
-  const { data: technologies } = useFetch<TechnologyProps[]>(
-    `http://localhost:3333/technologies`, { method: 'GET' }
-  )
+  const { data: technologies, status, error } = useQuery<TechnologyProps[]>({
+    queryKey: ['technologies'],
+    queryFn: async () => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/technologies`, { method: 'GET' })
+
+      if (!response.ok) {
+        throw new Error('Algo deu errado')
+      }
+  
+      return response.json()
+    }
+  })
 
   const { form } = useAdminRoomViewForm({
     number, 
@@ -36,7 +46,11 @@ export function AdminRoomView({
 
   const { handleSubmitRoomForm, handleDeleteRoom, isLoading } = useSubmitRoomForm({ room_id, movie_theater_id })
 
-  return ( 
+  return status === 'pending' ? (
+    <p>Carregando...</p>
+  ) : status === 'error' ? (
+    <p>{error.message}</p>
+  ) : ( 
     <>
     <Toaster />
     <Form {...form}>

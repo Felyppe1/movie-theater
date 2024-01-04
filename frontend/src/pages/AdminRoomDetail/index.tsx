@@ -1,6 +1,7 @@
 import { AdminRoomView } from "@/components/AdminRoomView"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
-import { useFetch } from "@/hooks/useFetch"
+import { env } from "@/env"
+import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 
 type SeatProps = {
@@ -21,15 +22,32 @@ type RoomProps = {
 export function AdminRoomDetail() {
   const { id } = useParams()
 
-  const { data: room, isLoading } = useFetch<RoomProps>(
-    `http://localhost:3333/rooms/${id}`,
-    { method: 'GET' }
-  )
+  const { data: room, status, error } = useQuery<RoomProps>({
+    queryKey: ['room', id],
+    queryFn: async ({ queryKey }) => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/rooms/${queryKey[1]}`, { method: 'GET' })
+      
+      if (!response.ok) {
+        if (response.status === 409) {
+          const error = await response.json()
+          throw new Error(error.message)
+        }
+
+        throw new Error('Algo deu errado')
+      }
+  
+      return response.json()
+    }
+  })
 
   return (
     <>
-    <AdminMainHeader h1='Cinemas' p='Alterar sala de cinema' />
-    {!isLoading && (
+    <AdminMainHeader h1='Cinemas' p={`Alterar sala do cinema`} />
+    {status === 'pending' ? (
+      <p>Carregando...</p>
+    ) : status === 'error' ? (
+      <p>{error.message}</p>
+    ) : (
       <>
       <AdminRoomView
         number={room.number}
