@@ -11,8 +11,8 @@ export function AdminLayout() {
                 <Button asChild variant={path.includes('/admin/movie-theater') ? 'secondary' : 'link'} size={"sm"}>
                     <Link to='/admin/movie-theater'>Cinemas</Link>
                 </Button>
-                <Button asChild variant={path.includes('/admin/film') ? 'secondary' : 'link'} size={"sm"}>
-                    <Link to='/admin/movie-theater'>Filmes</Link>
+                <Button asChild variant={path.includes('/admin/movie-selection') ? 'secondary' : 'link'} size={"sm"}>
+                    <Link to='/admin/movie-selection'>Seleção de Filmes</Link>
                 </Button>
             </nav>
             <main className={'min-h-screen p-[1rem] pb-[5rem] ml-[18rem] bg-background max-w-[55rem]'}>

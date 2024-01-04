@@ -9,6 +9,7 @@ import { AdminMovieTheaterDetail } from "./pages/AdminMovieTheaterDetail";
 import { AdminMovieTheaterAdd } from "./pages/AdminMovieTheaterAdd";
 import { AdminRoomDetail } from "./pages/AdminRoomDetail";
 import { AdminRoomAdd } from "./pages/AdminRoomAdd";
+import { AdminMovieSelection } from "./pages/AdminMovieSelection";
 
 export function Router() {
     return (
@@ -28,6 +29,7 @@ export function Router() {
                 <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
                 <Route path='movie-theater/:id/room/add/' element={<AdminRoomAdd />} />
                 <Route path='movie-theater/room/:id/' element={<AdminRoomDetail />} />
+                <Route path='movie-selection/' element={<AdminMovieSelection />} />
             </Route>
         </Routes>
     )
