@@ -45,7 +45,7 @@ model User {
 }
 
 model Cellphone {
-  id     String  @id @default(uuid())
+  id     String @id @default(uuid())
   ddd    String
   number String
   User   User[]
@@ -66,7 +66,7 @@ model State {
 
 model City {
   id   String @id @default(uuid())
-  name String 
+  name String
 
   state    State  @relation(fields: [state_id], references: [id])
   state_id String
@@ -91,17 +91,18 @@ model MovieTheater {
   city    City   @relation(fields: [city_id], references: [id])
   city_id String
 
-  Room       Room[]
+  Room   Room[]
+  movies Movie[]
 }
 
 model Room {
   id     String @id @default(uuid())
   number String
 
-  movieTheater    MovieTheater @relation(fields: [movie_theater_id], references: [id], onDelete: Cascade)
+  movieTheater     MovieTheater @relation(fields: [movie_theater_id], references: [id], onDelete: Cascade)
   movie_theater_id String
 
-  seats Seat[]
+  seats        Seat[]
   technologies Technology[]
 
   @@map("rooms")
@@ -127,4 +128,31 @@ model Technology {
   rooms Room[]
 
   @@map("technologies")
+}
+
+model Movie {
+  id            String @id @default(uuid())
+  tmdb_id       Int    @unique
+  name          String
+  original_name String
+  synopsis      String
+  duration DateTime
+  release_date DateTime
+  directors     String
+  poster_path        String
+  max_date DateTime
+
+  genres        Genre[]
+  movieTheaters MovieTheater[]
+
+  @@map("movies")
+}
+
+model Genre {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  movies Movie[]
+
+  @@map("genres")
 }
