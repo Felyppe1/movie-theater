@@ -12,20 +12,20 @@ const movieSelectionValidationSchema = zod.object({
   poster_path: zod.string().min(1),
   max_date: zod.date()
 })
-type MovieSelectionForm = zod.infer<typeof movieSelectionValidationSchema>
+export type MovieSelectionForm = zod.infer<typeof movieSelectionValidationSchema>
 
 export function useMovieSelectionForm() {
-  const form = useForm({
+  const form = useForm<MovieSelectionForm>({
     resolver: zodResolver(movieSelectionValidationSchema),
     defaultValues: {
-      tmdb_id: null,
+      tmdb_id: 0,
       name: '',
       original_name: '',
       sinopse: '',
-      duration: '',
+      duration: 0,
       release_date: new Date(),
       poster_path: '',
-      max_date: '',
+      max_date: undefined,
     }
   })
 

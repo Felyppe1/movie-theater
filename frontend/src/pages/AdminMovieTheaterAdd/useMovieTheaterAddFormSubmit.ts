@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { MovieTheaterAddForm } from './useMovieTheaterAddForm'
 import { useToast } from '@/components/ui/use-toast'
-import { useNavigate } from 'react-router-dom'
 import { env } from '@/env'
 
 
@@ -9,8 +8,6 @@ export function useMovieTheaterAddFormSubmit() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const { toast } = useToast()
-
-  const navigate = useNavigate()
 
   const handleSubmit = async (data: MovieTheaterAddForm) => {
     setIsLoading(true)
@@ -31,14 +28,7 @@ export function useMovieTheaterAddFormSubmit() {
         return
       }
 
-      navigate('/admin/movie-theater/', {
-        state: {
-          messages: [{
-            description: `Cinema cadastrado com sucesso`, variant: 'success'
-          }]
-        }
-      })
-      toast({ description: 'Cinema cadastrado com sucesso', variant: 'success' })
+      toast({ description: 'Cinema cadastrado com sucesso', variant: 'success',  })
     } catch (error) {
       console.log(error)
     } finally {
