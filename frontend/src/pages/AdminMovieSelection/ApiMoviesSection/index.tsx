@@ -7,29 +7,23 @@ import { env } from "@/env"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ptBR } from 'date-fns/locale'
-import { useQuery } from "@tanstack/react-query"
-import { UseFormReturn } from "react-hook-form"
-import { MovieSelectionForm } from "../useMovieSelectionForm"
+import { AddMovieForm, useAddMovieForm } from "./useMovieSelectionForm"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { TmdbMovie, TmdbMovieDetails } from "@/@types/TmdbMovie"
 
-type SelectMovieSectionProps = {
-  basicInfo: {
-    id: number
-    title: string
-    original_title: string
-    overview: string
-    poster_path: string
-  }
-  form: UseFormReturn<MovieSelectionForm>
-  handleSubmitForm: (data: MovieSelectionForm) => void
-  status?: 'pending' | 'error' | 'success' | 'idle'
+
+type ApiMoviesSectionProps = {
+  movie: TmdbMovie
   movieTmdbIds: Set<number>
 }
 
-export function SelectMovieSection({ form, handleSubmitForm, basicInfo, status: movieListStatus, movieTmdbIds }: SelectMovieSectionProps) {
+export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps) {
+  const queryClient = useQueryClient()
+
   const { status: movieDetailStatus, refetch } = useQuery({
-    queryKey: ['movie', basicInfo.id],
+    queryKey: ['movie', movie.id],
     queryFn: async () => {
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${basicInfo.id}?language=pt-BR`, { 
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}?language=pt-BR`, { 
         method: 'GET',
         headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
       })
@@ -45,7 +39,7 @@ export function SelectMovieSection({ form, handleSubmitForm, basicInfo, status: 
 
       return response.json()
     },
-    select: (data) => {
+    select: (data: TmdbMovieDetails) => {
       form.setValue('tmdb_id', data.id)
       form.setValue('name', data.title)
       form.setValue('original_name', data.original_title)
@@ -71,30 +65,62 @@ export function SelectMovieSection({ form, handleSubmitForm, basicInfo, status: 
     refetch()
   }
 
+  const { form } = useAddMovieForm()
+
+  const addMovieMutation = useMutation({
+    mutationFn: async (data: AddMovieForm) => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+
+      if (!response.ok) {
+        if (response.status == 409) {
+          const error = await response.json()
+          throw new Error(error.message)
+        }
+
+        throw new Error(response.message)
+      }
+
+      return response.json()
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['movies'] })
+    }
+  })
+
+  const handleSubmitAddMovieForm = (data: AddMovieForm) => {
+    addMovieMutation.mutate(data)
+  }
+
   return (
-    <li key={basicInfo.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
-      <img src={`https://image.tmdb.org/t/p/w185/${basicInfo?.poster_path}`} className='w-[8.5rem]' alt="" />
+    <li key={movie.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
+      <img src={`https://image.tmdb.org/t/p/w185/${movie?.poster_path}`} className='w-[8.5rem]' alt="" />
       <div className='flex flex-col justify-between'>
         <div>
           <p className='text-sm'>
-            <strong>Título:</strong> {basicInfo?.title}
+            <strong>Título:</strong> {movie?.title}
           </p>
           <p className='text-sm'>
-            <strong>Título original:</strong> {basicInfo?.original_title}
+            <strong>Título original:</strong> {movie?.original_title}
           </p>
           <p className='text-sm mt-[.25rem] line-clamp-4'>
-            <strong>Sinopse:</strong> {basicInfo?.overview}
+            <strong>Sinopse:</strong> {movie?.overview}
           </p>
         </div>
         <Sheet>
           <SheetTrigger asChild>
             <Button 
               onClick={handleSelectMovie}
-              variant={movieTmdbIds.has(basicInfo.id) ? 'success' : 'default'}
+              variant={movieTmdbIds.has(movie.id) ? 'success' : 'default'}
               size='tiny'
               className={cn('w-fit py-[.25rem] px-[1rem] mt-[.25rem]')}
             >
-              {movieTmdbIds.has(basicInfo.id) ? 'Selecionado' : 'Selecionar'}
+              {movieTmdbIds.has(movie.id) ? 'Selecionado' : 'Selecionar'}
             </Button>
           </SheetTrigger>
           <SheetContent 
@@ -171,8 +197,8 @@ export function SelectMovieSection({ form, handleSubmitForm, basicInfo, status: 
             <SheetFooter>
               <Button 
                 type='submit' 
-                onClick={form.handleSubmit(handleSubmitForm)} 
-                disabled={movieDetailStatus === 'pending' || movieListStatus === 'pending'}
+                onClick={form.handleSubmit(handleSubmitAddMovieForm)} 
+                disabled={movieDetailStatus === 'pending'}
               >
                 Salvar
               </Button>
