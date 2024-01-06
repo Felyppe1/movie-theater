@@ -6,7 +6,6 @@ import { CalendarIcon } from "lucide-react"
 import { env } from "@/env"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Label } from "@/components/ui/label"
 import { ptBR } from 'date-fns/locale'
 import { useQuery } from "@tanstack/react-query"
 import { UseFormReturn } from "react-hook-form"
@@ -14,12 +13,20 @@ import { MovieSelectionForm } from "../useMovieSelectionForm"
 
 type SelectMovieSectionProps = {
   id: number
+  basicInfo: {
+    id: number
+    title: string
+    original_title: string
+    overview: string
+    poster_path: string
+  }
   form: UseFormReturn<MovieSelectionForm>
   handleSubmitForm: (data: MovieSelectionForm) => void
+  status?: 'pending' | 'error' | 'success' | 'idle'
 }
 
-export function SelectMovieSection({ id, form, handleSubmitForm }: SelectMovieSectionProps) {
-  const { status, data } = useQuery({
+export function SelectMovieSection({ id, form, handleSubmitForm, basicInfo, status: addMovieStatus }: SelectMovieSectionProps) {
+  const { status: movieDetailStatus, refetch } = useQuery({
     queryKey: ['movie', id],
     queryFn: async () => {
       const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=pt-BR`, { 
@@ -42,7 +49,7 @@ export function SelectMovieSection({ id, form, handleSubmitForm }: SelectMovieSe
       form.setValue('tmdb_id', data.id)
       form.setValue('name', data.title)
       form.setValue('original_name', data.original_title)
-      form.setValue('sinopse', data.overview)
+      form.setValue('synopsis', data.overview)
       form.setValue('duration', data.runtime)
       form.setValue('release_date', new Date(data.release_date))
       form.setValue('poster_path', data.poster_path)
@@ -56,31 +63,33 @@ export function SelectMovieSection({ id, form, handleSubmitForm }: SelectMovieSe
         release_date: data.release_date,
         poster_path: data.poster_path
       }
-    }
+    },
+    enabled: false
   })
 
-  console.log(form.formState.errors)
-  
+  const handleSelectMovie = () => {
+    refetch()
+  }
+
   return (
-    // <p>teste</p>
-    <li className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
-      <img src={`https://image.tmdb.org/t/p/w185/${data?.poster_path}`} className='w-[8rem]' alt="" />
+    <li key={basicInfo.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
+      <img src={`https://image.tmdb.org/t/p/w185/${basicInfo?.poster_path}`} className='w-[8rem]' alt="" />
       <div className='flex flex-col justify-between'>
         <div>
           <p className='text-sm'>
-            <strong>Título:</strong> {data?.name}
+            <strong>Título:</strong> {basicInfo?.title}
           </p>
           <p className='text-sm'>
-            <strong>Título original:</strong> {data?.original_name}
+            <strong>Título original:</strong> {basicInfo?.original_title}
           </p>
           <p className='text-sm mt-[.25rem] h-[6rem] overflow-hidden'>
-            <strong>Sinopse:</strong> {data?.synopsis}
+            <strong>Sinopse:</strong> {basicInfo?.overview}
           </p>
         </div>
         <Sheet>
           <SheetTrigger asChild>
             <Button 
-              // onClick={() => {handleSelectMovie(data?.tmdb_id)}} 
+              onClick={handleSelectMovie}
               size='tiny' 
               className='w-fit py-[.25rem] px-[1rem] mt-[.25rem]'
             >
@@ -98,35 +107,30 @@ export function SelectMovieSection({ id, form, handleSubmitForm }: SelectMovieSe
               </SheetDescription>
             </SheetHeader>
 
-            {status === 'pending' ? (
+            {movieDetailStatus === 'pending' ? (
               <p>Carregando...</p>
             ) : (
               <div className='grid gap-[.5rem] py-4'>
-                <img src={`https://image.tmdb.org/t/p/w92/${data?.poster_path}`} alt="" />
+                <img src={`https://image.tmdb.org/t/p/w92/${form.getValues().poster_path}`} alt="" />
                 <p className='text-sm'>
-                  <strong>Título:</strong> {data?.name}
+                  <strong>Título:</strong> {form.getValues().name}
                 </p>
                 <p className='text-sm'>
-                  <strong>Título original:</strong> {data?.original_name}
+                  <strong>Título original:</strong> {form.getValues().original_name}
                 </p>
                 <p className='text-sm'>
-                  <strong>Sinopse:</strong> {data?.synopsis}
+                  <strong>Sinopse:</strong> {form.getValues().synopsis}
                 </p>
                 <p className='text-sm'>
-                  <strong>Duração:</strong> {data?.duration}
+                  <strong>Duração:</strong> {form.getValues().duration} min
                 </p>
                 <p className='text-sm'>
-                  <strong>Data de lançamento:</strong> {format(data?.release_date, 'PPP', { locale: ptBR })}
+                  <strong>Data de lançamento:</strong> {format(form.getValues().release_date, 'PPP', { locale: ptBR })}
                 </p>
-                <form 
-                  // onSubmit={form.handleSubmit(handleSubmitMovieSelectionForm)} 
-                  className='flex flex-col gap-2'
-                >
-                  <Label>
-                    <strong>
-                      Data de exibição limite:
-                    </strong>
-                  </Label>
+                <div className='flex flex-col gap-2'>
+                  <strong className='text-sm'>
+                    Data de exibição limite:
+                  </strong>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -159,7 +163,7 @@ export function SelectMovieSection({ id, form, handleSubmitForm }: SelectMovieSe
                       />
                     </PopoverContent>
                   </Popover>
-                </form>
+                </div>
               </div>
             )}
 
@@ -167,7 +171,7 @@ export function SelectMovieSection({ id, form, handleSubmitForm }: SelectMovieSe
               <Button 
                 type='submit' 
                 onClick={form.handleSubmit(handleSubmitForm)} 
-                disabled={status === 'pending'}
+                disabled={movieDetailStatus === 'pending' || addMovieStatus === 'pending'}
               >
                 Salvar
               </Button>

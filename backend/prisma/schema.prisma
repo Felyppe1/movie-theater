@@ -131,16 +131,16 @@ model Technology {
 }
 
 model Movie {
-  id            String @id @default(uuid())
-  tmdb_id       Int    @unique
+  id            String   @id @default(uuid())
+  tmdb_id       Int      @unique
   name          String
   original_name String
   synopsis      String
-  duration DateTime
-  release_date DateTime
-  directors     String
-  poster_path        String
-  max_date DateTime
+  duration      Int
+  release_date  DateTime
+  directors     String?
+  poster_path   String
+  max_date      DateTime
 
   genres        Genre[]
   movieTheaters MovieTheater[]

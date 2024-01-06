@@ -4,6 +4,7 @@ import { placesRoutes } from "./places.routes";
 import { movieTheatersRoutes } from "./movieTheaters.routes";
 import { technologiesRoutes } from "./technologies.routes";
 import { roomsRoutes } from "./rooms.routes";
+import { moviesRoutes } from "./movies.routes";
 
 export const router = Router()
 
@@ -12,3 +13,4 @@ router.use('/places', placesRoutes)
 router.use('/movie-theaters', movieTheatersRoutes)
 router.use('/technologies', technologiesRoutes)
 router.use('/rooms', roomsRoutes)
+router.use('/movies', moviesRoutes)
