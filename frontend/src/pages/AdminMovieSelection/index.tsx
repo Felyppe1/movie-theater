@@ -1,10 +1,38 @@
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { env } from "@/env"
 import { MovieSelectionForm, useMovieSelectionForm } from "./useMovieSelectionForm"
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query"
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { SelectMovieSection } from "./SelectMovieSection"
 
 export function AdminMovieSelection() {
+  const movieTmdbIds = new Set<number>()
+
+  const queryClient = useQueryClient()
+
+  useQuery({
+    queryKey: ['movieTmdbIds'],
+    queryFn: async () => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movies/tmdb-ids`, { 
+        method: 'GET',
+      })
+      
+      if (!response.ok) {
+        if (response.status === 409) {
+          const error = await response.json()
+          throw new Error(error.message)
+        }
+
+        throw new Error('Algo deu errado')
+      }
+  
+      return response.json()
+    },
+    select: (data: number[]) => {
+      data.forEach(tmdbId => movieTmdbIds.add(tmdbId))
+      return data
+    }
+  })
+
   const { data: movies, error, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery({
     queryKey: ['movies'],
     queryFn: async ({ pageParam }) => {
@@ -47,7 +75,6 @@ export function AdminMovieSelection() {
     const element = e.target
     const distanceToBottom = element.scrollHeight - (element.scrollTop + element.clientHeight)
 
-    console.log(distanceToBottom)
     if (distanceToBottom < 300) {
       if (hasNextPage && !isFetchingNextPage)
       fetchNextPage()
@@ -77,9 +104,7 @@ export function AdminMovieSelection() {
 
       return response.json()
     },
-    onError: (error) => {
-      console.log(error)
-    }
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['movieTmdbIds'] })
   })
 
   const handleSubmitMovieSelectionForm = (data: MovieSelectionForm) => {
@@ -98,7 +123,13 @@ export function AdminMovieSelection() {
         <ul onScroll={handleMoviesListScroll} className='max-w-[35rem] h-[72vh] overflow-y-scroll'>
           {movies?.map(movie => {
             return (
-              <SelectMovieSection basicInfo={movie} id={movie.id} form={form} handleSubmitForm={handleSubmitMovieSelectionForm} status={addMovieMutation.status} />
+              <SelectMovieSection 
+                basicInfo={movie} 
+                form={form} 
+                handleSubmitForm={handleSubmitMovieSelectionForm} 
+                status={addMovieMutation.status}
+                movieTmdbIds={movieTmdbIds}
+              />
             )
           })}
         </ul>

@@ -42,6 +42,6 @@ export class CreateMovieController {
 
     await this.createMovieUseCase.execute(data)
 
-    return response.status(201).send()
+    return response.status(201).json({ message: 'Filme criado com sucesso' })
   }
 }

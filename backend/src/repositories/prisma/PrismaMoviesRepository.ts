@@ -28,4 +28,10 @@ export class PrismaMoviesRepository implements IMoviesRepository {
 
     return movie
   }
+
+  async getAll(): Promise<Movie[] | null> {
+    const movies = await prisma.movie.findMany()
+
+    return movies
+  }
 }

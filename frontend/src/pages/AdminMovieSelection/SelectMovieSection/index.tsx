@@ -12,7 +12,6 @@ import { UseFormReturn } from "react-hook-form"
 import { MovieSelectionForm } from "../useMovieSelectionForm"
 
 type SelectMovieSectionProps = {
-  id: number
   basicInfo: {
     id: number
     title: string
@@ -23,13 +22,14 @@ type SelectMovieSectionProps = {
   form: UseFormReturn<MovieSelectionForm>
   handleSubmitForm: (data: MovieSelectionForm) => void
   status?: 'pending' | 'error' | 'success' | 'idle'
+  movieTmdbIds: Set<number>
 }
 
-export function SelectMovieSection({ id, form, handleSubmitForm, basicInfo, status: addMovieStatus }: SelectMovieSectionProps) {
+export function SelectMovieSection({ form, handleSubmitForm, basicInfo, status: movieListStatus, movieTmdbIds }: SelectMovieSectionProps) {
   const { status: movieDetailStatus, refetch } = useQuery({
-    queryKey: ['movie', id],
+    queryKey: ['movie', basicInfo.id],
     queryFn: async () => {
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=pt-BR`, { 
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${basicInfo.id}?language=pt-BR`, { 
         method: 'GET',
         headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
       })
@@ -73,7 +73,7 @@ export function SelectMovieSection({ id, form, handleSubmitForm, basicInfo, stat
 
   return (
     <li key={basicInfo.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
-      <img src={`https://image.tmdb.org/t/p/w185/${basicInfo?.poster_path}`} className='w-[8rem]' alt="" />
+      <img src={`https://image.tmdb.org/t/p/w185/${basicInfo?.poster_path}`} className='w-[8.5rem]' alt="" />
       <div className='flex flex-col justify-between'>
         <div>
           <p className='text-sm'>
@@ -82,7 +82,7 @@ export function SelectMovieSection({ id, form, handleSubmitForm, basicInfo, stat
           <p className='text-sm'>
             <strong>Título original:</strong> {basicInfo?.original_title}
           </p>
-          <p className='text-sm mt-[.25rem] h-[6rem] overflow-hidden'>
+          <p className='text-sm mt-[.25rem] line-clamp-4'>
             <strong>Sinopse:</strong> {basicInfo?.overview}
           </p>
         </div>
@@ -90,10 +90,11 @@ export function SelectMovieSection({ id, form, handleSubmitForm, basicInfo, stat
           <SheetTrigger asChild>
             <Button 
               onClick={handleSelectMovie}
-              size='tiny' 
-              className='w-fit py-[.25rem] px-[1rem] mt-[.25rem]'
+              variant={movieTmdbIds.has(basicInfo.id) ? 'success' : 'default'}
+              size='tiny'
+              className={cn('w-fit py-[.25rem] px-[1rem] mt-[.25rem]')}
             >
-              Selecionar
+              {movieTmdbIds.has(basicInfo.id) ? 'Selecionado' : 'Selecionar'}
             </Button>
           </SheetTrigger>
           <SheetContent onCloseAutoFocus={() => {
@@ -171,7 +172,7 @@ export function SelectMovieSection({ id, form, handleSubmitForm, basicInfo, stat
               <Button 
                 type='submit' 
                 onClick={form.handleSubmit(handleSubmitForm)} 
-                disabled={movieDetailStatus === 'pending' || addMovieStatus === 'pending'}
+                disabled={movieDetailStatus === 'pending' || movieListStatus === 'pending'}
               >
                 Salvar
               </Button>

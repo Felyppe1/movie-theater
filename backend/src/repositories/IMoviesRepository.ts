@@ -15,4 +15,5 @@ export type ICreateMovieRepositoryDTO = {
 export interface IMoviesRepository {
   create(data: ICreateMovieRepositoryDTO): Promise<void>
   findByTmdbId(tmdbId: number): Promise<Movie | null>
+  getAll(): Promise<Movie[] | null>
 }
