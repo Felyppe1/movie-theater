@@ -97,10 +97,10 @@ export function SelectMovieSection({ form, handleSubmitForm, basicInfo, status: 
               {movieTmdbIds.has(basicInfo.id) ? 'Selecionado' : 'Selecionar'}
             </Button>
           </SheetTrigger>
-          <SheetContent onCloseAutoFocus={() => {
-            form.setValue('max_date', undefined)
-          }} 
-            className={cn('overflow-scroll')}>
+          <SheetContent 
+            onCloseAutoFocus={() => form.setValue('max_date', undefined)} 
+            className={cn('overflow-y-auto')}
+          >
             <SheetHeader>
               <SheetTitle>Informações do filme</SheetTitle>
               <SheetDescription>
@@ -111,7 +111,7 @@ export function SelectMovieSection({ form, handleSubmitForm, basicInfo, status: 
             {movieDetailStatus === 'pending' ? (
               <p>Carregando...</p>
             ) : (
-              <div className='grid gap-[.5rem] py-4'>
+              <div className='grid gap-[.5rem] py-6'>
                 <img src={`https://image.tmdb.org/t/p/w92/${form.getValues().poster_path}`} alt="" />
                 <p className='text-sm'>
                   <strong>Título:</strong> {form.getValues().name}

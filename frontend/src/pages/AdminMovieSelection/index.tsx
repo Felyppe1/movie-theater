@@ -3,6 +3,7 @@ import { env } from "@/env"
 import { MovieSelectionForm, useMovieSelectionForm } from "./useMovieSelectionForm"
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { SelectMovieSection } from "./SelectMovieSection"
+import { DatabaseMovieSection } from "./DatabaseMoviesSection"
 
 export function AdminMovieSelection() {
   const movieTmdbIds = new Set<number>()
@@ -71,6 +72,26 @@ export function AdminMovieSelection() {
     }
   })
 
+  const databaseMoviesQuery = useQuery({
+    queryKey: ['databaseMovies'],
+    queryFn: async () => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { 
+        method: 'GET',
+      })
+      
+      if (!response.ok) {
+        if (response.status === 409) {
+          const error = await response.json()
+          throw new Error(error.message)
+        }
+
+        throw new Error('Algo deu errado')
+      }
+  
+      return response.json()
+    }
+  })
+
   const handleMoviesListScroll = (e) => {
     const element = e.target
     const distanceToBottom = element.scrollHeight - (element.scrollTop + element.clientHeight)
@@ -104,7 +125,10 @@ export function AdminMovieSelection() {
 
       return response.json()
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ['movieTmdbIds'] })
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['movieTmdbIds'] })
+      queryClient.invalidateQueries({ queryKey: ['databaseMovies'] })
+    }
   })
 
   const handleSubmitMovieSelectionForm = (data: MovieSelectionForm) => {
@@ -119,7 +143,8 @@ export function AdminMovieSelection() {
   ) : (
     <>
       <AdminMainHeader h1='Seleção de Filmes' p='Selecionar filmes para o banco de dados dos cinemas' />
-      <section>
+      <section className='pb-[3rem] border-b'>
+        <h2 className='text-2xl font-semibold text-secondary-foreground py-[1rem]'>Filmes disponíveis</h2>
         <ul onScroll={handleMoviesListScroll} className='max-w-[35rem] h-[72vh] overflow-y-scroll'>
           {movies?.map(movie => {
             return (
@@ -130,6 +155,19 @@ export function AdminMovieSelection() {
                 status={addMovieMutation.status}
                 movieTmdbIds={movieTmdbIds}
               />
+            )
+          })}
+        </ul>
+      </section>
+      <section className='mt-[2rem]'>
+        <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>Filmes no banco de dados</h2>
+        {databaseMoviesQuery.data?.length == 0 && (
+          <p>Não há filmes</p>
+        )}
+        <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] overflow-x-auto overscroll-contain snap-x'>
+          {databaseMoviesQuery.data?.map((movie) => {
+            return (
+              <DatabaseMovieSection movie={movie} />
             )
           })}
         </ul>
