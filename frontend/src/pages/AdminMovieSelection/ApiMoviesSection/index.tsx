@@ -7,7 +7,7 @@ import { env } from "@/env"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ptBR } from 'date-fns/locale'
-import { AddMovieForm, useAddMovieForm } from "./useMovieSelectionForm"
+import { AddMovieForm, useAddMovieForm } from "./useAddMovieForm"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { TmdbMovie, TmdbMovieDetails } from "@/@types/TmdbMovie"
 
@@ -20,9 +20,10 @@ type ApiMoviesSectionProps = {
 export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps) {
   const queryClient = useQueryClient()
 
-  const { status: movieDetailStatus, refetch } = useQuery({
+  const { data: movieDetail, status: movieDetailStatus, refetch } = useQuery({
     queryKey: ['movie', movie.id],
-    queryFn: async () => {
+    queryFn: async (): Promise<TmdbMovieDetails> => {
+      console.log(!!movieDetail)
       const response = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}?language=pt-BR`, { 
         method: 'GET',
         headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
@@ -39,7 +40,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
 
       return response.json()
     },
-    select: (data: TmdbMovieDetails) => {
+    select: (data) => {
       form.setValue('tmdb_id', data.id)
       form.setValue('name', data.title)
       form.setValue('original_name', data.original_title)
@@ -48,21 +49,13 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
       form.setValue('release_date', new Date(data.release_date))
       form.setValue('poster_path', data.poster_path)
 
-      return {
-        tmdb_id: data.id,
-        name: data.title,
-        original_name: data.original_title,
-        synopsis: data.overview,
-        duration: data.runtime,
-        release_date: data.release_date,
-        poster_path: data.poster_path
-      }
+      return { tmdb_id: data.id }
     },
-    enabled: false
+    enabled: false,
   })
 
   const handleSelectMovie = () => {
-    refetch()
+    refetch() // TODO: only refetch once
   }
 
   const { form } = useAddMovieForm()
@@ -94,8 +87,17 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
   })
 
   const handleSubmitAddMovieForm = (data: AddMovieForm) => {
-    addMovieMutation.mutate(data)
+    console.log(data)
+    // addMovieMutation.mutate(data)
   }
+
+  const onCloseMovieDetail = () => {
+    // form.resetField('max_date') // TODO: make it work
+    form.setValue('max_date', undefined)
+    form.clearErrors('max_date')
+  }
+
+  console.log(form.getValues())
 
   return (
     <li key={movie.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
@@ -129,7 +131,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                 </Button>
               </SheetTrigger>
               <SheetContent 
-                onCloseAutoFocus={() => form.setValue('max_date', undefined)} 
+                onCloseAutoFocus={onCloseMovieDetail} 
                 className={cn('overflow-y-auto')}
               >
                 <SheetHeader>
@@ -144,23 +146,38 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                 ) : (
                   <div className='grid gap-[.5rem] py-6'>
                     <img src={`https://image.tmdb.org/t/p/w92/${form.getValues().poster_path}`} alt="" />
-                    <p className='text-sm'>
-                      <strong>Título:</strong> {form.getValues().name}
-                    </p>
-                    <p className='text-sm'>
-                      <strong>Título original:</strong> {form.getValues().original_name}
-                    </p>
-                    <p className='text-sm'>
-                      <strong>Sinopse:</strong> {form.getValues().synopsis}
-                    </p>
-                    <p className='text-sm'>
-                      <strong>Duração:</strong> {form.getValues().duration} min
-                    </p>
-                    <p className='text-sm'>
-                      <strong>Data de lançamento:</strong> {format(form.getValues().release_date, 'PPP', { locale: ptBR })}
-                    </p>
+                    <div className='text-sm'>
+                      <strong className='font-medium'>Título: </strong>
+                      <span>
+                        {form.getValues().name}
+                      </span>
+                    </div>
+                    <div className='text-sm'>
+                      <strong className='font-medium'>Título original: </strong>
+                      <span>
+                        {form.getValues().original_name}
+                      </span>
+                    </div>
+                    <div className='text-sm'>
+                      <strong className='font-medium'>Sinopse: </strong>
+                      <span>
+                        {form.getValues().synopsis}
+                      </span>
+                    </div>
+                    <div className='text-sm'>
+                      <strong className='font-medium'>Duração: </strong> 
+                      <span>
+                        {form.getValues().duration} min
+                      </span>
+                    </div>
+                    <div className='text-sm'>
+                      <strong className='font-medium'>Data de lançamento: </strong>
+                      <span>
+                        {format(form.getValues().release_date, 'PPP', { locale: ptBR })}
+                      </span>
+                    </div>
                     <div className='flex flex-col gap-2'>
-                      <strong className='text-sm'>
+                      <strong className={`font-medium text-sm ${form.formState.errors?.max_date && "text-destructive"}`}>
                         Data de exibição limite:
                       </strong>
                       <Popover>
@@ -180,6 +197,9 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </PopoverTrigger>
+                        {form.formState.errors?.max_date && (
+                          <p className='text-sm font-medium text-destructive'>{form.formState.errors.max_date.message}</p>
+                        )}
                         <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"

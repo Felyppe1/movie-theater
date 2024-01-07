@@ -6,12 +6,16 @@ import { MoviesSection } from "./MoviesSection"
 import { TmdbMovie } from "@/@types/TmdbMovie"
 import { Movie } from "@/@types/Movie"
 
+type ApiMoviesProps = {
+  results: TmdbMovie[]
+}
+
 export function AdminMovieSelection() {
   const movieTmdbIds = new Set<number>()
 
   const { data: apiMovies, error, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery({
     queryKey: ['apiMovies'],
-    queryFn: async ({ pageParam }) => {
+    queryFn: async ({ pageParam }): Promise<ApiMoviesProps> => {
       const response = await fetch(`https://api.themoviedb.org/3/movie/now_playing?language=pt-BR&page=${pageParam}`, { 
         method: 'GET',
         headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
@@ -41,8 +45,6 @@ export function AdminMovieSelection() {
       // const lastPageData = data.pages[lastFetchedPage].results
       // const currentMovies = movies ? [...movies] : []
       // const updatedData = [...currentMovies, ...lastPageData]
-      // console.log(updatedData)
-      // console.log(...data.pages[lastFetchedPage].results)
       return data.pages.flatMap((page) => page.results)
     },
   })
@@ -91,7 +93,7 @@ export function AdminMovieSelection() {
       <section className='pb-[3rem] border-b'>
         <h2 className='text-2xl font-semibold text-secondary-foreground py-[1rem]'>Filmes disponíveis</h2>
         <ul onScroll={onMoviesListScroll} className='max-w-[35rem] h-[72vh] overflow-y-scroll'>
-          {apiMovies?.map((movie: TmdbMovie) => {
+          {apiMovies?.map((movie) => {
             return (
               <ApiMoviesSection 
                 movie={movie}

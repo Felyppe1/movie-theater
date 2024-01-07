@@ -58,29 +58,34 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
           <SheetHeader>
             <SheetTitle>Informações do filme</SheetTitle>
             <SheetDescription>
-              Preencha os campos do formulário para salvar o filme.
+              Você pode editar ou excluir o filme do banco de dados.
             </SheetDescription>
           </SheetHeader>
 
           <div className='grid gap-[.5rem] py-6'>
             <img src={`https://image.tmdb.org/t/p/w92/${movie.poster_path}`} alt="" />
-            <p className='text-sm'>
-              <strong>Título:</strong> {movie.name}
-            </p>
-            <p className='text-sm'>
-              <strong>Título original:</strong> {movie.original_name}
-            </p>
-            <p className='text-sm'>
-              <strong>Sinopse:</strong> {movie.synopsis}
-            </p>
-            <p className='text-sm'>
-              <strong>Duração:</strong> {movie.duration} min
-            </p>
-            <p className='text-sm'>
-              <strong>Data de lançamento:</strong> {format(movie.release_date, 'PPP', { locale: ptBR })}
-            </p>
+            <div className='text-sm'>
+              <strong className='font-medium'>Título: </strong> 
+              {movie.name}
+            </div>
+            <div className='text-sm'>
+              <strong className='font-medium'>Título original: </strong> 
+              {movie.original_name}
+            </div>
+            <div className='text-sm'>
+              <strong className='font-medium'>Sinopse: </strong> 
+              {movie.synopsis}
+            </div>
+            <div className='text-sm'>
+              <strong className='font-medium'>Duração: </strong> 
+              {movie.duration} min
+            </div>
+            <div className='text-sm'>
+              <strong className='font-medium'>Data de lançamento: </strong> 
+              {format(movie.release_date, 'PPP', { locale: ptBR })}
+            </div>
             <div className='flex flex-col gap-2'>
-              <strong className='text-sm'>
+              <strong className='font-medium text-sm mr-[.25rem]'>
                 Data de exibição limite:
               </strong>
               <Popover>
