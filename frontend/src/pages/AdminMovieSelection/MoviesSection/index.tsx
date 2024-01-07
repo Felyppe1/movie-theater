@@ -7,12 +7,43 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { Movie } from "@/@types/Movie"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { env } from "@/env"
+
 
 type MoviesSectionProps = {
   movie: Movie
 }
 
 export function MoviesSection({ movie }: MoviesSectionProps) {
+  const queryClient = useQueryClient()
+  const removeMovieMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movies/${id}`, { 
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (!response.ok) {
+        if (response.status == 409) {
+          const error = await response.json()
+          throw new Error(error.message)
+        }
+
+        throw new Error(response.message)
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['movies'] })
+    }
+  })
+
+  const handleRemoveMovie = () => {
+    removeMovieMutation.mutate(movie.id)
+  }
+  
   return (
     <li className='snap-center'>
       <Sheet>
@@ -84,12 +115,8 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
           </div>
 
           <SheetFooter>
-            <Button 
-              type='submit' 
-              // onClick={form.handleSubmit(handleSubmitForm)} 
-            >
-              Faz nada
-            </Button>
+            <Button variant='destructive' onClick={handleRemoveMovie}>Remover</Button>
+            <Button>Editar (not working)</Button>
             {/* <SheetClose asChild>
             </SheetClose> */}
           </SheetFooter>

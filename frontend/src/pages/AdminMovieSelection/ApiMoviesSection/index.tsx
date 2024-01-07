@@ -112,101 +112,107 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
             <strong>Sinopse:</strong> {movie?.overview}
           </p>
         </div>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button 
-              onClick={handleSelectMovie}
-              variant={movieTmdbIds.has(movie.id) ? 'success' : 'default'}
-              size='tiny'
-              className={cn('w-fit py-[.25rem] px-[1rem] mt-[.25rem]')}
-            >
-              {movieTmdbIds.has(movie.id) ? 'Selecionado' : 'Selecionar'}
-            </Button>
-          </SheetTrigger>
-          <SheetContent 
-            onCloseAutoFocus={() => form.setValue('max_date', undefined)} 
-            className={cn('overflow-y-auto')}
-          >
-            <SheetHeader>
-              <SheetTitle>Informações do filme</SheetTitle>
-              <SheetDescription>
-                Preencha os campos do formulário para salvar o filme.
-              </SheetDescription>
-            </SheetHeader>
-
-            {movieDetailStatus === 'pending' ? (
-              <p>Carregando...</p>
-            ) : (
-              <div className='grid gap-[.5rem] py-6'>
-                <img src={`https://image.tmdb.org/t/p/w92/${form.getValues().poster_path}`} alt="" />
-                <p className='text-sm'>
-                  <strong>Título:</strong> {form.getValues().name}
-                </p>
-                <p className='text-sm'>
-                  <strong>Título original:</strong> {form.getValues().original_name}
-                </p>
-                <p className='text-sm'>
-                  <strong>Sinopse:</strong> {form.getValues().synopsis}
-                </p>
-                <p className='text-sm'>
-                  <strong>Duração:</strong> {form.getValues().duration} min
-                </p>
-                <p className='text-sm'>
-                  <strong>Data de lançamento:</strong> {format(form.getValues().release_date, 'PPP', { locale: ptBR })}
-                </p>
-                <div className='flex flex-col gap-2'>
-                  <strong className='text-sm'>
-                    Data de exibição limite:
-                  </strong>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !form.getValues().max_date && "text-muted-foreground"
-                        )}
-                      >
-                        {form.getValues().max_date ? (
-                          format(form.getValues().max_date!, 'PPP', { locale: ptBR })
-                        ) : (
-                          <span>Escolha uma data</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={form.getValues().max_date!}
-                        onSelect={(date) => {
-                          form.setValue('max_date', date)
-                          form.trigger('max_date')
-                        }}
-                        disabled={(date) =>
-                          date < new Date()
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
-            )}
-
-            <SheetFooter>
-              <Button 
-                type='submit' 
-                onClick={form.handleSubmit(handleSubmitAddMovieForm)} 
-                disabled={movieDetailStatus === 'pending'}
+        {movieTmdbIds.has(movie.id) 
+          ? (
+            <span className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background pointer-events-none bg-success text-success-foreground hover:bg-success/90 w-fit py-[.25rem] px-[1rem] mt-[.25rem]'>
+              Selecionado
+            </span>
+          ) : (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button 
+                  onClick={handleSelectMovie}
+                  size='tiny'
+                  className={cn('w-fit py-[.25rem] px-[1rem] mt-[.25rem]')}
+                >
+                  Selecionar
+                </Button>
+              </SheetTrigger>
+              <SheetContent 
+                onCloseAutoFocus={() => form.setValue('max_date', undefined)} 
+                className={cn('overflow-y-auto')}
               >
-                Salvar
-              </Button>
-              <SheetClose asChild>
-              </SheetClose>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
+                <SheetHeader>
+                  <SheetTitle>Informações do filme</SheetTitle>
+                  <SheetDescription>
+                    Preencha os campos do formulário para salvar o filme.
+                  </SheetDescription>
+                </SheetHeader>
+
+                {movieDetailStatus === 'pending' ? (
+                  <p>Carregando...</p>
+                ) : (
+                  <div className='grid gap-[.5rem] py-6'>
+                    <img src={`https://image.tmdb.org/t/p/w92/${form.getValues().poster_path}`} alt="" />
+                    <p className='text-sm'>
+                      <strong>Título:</strong> {form.getValues().name}
+                    </p>
+                    <p className='text-sm'>
+                      <strong>Título original:</strong> {form.getValues().original_name}
+                    </p>
+                    <p className='text-sm'>
+                      <strong>Sinopse:</strong> {form.getValues().synopsis}
+                    </p>
+                    <p className='text-sm'>
+                      <strong>Duração:</strong> {form.getValues().duration} min
+                    </p>
+                    <p className='text-sm'>
+                      <strong>Data de lançamento:</strong> {format(form.getValues().release_date, 'PPP', { locale: ptBR })}
+                    </p>
+                    <div className='flex flex-col gap-2'>
+                      <strong className='text-sm'>
+                        Data de exibição limite:
+                      </strong>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !form.getValues().max_date && "text-muted-foreground"
+                            )}
+                          >
+                            {form.getValues().max_date ? (
+                              format(form.getValues().max_date!, 'PPP', { locale: ptBR })
+                            ) : (
+                              <span>Escolha uma data</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={form.getValues().max_date!}
+                            onSelect={(date) => {
+                              form.setValue('max_date', date)
+                              form.trigger('max_date')
+                            }}
+                            disabled={(date) =>
+                              date < new Date()
+                            }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+                )}
+
+                <SheetFooter>
+                  <Button 
+                    type='submit' 
+                    onClick={form.handleSubmit(handleSubmitAddMovieForm)} 
+                    disabled={movieDetailStatus === 'pending'}
+                  >
+                    Salvar
+                  </Button>
+                  <SheetClose asChild>
+                  </SheetClose>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+          )}
       </div>
     </li>
   )

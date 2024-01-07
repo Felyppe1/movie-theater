@@ -34,4 +34,12 @@ export class PrismaMoviesRepository implements IMoviesRepository {
 
     return movies
   }
+
+  async delete(id: string): Promise<void> {
+    await prisma.movie.delete({
+      where: {
+        id: id
+      }
+    })
+  }
 }
