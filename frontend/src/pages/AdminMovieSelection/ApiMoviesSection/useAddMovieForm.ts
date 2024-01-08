@@ -2,11 +2,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import zod from 'zod'
 
+const genresValidationSchema = zod.object({
+  id: zod.number().min(1),
+  name: zod.string().min(1)
+})
+
 const movieSelectionValidationSchema = zod.object({
   tmdb_id: zod.number().min(1),
   name: zod.string().min(1),
   original_name: zod.string().min(1),
   synopsis: zod.string().min(1),
+  genres: zod.array(genresValidationSchema),
   duration: zod.number().min(1),
   release_date: zod.date(),
   poster_path: zod.string().min(1),
@@ -24,6 +30,7 @@ export function useAddMovieForm() {
       name: '',
       original_name: '',
       synopsis: '',
+      genres: [],
       duration: 0,
       release_date: new Date(),
       poster_path: '',

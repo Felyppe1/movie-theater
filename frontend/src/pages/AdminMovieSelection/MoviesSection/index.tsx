@@ -9,10 +9,14 @@ import { ptBR } from "date-fns/locale"
 import { Movie } from "@/@types/Movie"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { env } from "@/env"
+import { Badge } from "@/components/ui/badge"
+import { Genre } from "@/@types/Genre"
 
 
 type MoviesSectionProps = {
-  movie: Movie
+  movie: Movie & {
+    genres: Genre[]
+  }
 }
 
 export function MoviesSection({ movie }: MoviesSectionProps) {
@@ -64,6 +68,13 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
 
           <div className='grid gap-[.5rem] py-6'>
             <img src={`https://image.tmdb.org/t/p/w92/${movie.poster_path}`} alt="" />
+            <div className='flex gap-x-[.5rem]'>
+              {movie.genres?.map(genre => {
+                return (
+                  <Badge>{genre.name}</Badge>
+                )
+              })}
+            </div>
             <div className='text-sm'>
               <strong className='font-medium'>Título: </strong> 
               {movie.name}

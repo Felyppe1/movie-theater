@@ -5,6 +5,7 @@ export type ICreateMovieRepositoryDTO = {
   name: string
   original_name: string
   synopsis: string
+  genres: { id: number }[]
   duration: number
   release_date: Date
   poster_path: string

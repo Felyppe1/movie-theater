@@ -5,9 +5,14 @@ import { ApiMoviesSection } from "./ApiMoviesSection"
 import { MoviesSection } from "./MoviesSection"
 import { TmdbMovie } from "@/@types/TmdbMovie"
 import { Movie } from "@/@types/Movie"
+import { Genre } from "@/@types/Genre"
 
 type ApiMoviesProps = {
   results: TmdbMovie[]
+}
+
+type MovieProps = Movie & {
+    genres: Genre[]
 }
 
 export function AdminMovieSelection() {
@@ -51,7 +56,7 @@ export function AdminMovieSelection() {
 
   const { data: movies } = useQuery({
     queryKey: ['movies'],
-    queryFn: async () => {
+    queryFn: async (): Promise<MovieProps[]> => {
       const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { 
         method: 'GET',
       })
@@ -109,7 +114,7 @@ export function AdminMovieSelection() {
           <p>Não há filmes</p>
         )}
         <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] overflow-x-auto overscroll-contain snap-x'>
-          {movies?.map((movie: Movie) => {
+          {movies?.map((movie) => {
             return (
               <MoviesSection movie={movie} />
             )

@@ -2,22 +2,16 @@ import { Request, Response } from "express";
 import { CreateMovieUseCase } from "../../useCases/CreateMovieUseCase";
 import zod from 'zod'
 
-type ICreateMovieControllerDTO = {
-  tmdb_id: number
-  name: string
-  original_name: string
-  synopsis: string
-  duration: number
-  release_date: Date
-  poster_path: string
-  max_date: Date
-  directors: string
-}
+const genresValidationSchema = zod.object({
+  id: zod.number().min(1)
+})
+
 const createMovieRequestValidationSchema = zod.object({
   tmdb_id: zod.number().min(1),
   name: zod.string().min(1),
   original_name: zod.string().min(1),
   synopsis: zod.string().min(1),
+  genres: zod.array(genresValidationSchema),
   duration: zod.number().min(1),
   release_date: zod.date(),
   poster_path: zod.string().min(1),

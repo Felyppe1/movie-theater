@@ -10,11 +10,16 @@ import { ptBR } from 'date-fns/locale'
 import { AddMovieForm, useAddMovieForm } from "./useAddMovieForm"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { TmdbMovie, TmdbMovieDetails } from "@/@types/TmdbMovie"
+import { Badge } from "@/components/ui/badge"
 
 
 type ApiMoviesSectionProps = {
   movie: TmdbMovie
   movieTmdbIds: Set<number>
+}
+
+type AddMovieMutationProps = Omit<AddMovieForm, 'genres'> & {
+  genres: { id: number }[]
 }
 
 export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps) {
@@ -45,6 +50,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
       form.setValue('name', data.title)
       form.setValue('original_name', data.original_title)
       form.setValue('synopsis', data.overview)
+      form.setValue('genres', data.genres)
       form.setValue('duration', data.runtime)
       form.setValue('release_date', new Date(data.release_date))
       form.setValue('poster_path', data.poster_path)
@@ -61,7 +67,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
   const { form } = useAddMovieForm()
 
   const addMovieMutation = useMutation({
-    mutationFn: async (data: AddMovieForm) => {
+    mutationFn: async (data: AddMovieMutationProps) => {
       const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { 
         method: 'POST',
         headers: {
@@ -87,8 +93,12 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
   })
 
   const handleSubmitAddMovieForm = (data: AddMovieForm) => {
-    console.log(data)
-    // addMovieMutation.mutate(data)
+    const cleanedData = {
+      ...data,
+      genres: data.genres.map(({ id, name }) => ({ id: id })),
+    }
+
+    addMovieMutation.mutate(cleanedData)
   }
 
   const onCloseMovieDetail = () => {
@@ -96,8 +106,6 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
     form.setValue('max_date', undefined)
     form.clearErrors('max_date')
   }
-
-  console.log(form.getValues())
 
   return (
     <li key={movie.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
@@ -146,6 +154,13 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                 ) : (
                   <div className='grid gap-[.5rem] py-6'>
                     <img src={`https://image.tmdb.org/t/p/w92/${form.getValues().poster_path}`} alt="" />
+                    <div className='flex gap-x-[.5rem]'>
+                      {form.getValues().genres?.map(genre => {
+                        return (
+                          <Badge>{genre.name}</Badge>
+                        )
+                      })}
+                    </div>
                     <div className='text-sm'>
                       <strong className='font-medium'>Título: </strong>
                       <span>
