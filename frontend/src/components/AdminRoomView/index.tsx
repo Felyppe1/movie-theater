@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
-import { SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
+import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 import { useSubmitRoomForm } from "./useSubmitRoomForm"
 import { Toaster } from "../ui/toaster"
 import { useQuery } from "@tanstack/react-query"
@@ -44,7 +44,7 @@ export function AdminRoomView({
     technologyIds: selectedTechnologyIds
   })
 
-  const { handleSubmitRoomForm, handleDeleteRoom, isLoading } = useSubmitRoomForm({ room_id, movie_theater_id })
+  const { handleAddRoomForm, handleDeleteRoom, isLoading } = useSubmitRoomForm({ room_id, movie_theater_id })
 
   return status === 'pending' ? (
     <p>Carregando...</p>
@@ -55,7 +55,7 @@ export function AdminRoomView({
     <Toaster />
     <Form {...form}>
     <form 
-      onSubmit={form.handleSubmit(handleSubmitRoomForm)} 
+      onSubmit={form.handleSubmit(handleAddRoomForm)} 
       className='space-y-8 pt-[1.5rem]'
     >
       <FormField
@@ -127,8 +127,8 @@ export function AdminRoomView({
       }
       <Button 
         type='submit' 
-        onClick={form.handleSubmit(handleSubmitRoomForm)} 
-        disabled={isLoading}
+        onClick={form.handleSubmit(handleAddRoomForm)} 
+        disabled={isLoading || !form.formState.isDirty}
         size='lg' 
         className='mt-[3rem]'
       >

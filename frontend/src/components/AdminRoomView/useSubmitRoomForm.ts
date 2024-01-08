@@ -16,13 +16,14 @@ export function useSubmitRoomForm({ room_id, movie_theater_id }: UseSubmitRoomFo
 
   const navigate = useNavigate()
   
-  const handleSubmitRoomForm = async ({ technologyIds, seats, ...formData }: AddRoomForm) => {
+  const handleAddRoomForm = async ({ technologyIds, seats, ...formData }: AddRoomForm) => {
     setIsLoading(true)
 
     const cleanedData = {
       ...formData,
       movie_theater_id,
       technologyIds,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       seats: seats?.map(({ selected, ...seat }) => seat),
       id: room_id ?? undefined
     }
@@ -35,7 +36,7 @@ export function useSubmitRoomForm({ room_id, movie_theater_id }: UseSubmitRoomFo
         },
         body: JSON.stringify(cleanedData)
       })
-      
+
       if (response.status === 409) {
         const responseData = await response.json()
         setError(responseData.message)
@@ -47,6 +48,8 @@ export function useSubmitRoomForm({ room_id, movie_theater_id }: UseSubmitRoomFo
         description: room_id ? 'Alterações realizadas com sucesso' : 'Sala criada com sucesso', 
         variant: 'success' 
       })
+      const responseData = await response.json()
+      navigate(`/admin/movie-theater/room/${responseData.id}`)
     } catch (err) {
       console.log(err)
     } finally {
@@ -78,7 +81,7 @@ export function useSubmitRoomForm({ room_id, movie_theater_id }: UseSubmitRoomFo
   }
 
   return { 
-    handleSubmitRoomForm, 
+    handleAddRoomForm, 
     handleDeleteRoom, 
     error, 
     isLoading 
