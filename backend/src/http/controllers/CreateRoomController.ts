@@ -30,8 +30,8 @@ export class CreateRoomController {
 
     createRoomRequestValidationSchema.parse(data)
 
-    await this.createRoomUseCase.execute(data)
+    const room = await this.createRoomUseCase.execute(data)
 
-    return response.status(201).send()
+    return response.status(201).json(room)
   }
 }

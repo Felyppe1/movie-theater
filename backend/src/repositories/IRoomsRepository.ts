@@ -23,9 +23,9 @@ export interface IUpdateRoomRepositoryDTO {
 }
 
 export interface IRoomsRepository {
-  create(data: ICreateRoomRepositoryDTO): Promise<void>
+  create(data: ICreateRoomRepositoryDTO): Promise<Room>
   findById(id: string): Promise<Room | null>
   findByNumberAndMovieTheater(number: string, movie_theater_id: string): Promise<Room | null>
-  update(data: IUpdateRoomRepositoryDTO): Promise<void>
+  update(data: IUpdateRoomRepositoryDTO): Promise<Room>
   delete(id: string): Promise<void>
 }

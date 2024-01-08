@@ -24,6 +24,8 @@ export class CreateRoomUseCase {
     // }
 
     // await this.roomsRepository.create(newData)
-    await this.roomsRepository.create({ number, movie_theater_id, technologyIds, seats })
+    const room = await this.roomsRepository.create({ number, movie_theater_id, technologyIds, seats })
+
+    return room
   }
 }

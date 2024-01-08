@@ -37,8 +37,8 @@ export class UpdateRoomController {
     updateRoomParamsRequestValidationSchema.parse(id)
     updateRoomBodyRequestValidationSchema.parse(data)
     
-    await this.updateRoomUseCase.execute(id, data)
+    const room = await this.updateRoomUseCase.execute(id, data)
 
-    return response.status(200).send()
+    return response.status(200).json(room)
   }
 }

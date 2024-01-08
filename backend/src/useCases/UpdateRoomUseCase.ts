@@ -13,5 +13,7 @@ export class UpdateRoomUseCase {
     { number, seats, technologyIds, movie_theater_id }: IUpdateRoomBodyRequestDTO
   ) {
     const room = await this.roomsRepository.update({ number, seats, technologyIds, movie_theater_id, id })
+
+    return room
   }
 }

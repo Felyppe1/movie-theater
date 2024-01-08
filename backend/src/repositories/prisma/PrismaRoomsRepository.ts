@@ -3,8 +3,8 @@ import { prisma } from "../../lib/prisma";
 import { ICreateRoomRepositoryDTO, IRoomsRepository, IUpdateRoomRepositoryDTO } from "../IRoomsRepository";
 
 export class PrismaRoomsRepository implements IRoomsRepository {
-  async create({ number, movie_theater_id, technologyIds, seats }: ICreateRoomRepositoryDTO): Promise<void> {
-    await prisma.room.create({
+  async create({ number, movie_theater_id, technologyIds, seats }: ICreateRoomRepositoryDTO): Promise<Room> {
+    const room = await prisma.room.create({
       data: {
         number,
         movie_theater_id,
@@ -16,6 +16,8 @@ export class PrismaRoomsRepository implements IRoomsRepository {
         }
       }
     })
+
+    return room
   }
 
   async findById(id: string): Promise<Room | null> {
@@ -54,8 +56,8 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     return room
   }
 
-  async update({ id, number, seats, technologyIds }: IUpdateRoomRepositoryDTO): Promise<void> {
-    await prisma.room.update({
+  async update({ id, number, seats, technologyIds }: IUpdateRoomRepositoryDTO): Promise<Room> {
+    const room =await prisma.room.update({
       where: {
         id: id
       },
@@ -74,6 +76,8 @@ export class PrismaRoomsRepository implements IRoomsRepository {
         }
       }
     })
+
+    return room
   }
 
   async delete(id: string): Promise<void> {
