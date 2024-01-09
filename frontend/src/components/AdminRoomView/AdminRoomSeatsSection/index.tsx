@@ -82,7 +82,7 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
     }
     
     setColumns(columns)
-    form.setValue('seats', seats)
+    form.setValue('seats', seats, { shouldDirty: true, shouldValidate: true })
   }
 
   function handleSelectSeat(seat: SeatProps, seatIndex: number) {
@@ -93,7 +93,7 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
       } else {
         newState = state.includes(seatIndex) ? state : [...state, seatIndex]
       }
-
+      
       if (newState.length > 0) {
         const areAllSeatsHidden = newState?.every(index => form.getValues().seats![index].exists == false)
         if (areAllSeatsHidden) {
@@ -107,7 +107,6 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
 
       return newState
     })
-
     form.getValues().seats![seatIndex].selected = !seat.selected
     form.setValue('seats', form.getValues().seats)
   }
@@ -143,7 +142,7 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
 
   return (
     <div className='mt-[2rem]'>
-      <Label className={`text-base`}>Formato da sala</Label>
+      <Label className={`text-base ${form.formState.errors?.seats && 'text-destructive'}`}>Formato da sala</Label>
       <div className='flex justify-between items-end' >
         <AdminRoomSeatsNumberForm 
           seatsNumberForm={seatsNumberForm} 
