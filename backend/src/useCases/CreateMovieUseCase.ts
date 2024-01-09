@@ -8,12 +8,12 @@ export class CreateMovieUseCase {
     this.moviesRepository = moviesRepository
   }
 
-  async execute({ tmdb_id, name, original_name, synopsis, genres, duration, poster_path, release_date, max_date, directors }: ICreateMovieRequestDTO) {
+  async execute({ tmdb_id, name, original_name, synopsis, genres, duration, poster_path, release_date, max_date, directors, quantity_avaiable }: ICreateMovieRequestDTO) {
     const movie = await this.moviesRepository.findByTmdbId(tmdb_id)
     if (movie) {
       return
     }
 
-    await this.moviesRepository.create({ tmdb_id, name, original_name, synopsis, genres, duration, poster_path, release_date, max_date, directors })
+    await this.moviesRepository.create({ tmdb_id, name, original_name, synopsis, genres, duration, poster_path, release_date, max_date, directors, quantity_avaiable })
   }
 }

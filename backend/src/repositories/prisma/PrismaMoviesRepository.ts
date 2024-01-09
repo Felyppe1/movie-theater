@@ -3,21 +3,13 @@ import { prisma } from "../../lib/prisma";
 import { ICreateMovieRepositoryDTO, IMoviesRepository } from "../IMoviesRepository";
 
 export class PrismaMoviesRepository implements IMoviesRepository {
-  async create({ tmdb_id, name, original_name, duration, synopsis, genres, poster_path, max_date, release_date, directors }: ICreateMovieRepositoryDTO): Promise<void> {
+  async create({ genres, ...data }: ICreateMovieRepositoryDTO): Promise<void> {
     await prisma.movie.create({
       data: {
-        tmdb_id,
-        name,
-        original_name,
-        synopsis,
+        ...data,
         genres: {
           connect: genres
-        },
-        duration,
-        poster_path,
-        release_date,
-        max_date,
-        directors
+        }
       }
     })
   }

@@ -16,7 +16,8 @@ const createMovieRequestValidationSchema = zod.object({
   release_date: zod.date(),
   poster_path: zod.string().min(1),
   max_date: zod.date(),
-  directors: zod.string().optional()
+  directors: zod.string().optional(),
+  quantity_avaiable: zod.number().min(1)
 })
 export type ICreateMovieRequestDTO = zod.infer<typeof createMovieRequestValidationSchema>
 

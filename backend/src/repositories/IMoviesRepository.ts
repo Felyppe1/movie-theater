@@ -11,6 +11,7 @@ export type ICreateMovieRepositoryDTO = {
   poster_path: string
   max_date: Date
   directors?: string
+  quantity_avaiable: number
 }
 
 export interface IMoviesRepository {

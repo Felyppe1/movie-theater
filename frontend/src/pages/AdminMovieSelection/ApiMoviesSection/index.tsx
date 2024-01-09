@@ -11,6 +11,8 @@ import { AddMovieForm, useAddMovieForm } from "./useAddMovieForm"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { TmdbMovie, TmdbMovieDetails } from "@/@types/TmdbMovie"
 import { Badge } from "@/components/ui/badge"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 
 
 type ApiMoviesSectionProps = {
@@ -104,7 +106,8 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
   const onCloseMovieDetail = () => {
     // form.resetField('max_date') // TODO: make it work
     form.setValue('max_date', undefined)
-    form.clearErrors('max_date')
+    form.setValue('quantity_avaiable', 0)
+    form.clearErrors(['max_date', 'quantity_avaiable'])
   }
 
   return (
@@ -231,12 +234,27 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                         </PopoverContent>
                       </Popover>
                     </div>
+                    <form onSubmit={form.handleSubmit(handleSubmitAddMovieForm)} className='flex items-center gap-2'>
+                      <Label 
+                        htmlFor="quantity_avaiable" 
+                        className={cn(form.formState.errors?.quantity_avaiable && 'text-destructive')}
+                      >
+                        Quantidade:
+                      </Label>
+                      <Input 
+                        {...form.register('quantity_avaiable', { valueAsNumber: true })}
+                        type='number' 
+                        id='quantity_avaiable' 
+                        className={cn('max-w-[5rem]')} 
+                        min={0} 
+                      />
+                    </form>
                   </div>
                 )}
 
                 <SheetFooter>
                   <Button 
-                    type='submit' 
+                    type='submit'
                     onClick={form.handleSubmit(handleSubmitAddMovieForm)} 
                     disabled={movieDetailStatus === 'pending'}
                   >
