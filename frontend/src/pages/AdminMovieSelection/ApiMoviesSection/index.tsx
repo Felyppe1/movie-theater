@@ -143,7 +143,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
               </SheetTrigger>
               <SheetContent 
                 onCloseAutoFocus={onCloseMovieDetail} 
-                className={cn('overflow-y-auto')}
+                className='overflow-y-auto'
               >
                 <SheetHeader>
                   <SheetTitle>Informações do filme</SheetTitle>
@@ -194,7 +194,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                         {format(form.getValues().release_date, 'PPP', { locale: ptBR })}
                       </span>
                     </div>
-                    <div className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-1'>
                       <strong className={`font-medium text-sm ${form.formState.errors?.max_date && "text-destructive"}`}>
                         Data de exibição limite:
                       </strong>
@@ -215,9 +215,9 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </PopoverTrigger>
-                        {form.formState.errors?.max_date && (
+                        {/* {form.formState.errors?.max_date && (
                           <p className='text-sm font-medium text-destructive'>{form.formState.errors.max_date.message}</p>
-                        )}
+                        )} */}
                         <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
@@ -234,7 +234,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                         </PopoverContent>
                       </Popover>
                     </div>
-                    <form onSubmit={form.handleSubmit(handleSubmitAddMovieForm)} className='flex items-center gap-2'>
+                    <form onSubmit={form.handleSubmit(handleSubmitAddMovieForm)} className='flex flex-col gap-2'>
                       <Label 
                         htmlFor="quantity_avaiable" 
                         className={cn(form.formState.errors?.quantity_avaiable && 'text-destructive')}

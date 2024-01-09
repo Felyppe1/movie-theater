@@ -11,6 +11,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { env } from "@/env"
 import { Badge } from "@/components/ui/badge"
 import { Genre } from "@/@types/Genre"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 
 
 type MoviesSectionProps = {
@@ -52,7 +54,7 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
     <li className='snap-center'>
       <Sheet>
         <SheetTrigger asChild>
-          <button>
+          <button className='rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 '>
             <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" className='rounded-md w-full' />
           </button>
         </SheetTrigger>
@@ -127,6 +129,23 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
                   />
                 </PopoverContent>
               </Popover>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <Label 
+                htmlFor="quantity_avaiable" 
+                // className={cn(form.formState.errors?.quantity_avaiable && 'text-destructive')}
+              >
+                Quantidade:
+              </Label>
+              <Input 
+                // {...form.register('quantity_avaiable', { valueAsNumber: true })}
+                value={movie.quantity_avaiable}
+                type='number'
+                readOnly
+                id='quantity_avaiable' 
+                className={cn('max-w-[5rem]')} 
+                min={0} 
+              />
             </div>
           </div>
 

@@ -113,7 +113,7 @@ export function AdminMovieSelection() {
         {movies?.length == 0 && (
           <p>Não há filmes</p>
         )}
-        <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] overflow-x-auto overscroll-contain snap-x'>
+        <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] p-[.5rem] overflow-x-auto overscroll-contain snap-x'>
           {movies?.map((movie) => {
             return (
               <MoviesSection movie={movie} />

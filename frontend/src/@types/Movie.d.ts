@@ -9,4 +9,5 @@ export type Movie = {
   directors: string | null
   poster_path: string
   max_date: Date
+  quantity_avaiable: number
 }
