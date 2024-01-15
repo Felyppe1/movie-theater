@@ -24,6 +24,23 @@ export class PrismaMoviesRepository implements IMoviesRepository {
     return movie
   }
 
+  async findManyUnrelatedToTheater(movieTheaterId: string): Promise<Movie[] | null> {
+    const movies = await prisma.movie.findMany({
+      where: {
+        movieTheaters: {
+          none: {
+            id: movieTheaterId
+          }
+        }
+      },
+      include: {
+        genres: true
+      }
+    })
+
+    return movies
+  }
+
   async getAll(): Promise<Movie[] | null> {
     const movies = await prisma.movie.findMany({
       include: {

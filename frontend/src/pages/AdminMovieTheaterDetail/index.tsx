@@ -7,11 +7,16 @@ import { RoomsList } from "./RoomsList"
 import { DatabaseMovie } from "./DatabaseMovie"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
+import { SelectedMovie } from "./SelectedMovie"
 
 export type RoomProps = {
   id: string
   number: string
   _count: { seats: number }
+}
+
+type MovieProps = Movie & {
+  genres: Genre[]
 }
 
 type MovieTheaterProps = {
@@ -24,10 +29,7 @@ type MovieTheaterProps = {
   state_id: string
   city_id: string
   Room: RoomProps[]
-}
-
-type MovieProps = Movie & {
-  genres: Genre[]
+  movies: MovieProps[]
 }
 
 export function AdminMovieTheaterDetail() {
@@ -55,7 +57,7 @@ export function AdminMovieTheaterDetail() {
   const { data: movies, status: movieStatus } = useQuery<MovieProps[]>({
     queryKey: ['movies'],
     queryFn: async () => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { method: 'GET' })
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movies/movie-theater/${id}/unrelated`, { method: 'GET' })
       
       if (!response.ok) {
         throw new Error('Ocorreu um erro')
@@ -81,23 +83,19 @@ export function AdminMovieTheaterDetail() {
         <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>
           Selecionados
         </h2>
-        <p>Ainda não está pronto</p>
 
-        {/* {movieStatus === 'pending' ? (
-          <p>Carregando...</p>
-        ) : (
-          movieTheater.movies?.length == 0 ? (
+        {movieTheater.movies?.length == 0 ? (
             <p>Nenhum filme selecionado</p>
           ) : (
             <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] p-[.5rem] overflow-x-auto overscroll-contain snap-x'>
               {movieTheater.movies?.map(movie => {
                 return (
-                  <DatabaseMovie movie={movie} movieTheaterId={id!} />
+                  <SelectedMovie movie={movie} movieTheaterId={id!} key={movie.id} />
                 )
               })}
             </ul>
           )
-        )} */}
+        }
       </section>
 
       <section className='mt-[2rem]'>
@@ -114,7 +112,7 @@ export function AdminMovieTheaterDetail() {
               {movies?.map(movie => {
                 if (movie.quantity_avaiable > 0) {
                   return (
-                    <DatabaseMovie movie={movie} movieTheaterId={id!} />
+                    <DatabaseMovie movie={movie} movieTheaterId={id!} key={movie.id} />
                   )
                 }
               })}

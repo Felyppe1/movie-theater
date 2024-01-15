@@ -3,6 +3,7 @@ import { makeCreateMovieController } from "../controllers/factories/makeCreateMo
 import { makeFetchMovieTmdbIdsController } from "../controllers/factories/makeFetchMovieTmdbIdsController";
 import { makeFetchMoviesController } from "../controllers/factories/makeFetchMoviesController";
 import { makeDeleteMovieController } from "../controllers/factories/makeDeleteMovieController";
+import { makeFetchMoviesUnrelatedToTheaterController } from "../controllers/factories/makeFetchMoviesUnrelatedToTheaterController";
 
 export const moviesRoutes = Router()
 
@@ -16,6 +17,10 @@ moviesRoutes.get('/tmdb-ids', (request, response) => {
 
 moviesRoutes.get('/', (request, response) => {
   return makeFetchMoviesController().handle(request, response)
+})
+
+moviesRoutes.get('/movie-theater/:id/unrelated', (request, response) => {
+  return makeFetchMoviesUnrelatedToTheaterController().handle(request, response)
 })
 
 moviesRoutes.delete('/:id', (request, response) => {

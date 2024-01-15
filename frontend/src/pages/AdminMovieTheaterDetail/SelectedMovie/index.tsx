@@ -14,36 +14,35 @@ import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
 import { env } from "@/env"
 
-type DatabaseMovieProps = {
+type SelectedMovieProps = {
   movie: Movie & {
     genres: Genre[]
   },
   movieTheaterId: string
 }
 
-export function DatabaseMovie({ movie, movieTheaterId }: DatabaseMovieProps) {
-  const queryClient = useQueryClient()
+export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
+  // const queryClient = useQueryClient()
 
-  const movieMutation = useMutation({
-    mutationFn: async (movieId: string) => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ movieId })
-      })
+  // const movieMutation = useMutation({
+  //   mutationFn: async (movieId: string) => {
+  //     const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ movieId })
+  //     })
 
-      return response.json()
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['movies'] })
-      queryClient.invalidateQueries({ queryKey: ['movieTheater', movieTheaterId] })
-    }
-  })
+  //     return response.json()
+  //   },
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['movies'] })
+  //   }
+  // })
 
-  const handleSelectMovie = () => {
-    movieMutation.mutate(movie.id)
+  const handleRemoveMovie = () => {
+    // movieMutation.mutate(movie.id)
   }
 
   return (
@@ -146,7 +145,11 @@ export function DatabaseMovie({ movie, movieTheaterId }: DatabaseMovieProps) {
           </div>
 
           <SheetFooter>
-            <Button onClick={handleSelectMovie}>Selecionar</Button>
+            <Button onClick={handleRemoveMovie} variant='destructive'>Remover</Button>
+            <Button>
+              Criar sessão
+              {/* <Link to=''></Link> */}
+            </Button>
             {/* <SheetClose asChild>
             </SheetClose> */}
           </SheetFooter>

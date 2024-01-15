@@ -43,6 +43,11 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
               }
             }
           }
+        },
+        movies: {
+          include: {
+            genres: true
+          }
         }
       }
     })
