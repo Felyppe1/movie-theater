@@ -1,12 +1,12 @@
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
-import { Button } from "@/components/ui/button"
 import { useParams } from "react-router-dom"
-import { Link } from "react-router-dom"
 import { Toaster } from "@/components/ui/toaster"
 import { useQuery } from "@tanstack/react-query"
 import { env } from "@/env"
+import { RoomsList } from "./RoomsList"
+import { DatabaseMovie } from "./DatabaseMovie"
+import { Movie } from "@/@types/Movie"
+import { Genre } from "@/@types/Genre"
 
 export type RoomProps = {
   id: string
@@ -24,6 +24,10 @@ type MovieTheaterProps = {
   state_id: string
   city_id: string
   Room: RoomProps[]
+}
+
+type MovieProps = Movie & {
+  genres: Genre[]
 }
 
 export function AdminMovieTheaterDetail() {
@@ -48,6 +52,20 @@ export function AdminMovieTheaterDetail() {
     retry: false
   })
 
+  const { data: movies, status: movieStatus } = useQuery<MovieProps[]>({
+    queryKey: ['movies'],
+    queryFn: async () => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { method: 'GET' })
+      
+      if (!response.ok) {
+        throw new Error('Ocorreu um erro')
+      }
+
+      return response.json()
+    }
+  })
+
+
   return status === 'pending' ? (
     <p>Carregando...</p>
   ) : status === 'error' ? (
@@ -56,39 +74,54 @@ export function AdminMovieTheaterDetail() {
     <>
       <Toaster />
       <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} />
-      
-      <Button asChild>
-        <Link to={`/admin/movie-theater/${id}/room/add/`} className='mt-[1rem]'>
-          Adicionar sala
-        </Link>
-      </Button>
 
-      <Table className='w-[17rem]'>
-        <TableCaption>Lista de salas</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Sala</TableHead>
-            <TableHead>Cadeiras</TableHead>
-            <TableHead>Sessões</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {movieTheater?.Room?.map(room => {
-            return (
-              <TableRow key={room.id}>
-                <TableCell className="font-medium py-2">
-                  <Link to={`/admin/movie-theater/room/${room.id}`}>
-                    {room.number}
-                  </Link>
-                </TableCell>
-                <TableCell className="py-2">{room._count.seats}</TableCell>
-                <TableCell className="py-2">0</TableCell>
-              </TableRow>
-            )
-          })}
-          
-        </TableBody>
-      </Table>
+      <RoomsList rooms={movieTheater?.Room} id={id} />
+
+      <section className='mt-[2rem]'>
+        <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>
+          Selecionados
+        </h2>
+        <p>Ainda não está pronto</p>
+
+        {/* {movieStatus === 'pending' ? (
+          <p>Carregando...</p>
+        ) : (
+          movieTheater.movies?.length == 0 ? (
+            <p>Nenhum filme selecionado</p>
+          ) : (
+            <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] p-[.5rem] overflow-x-auto overscroll-contain snap-x'>
+              {movieTheater.movies?.map(movie => {
+                return (
+                  <DatabaseMovie movie={movie} movieTheaterId={id!} />
+                )
+              })}
+            </ul>
+          )
+        )} */}
+      </section>
+
+      <section className='mt-[2rem]'>
+        <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>
+          Disponíveis
+        </h2>
+        {movieStatus === 'pending' ? (
+          <p>Carregando...</p>
+        ) : (
+          movies?.length == 0 ? (
+            <p>Não há filmes</p>
+          ) : (
+            <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] p-[.5rem] overflow-x-auto overscroll-contain snap-x'>
+              {movies?.map(movie => {
+                if (movie.quantity_avaiable > 0) {
+                  return (
+                    <DatabaseMovie movie={movie} movieTheaterId={id!} />
+                  )
+                }
+              })}
+            </ul>
+          )
+        )}
+      </section>
     </>
   )
 }

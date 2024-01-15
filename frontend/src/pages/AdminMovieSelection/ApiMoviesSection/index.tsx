@@ -28,7 +28,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
   const queryClient = useQueryClient()
 
   const { data: movieDetail, status: movieDetailStatus, refetch } = useQuery({
-    queryKey: ['movie', movie.id],
+    queryKey: ['apiMovie', movie.id],
     queryFn: async (): Promise<TmdbMovieDetails> => {
       console.log(!!movieDetail)
       const response = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}?language=pt-BR`, { 

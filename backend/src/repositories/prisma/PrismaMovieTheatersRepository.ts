@@ -44,7 +44,6 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
             }
           }
         }
-        
       }
     })
     
@@ -55,6 +54,26 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     const movieTheater = await prisma.movieTheater.findUnique({
       where: {
         name
+      }
+    })
+
+    return movieTheater
+  }
+
+  async addMovie(id: string, movieId: string): Promise<MovieTheater> {
+    const movieTheater = await prisma.movieTheater.update({
+      where: {
+        id: id
+      },
+      data: {
+        movies: {
+          connect: {
+            id: movieId
+          }
+        }
+      },
+      include: {
+        movies: true
       }
     })
 
