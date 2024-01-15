@@ -8,9 +8,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3333
-
-RUN npx prisma generate && \
-    apt update
+EXPOSE 5173
 
 CMD ["npm", "run", "dev"]

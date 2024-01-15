@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -25,7 +25,7 @@
     "@tanstack/react-table": "^8.11.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "date-fns": "^3.0.6",
+    "date-fns": "^3.2.0",
     "embla-carousel-react": "^8.0.0-rc18",
     "lucide-react": "^0.302.0",
     "react": "^18.2.0",
