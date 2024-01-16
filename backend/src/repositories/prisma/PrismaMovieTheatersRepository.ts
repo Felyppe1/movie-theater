@@ -84,4 +84,21 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
 
     return movieTheater
   }
+
+  async removeMovie(id: string, movieId: string): Promise<MovieTheater> {
+    const movieTheater = await prisma.movieTheater.update({
+      where: {
+        id: id
+      },
+      data: {
+        movies: {
+          disconnect: {
+            id: movieId
+          }
+        }
+      }
+    })
+
+    return movieTheater
+  }
 }

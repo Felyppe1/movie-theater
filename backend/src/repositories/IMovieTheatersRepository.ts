@@ -14,4 +14,5 @@ export interface IMovieTheatersRepository {
   findById(id: string): Promise<MovieTheater | null>
   findByName(name: string): Promise<MovieTheater | null>
   addMovie(id: string, movieId: string): Promise<MovieTheater>
+  removeMovie(id: string, movieId: string): Promise<MovieTheater>
 }

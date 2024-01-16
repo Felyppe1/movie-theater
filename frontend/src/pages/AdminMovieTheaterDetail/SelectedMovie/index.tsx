@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
 import { env } from "@/env"
+import { Link } from "react-router-dom"
 
 type SelectedMovieProps = {
   movie: Movie & {
@@ -22,27 +23,28 @@ type SelectedMovieProps = {
 }
 
 export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
-  // const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
-  // const movieMutation = useMutation({
-  //   mutationFn: async (movieId: string) => {
-  //     const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ movieId })
-  //     })
+  const movieMutation = useMutation({
+    mutationFn: async (movieId: string) => {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ movieId })
+      })
 
-  //     return response.json()
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['movies'] })
-  //   }
-  // })
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['movies'] })
+      queryClient.invalidateQueries({ queryKey: ['movieTheater', movieTheaterId] })
+    }
+  })
 
   const handleRemoveMovie = () => {
-    // movieMutation.mutate(movie.id)
+    movieMutation.mutate(movie.id)
   }
 
   return (
@@ -146,9 +148,8 @@ export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
 
           <SheetFooter>
             <Button onClick={handleRemoveMovie} variant='destructive'>Remover</Button>
-            <Button>
-              Criar sessão
-              {/* <Link to=''></Link> */}
+            <Button asChild>
+              <Link to={`/admin/movie-theater/${movieTheaterId}`}>Criar sessão</Link>
             </Button>
             {/* <SheetClose asChild>
             </SheetClose> */}

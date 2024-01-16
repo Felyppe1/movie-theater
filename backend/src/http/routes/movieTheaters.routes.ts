@@ -3,6 +3,7 @@ import { makeCreateMovieTheaterController } from "../controllers/factories/makeC
 import { makeFetchMovieTheatersController } from "../controllers/factories/makeFetchMovieTheatersController";
 import { makeGetMovieTheaterController } from "../controllers/factories/makeGetMovieTheaterController";
 import { makeAddMovieToTheaterController } from "../controllers/factories/makeAddMovieToTheaterController";
+import { makeRemoveMovieFromTheaterController } from "../controllers/factories/makeRemoveMovieFromTheaterController";
 
 export const movieTheatersRoutes = Router()
 
@@ -20,4 +21,8 @@ movieTheatersRoutes.get('/:id', (request, response) => {
 
 movieTheatersRoutes.post('/:id/movie', (request, response) => {
   return makeAddMovieToTheaterController().handle(request, response)
+})
+
+movieTheatersRoutes.delete('/:id/movie', (request, response) => {
+  return makeRemoveMovieFromTheaterController().handle(request, response)
 })
