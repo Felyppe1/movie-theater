@@ -2,15 +2,13 @@ import { Request, Response } from "express";
 import { AddMovieToTheaterUseCase } from "../../useCases/AddMovieToTheaterUseCase";
 import zod from 'zod'
 
-const addMovieToTheaterParamsRequestValidationSchema = zod.object({
+export const addMovieToTheaterRequestParamsSchema = zod.object({
   id: zod.string().min(1)
 })
-type AddMovieToTheaterParamsRequestDTO = zod.infer<typeof addMovieToTheaterParamsRequestValidationSchema>
 
-const addMovieToTheaterBodyRequestValidationSchema = zod.object({
+export const addMovieToTheaterRequestBodySchema = zod.object({
   movieId: zod.string().min(1)
 })
-type AddMovieToTheaterBodyRequestDTO = zod.infer<typeof addMovieToTheaterBodyRequestValidationSchema>
 
 
 export class AddMovieToTheaterController {
@@ -21,13 +19,10 @@ export class AddMovieToTheaterController {
   }
 
   async handle(request: Request, response: Response) {
-    const params = request.params as AddMovieToTheaterParamsRequestDTO
-    const body = request.body as AddMovieToTheaterBodyRequestDTO
+    const { id } = addMovieToTheaterRequestParamsSchema.parse(request.params)
+    const { movieId } = addMovieToTheaterRequestBodySchema.parse(request.body)
 
-    addMovieToTheaterParamsRequestValidationSchema.parse(params)
-    addMovieToTheaterBodyRequestValidationSchema.parse(body)
-
-    const movieTheater = await this.addMovieToTheaterUseCase.execute(params.id, body.movieId)
+    const movieTheater = await this.addMovieToTheaterUseCase.execute({ id, movieId })
 
     return response.status(200).json(movieTheater)
   }
