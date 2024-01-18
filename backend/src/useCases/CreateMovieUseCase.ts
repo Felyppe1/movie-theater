@@ -1,5 +1,10 @@
-import { ICreateMovieRequestDTO } from "../http/controllers/CreateMovieController"
+import { Movie } from ".prisma/client";
+import { createMovieControllerBodySchema } from "../http/controllers/CreateMovieController"
 import { IMoviesRepository } from "../repositories/IMoviesRepository"
+import { AppError } from "../errors/AppError";
+import zod from 'zod'
+
+type CreateMovieUseCaseDTO = zod.infer<typeof createMovieControllerBodySchema>
 
 export class CreateMovieUseCase {
   private moviesRepository: IMoviesRepository
@@ -8,12 +13,14 @@ export class CreateMovieUseCase {
     this.moviesRepository = moviesRepository
   }
 
-  async execute({ tmdb_id, name, original_name, synopsis, genres, duration, poster_path, release_date, max_date, directors, quantity_avaiable }: ICreateMovieRequestDTO) {
-    const movie = await this.moviesRepository.findByTmdbId(tmdb_id)
-    if (movie) {
-      return
+  async execute(data: CreateMovieUseCaseDTO): Promise<Movie> {
+    const movieExists = await this.moviesRepository.findByTmdbId({ tmdbId: data.tmdb_id })
+    if (movieExists) {
+      throw new AppError('Filme já cadastrado', 409)
     }
 
-    await this.moviesRepository.create({ tmdb_id, name, original_name, synopsis, genres, duration, poster_path, release_date, max_date, directors, quantity_avaiable })
+    const movie = await this.moviesRepository.create(data)
+
+    return movie
   }
 }

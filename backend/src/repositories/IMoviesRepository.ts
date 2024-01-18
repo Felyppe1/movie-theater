@@ -1,6 +1,6 @@
 import { Movie } from "@prisma/client"
 
-export type ICreateMovieRepositoryDTO = {
+export type MovieCreateDTO = {
   tmdb_id: number
   name: string
   original_name: string
@@ -14,10 +14,22 @@ export type ICreateMovieRepositoryDTO = {
   quantity_avaiable: number
 }
 
+export type MovieFindByTmdbIdDTO = {
+  tmdbId: number
+}
+
+export type MoviefindManyUnrelatedToTheaterDTO = {
+  movieTheaterId: string
+}
+
+export type MovieDeleteDTO = {
+  id: string
+}
+
 export interface IMoviesRepository {
-  create(data: ICreateMovieRepositoryDTO): Promise<void>
-  findByTmdbId(tmdbId: number): Promise<Movie | null>
-  findManyUnrelatedToTheater(movieTheaterId: string): Promise<Movie[] | null>
+  create(data: MovieCreateDTO): Promise<Movie>
+  findByTmdbId(data: MovieFindByTmdbIdDTO): Promise<Movie | null>
+  findManyUnrelatedToTheater(data: MoviefindManyUnrelatedToTheaterDTO): Promise<Movie[] | null>
   getAll(): Promise<Movie[] | null>
-  delete(id: string): Promise<void>
+  delete(data: MovieDeleteDTO): Promise<void>
 }

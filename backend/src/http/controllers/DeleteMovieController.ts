@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { DeleteMovieUseCase } from "../../useCases/DeleteMovieUseCase";
 import zod from 'zod'
 
-const deleteMovieParamsRequestValidationSchema = zod.object({
+export const deleteMovieControllerParamsSchema = zod.object({
   id: zod.string().min(1)
 })
-export type DeleteMovieParamsRequestDTO = zod.infer<typeof deleteMovieParamsRequestValidationSchema>
+
 
 export class DeleteMovieController {
   private deleteMovieUseCase: DeleteMovieUseCase
@@ -15,9 +15,7 @@ export class DeleteMovieController {
   }
 
   async handle(request: Request, response: Response) {
-    const params = request.params as DeleteMovieParamsRequestDTO
-
-    deleteMovieParamsRequestValidationSchema.parse(params)
+    const params = deleteMovieControllerParamsSchema.parse(request.params)
 
     await this.deleteMovieUseCase.execute(params)
 

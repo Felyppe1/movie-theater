@@ -1,10 +1,10 @@
 import { Movie } from ".prisma/client";
 import { prisma } from "../../lib/prisma";
-import { ICreateMovieRepositoryDTO, IMoviesRepository } from "../IMoviesRepository";
+import { MovieCreateDTO, IMoviesRepository, MovieFindByTmdbIdDTO, MoviefindManyUnrelatedToTheaterDTO, MovieDeleteDTO } from "../IMoviesRepository";
 
 export class PrismaMoviesRepository implements IMoviesRepository {
-  async create({ genres, ...data }: ICreateMovieRepositoryDTO): Promise<void> {
-    await prisma.movie.create({
+  async create({ genres, ...data }: MovieCreateDTO): Promise<Movie> {
+    const movie = await prisma.movie.create({
       data: {
         ...data,
         genres: {
@@ -12,9 +12,11 @@ export class PrismaMoviesRepository implements IMoviesRepository {
         }
       }
     })
+
+    return movie
   }
 
-  async findByTmdbId(tmdbId: number): Promise<Movie | null> {
+  async findByTmdbId({ tmdbId }: MovieFindByTmdbIdDTO): Promise<Movie | null> {
     const movie = await prisma.movie.findUnique({
       where: {
         tmdb_id: tmdbId
@@ -24,7 +26,7 @@ export class PrismaMoviesRepository implements IMoviesRepository {
     return movie
   }
 
-  async findManyUnrelatedToTheater(movieTheaterId: string): Promise<Movie[] | null> {
+  async findManyUnrelatedToTheater({ movieTheaterId }: MoviefindManyUnrelatedToTheaterDTO): Promise<Movie[] | null> {
     const movies = await prisma.movie.findMany({
       where: {
         movieTheaters: {
@@ -51,7 +53,7 @@ export class PrismaMoviesRepository implements IMoviesRepository {
     return movies
   }
 
-  async delete(id: string): Promise<void> {
+  async delete({ id }: MovieDeleteDTO): Promise<void> {
     await prisma.movie.delete({
       where: {
         id: id

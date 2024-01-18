@@ -100,6 +100,9 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
       genres: data.genres.map(({ id, name }) => ({ id: id })),
     }
 
+    console.log(cleanedData.max_date)
+    console.log(typeof cleanedData.max_date)
+
     addMovieMutation.mutate(cleanedData)
   }
 
