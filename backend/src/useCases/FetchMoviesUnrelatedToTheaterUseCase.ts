@@ -1,10 +1,8 @@
-import { fetchMoviesUnrelatedToTheaterControllerParamsSchema } from "../http/controllers/FetchMoviesUnrelatedToTheaterController";
 import { IMoviesRepository } from "../repositories/IMoviesRepository";
-import zod from 'zod'
 
-type FetchMoviesUnrelatedToTheaterUseCaseDTO = zod.infer<
-  typeof fetchMoviesUnrelatedToTheaterControllerParamsSchema
->
+type FetchMoviesUnrelatedToTheaterUseCaseDTO = {
+  movieTheaterId: string
+}
 
 export class FetchMoviesUnrelatedToTheaterUseCase {
   private moviesRepository: IMoviesRepository

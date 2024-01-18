@@ -28,9 +28,9 @@ export class CreateMovieController {
   }
 
   async handle(request: Request, response: Response) {
-    const data = createMovieControllerBodySchema.parse(request.body)
+    const body = createMovieControllerBodySchema.parse(request.body)
 
-    const movie = await this.createMovieUseCase.execute(data)
+    const movie = await this.createMovieUseCase.execute(body)
 
     return response.status(201).json(movie)
   }

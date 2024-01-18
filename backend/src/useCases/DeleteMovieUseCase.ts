@@ -1,8 +1,8 @@
-import { deleteMovieControllerParamsSchema } from "../http/controllers/DeleteMovieController";
 import { IMoviesRepository } from "../repositories/IMoviesRepository";
-import zod from 'zod'
 
-type DeleteMovieUseCaseDTO = zod.infer<typeof deleteMovieControllerParamsSchema>
+type DeleteMovieUseCaseDTO = {
+  id: string
+}
 
 export class DeleteMovieUseCase {
   private moviesRepository: IMoviesRepository

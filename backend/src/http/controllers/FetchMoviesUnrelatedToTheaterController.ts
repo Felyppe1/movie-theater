@@ -1,10 +1,5 @@
 import { Request, Response } from "express";
 import { FetchMoviesUnrelatedToTheaterUseCase } from "../../useCases/FetchMoviesUnrelatedToTheaterUseCase";
-import zod from 'zod'
-
-export const fetchMoviesUnrelatedToTheaterControllerParamsSchema = zod.object({
-  id: zod.string().min(1)
-})
 
 
 export class FetchMoviesUnrelatedToTheaterController {
@@ -15,9 +10,9 @@ export class FetchMoviesUnrelatedToTheaterController {
   }
 
   async handle(request: Request, response: Response) {
-    const params = fetchMoviesUnrelatedToTheaterControllerParamsSchema.parse(request.params)
+    const { id: movieTheaterId } = request.params
 
-    const movies = await this.fetchMoviesUnrelatedToTheaterUseCase.execute(params.id)
+    const movies = await this.fetchMoviesUnrelatedToTheaterUseCase.execute({ movieTheaterId })
 
     return response.status(200).json(movies)
   }
