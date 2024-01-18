@@ -9,18 +9,12 @@ const seatValidationSchema = zod.object({
   type: zod.string().min(1)
 })
 
-const updateRoomBodyRequestValidationSchema = zod.object({
+export const updateRoomControllerBodySchema = zod.object({
   number: zod.string().min(1).max(5),
   technologyIds: zod.array(zod.string().min(1)).min(1),
   seats: zod.array(seatValidationSchema).min(1),
   movie_theater_id: zod.string().min(1),
 })
-export type IUpdateRoomBodyRequestDTO = zod.infer<typeof updateRoomBodyRequestValidationSchema>
-
-const updateRoomParamsRequestValidationSchema = zod.object({
-  id: zod.string().min(1)
-})
-export type IUpdateRoomParamsRequestDTO = zod.infer<typeof updateRoomParamsRequestValidationSchema>
 
 
 export class UpdateRoomController {
@@ -31,13 +25,10 @@ export class UpdateRoomController {
   }
 
   async handle(request: Request, response: Response) {
-    const id = request.params as IUpdateRoomParamsRequestDTO
-    const data = request.body as IUpdateRoomBodyRequestDTO
-
-    updateRoomParamsRequestValidationSchema.parse(id)
-    updateRoomBodyRequestValidationSchema.parse(data)
+    const { id } = request.params
+    const body = updateRoomControllerBodySchema.parse(request.body)
     
-    const room = await this.updateRoomUseCase.execute(id, data)
+    const room = await this.updateRoomUseCase.execute({ id, ...body })
 
     return response.status(200).json(room)
   }

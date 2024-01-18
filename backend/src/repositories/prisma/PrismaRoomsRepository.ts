@@ -1,9 +1,9 @@
 import { Room } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
-import { ICreateRoomRepositoryDTO, IRoomsRepository, IUpdateRoomRepositoryDTO } from "../IRoomsRepository";
+import { RoomsCreateDTO, IRoomsRepository, RoomsUpdateDTO, RoomsFindByIdDTO, RoomsFindByNumberAndMovieTheaterDTO, RoomsDeleteDTO } from "../IRoomsRepository";
 
 export class PrismaRoomsRepository implements IRoomsRepository {
-  async create({ number, movie_theater_id, technologyIds, seats }: ICreateRoomRepositoryDTO): Promise<Room> {
+  async create({ number, movie_theater_id, technologyIds, seats }: RoomsCreateDTO): Promise<Room> {
     const room = await prisma.room.create({
       data: {
         number,
@@ -20,7 +20,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     return room
   }
 
-  async findById(id: string): Promise<Room | null> {
+  async findById({ id }: RoomsFindByIdDTO): Promise<Room | null> {
     const room = await prisma.room.findUnique({
       where: {
         id: id
@@ -45,7 +45,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     return room
   }
 
-  async findByNumberAndMovieTheater(number: string, movie_theater_id: string): Promise<Room | null> {
+  async findByNumberAndMovieTheater({ number, movie_theater_id }: RoomsFindByNumberAndMovieTheaterDTO): Promise<Room | null> {
     const room = await prisma.room.findFirst({
       where: {
         number,
@@ -56,7 +56,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     return room
   }
 
-  async update({ id, number, seats, technologyIds }: IUpdateRoomRepositoryDTO): Promise<Room> {
+  async update({ id, number, seats, technologyIds }: RoomsUpdateDTO): Promise<Room> {
     const room =await prisma.room.update({
       where: {
         id: id
@@ -80,7 +80,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     return room
   }
 
-  async delete(id: string): Promise<void> {
+  async delete({ id }: RoomsDeleteDTO): Promise<void> {
     await prisma.room.delete({
       where: { id }
     })

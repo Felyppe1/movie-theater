@@ -1,5 +1,9 @@
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
 
+type DeleteRoomUseCaseDTO = {
+  id: string
+}
+
 export class DeleteRoomUseCase {
   private roomsRepository: IRoomsRepository
 
@@ -7,7 +11,7 @@ export class DeleteRoomUseCase {
     this.roomsRepository = roomsRepository
   }
 
-  async execute(id: string) {
-    await this.roomsRepository.delete(id)
+  async execute(data: DeleteRoomUseCaseDTO) {
+    await this.roomsRepository.delete(data)
   }
 }

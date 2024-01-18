@@ -1,20 +1,29 @@
 import { Room } from "@prisma/client"
 
-interface Seat {
+type Seat = {
   row: string
   column: string
   exists: boolean
   type: string
 }
 
-export interface ICreateRoomRepositoryDTO {
+export type RoomsCreateDTO = {
   number: string
   movie_theater_id: string
   technologyIds: string[]
   seats: Seat[]
 }
 
-export interface IUpdateRoomRepositoryDTO {
+export type RoomsFindByIdDTO = {
+  id: string
+}
+
+export type RoomsFindByNumberAndMovieTheaterDTO = {
+  number: string
+  movie_theater_id: string
+}
+
+export type RoomsUpdateDTO = {
   id: string
   number: string
   movie_theater_id: string
@@ -22,10 +31,12 @@ export interface IUpdateRoomRepositoryDTO {
   seats: Seat[]
 }
 
+export type RoomsDeleteDTO = RoomsFindByIdDTO
+
 export interface IRoomsRepository {
-  create(data: ICreateRoomRepositoryDTO): Promise<Room>
-  findById(id: string): Promise<Room | null>
-  findByNumberAndMovieTheater(number: string, movie_theater_id: string): Promise<Room | null>
-  update(data: IUpdateRoomRepositoryDTO): Promise<Room>
-  delete(id: string): Promise<void>
+  create(data: RoomsCreateDTO): Promise<Room>
+  findById({ id }: RoomsFindByIdDTO): Promise<Room | null>
+  findByNumberAndMovieTheater(data: RoomsFindByNumberAndMovieTheaterDTO): Promise<Room | null>
+  update(data: RoomsUpdateDTO): Promise<Room>
+  delete(data: RoomsDeleteDTO): Promise<void>
 }

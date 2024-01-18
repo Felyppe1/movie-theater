@@ -1,12 +1,6 @@
 import { Request, Response } from "express"
 import { DeleteRoomUseCase } from "../../useCases/DeleteRoomUseCase"
-import zod from 'zod'
 
-
-const deleteRoomParamsRequestValidationSchema = zod.object({
-  id: zod.string().min(1)
-})
-type DeleteRoomParamsRequestDTO = zod.infer<typeof deleteRoomParamsRequestValidationSchema>
 
 export class DeleteRoomController {
   private deleteRoomUseCase: DeleteRoomUseCase
@@ -16,11 +10,9 @@ export class DeleteRoomController {
   }
 
   async handle(request: Request, response: Response){
-    const params = request.params as DeleteRoomParamsRequestDTO
-
-    deleteRoomParamsRequestValidationSchema.parse(params)
+    const { id } = request.params
     
-    await this.deleteRoomUseCase.execute(params.id)
+    await this.deleteRoomUseCase.execute({ id })
 
     return response.sendStatus(204)
   }

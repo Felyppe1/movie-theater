@@ -1,6 +1,9 @@
 import { AppError } from "../errors/AppError";
-import { IGetRoomRequestDTO } from "../http/controllers/GetRoomController";
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
+
+type GetRoomUseCaseDTO = {
+  id: string
+}
 
 export class GetRoomUseCase {
   private roomsRepository: IRoomsRepository
@@ -9,8 +12,8 @@ export class GetRoomUseCase {
     this.roomsRepository = roomsRepository
   }
 
-  async execute({ id }: IGetRoomRequestDTO) {
-    const room = await this.roomsRepository.findById(id)
+  async execute({ id }: GetRoomUseCaseDTO) {
+    const room = await this.roomsRepository.findById({ id })
     if (!room) {
       throw new AppError('Sala não encontrada', 409)
     }

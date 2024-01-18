@@ -1,5 +1,10 @@
-import { IUpdateRoomBodyRequestDTO, IUpdateRoomParamsRequestDTO } from "../http/controllers/UpdateRoomController";
+import { updateRoomControllerBodySchema } from "../http/controllers/UpdateRoomController";
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
+import zod from 'zod'
+
+type UpdateRoomUseCaseDTO = zod.infer<typeof updateRoomControllerBodySchema> & {
+  id: string
+}
 
 export class UpdateRoomUseCase {
   private roomsRepository: IRoomsRepository
@@ -8,11 +13,8 @@ export class UpdateRoomUseCase {
     this.roomsRepository = roomsRepository
   }
 
-  async execute(
-    { id }: IUpdateRoomParamsRequestDTO, 
-    { number, seats, technologyIds, movie_theater_id }: IUpdateRoomBodyRequestDTO
-  ) {
-    const room = await this.roomsRepository.update({ number, seats, technologyIds, movie_theater_id, id })
+  async execute(data: UpdateRoomUseCaseDTO) {
+    const room = await this.roomsRepository.update(data)
 
     return room
   }

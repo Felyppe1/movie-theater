@@ -1,6 +1,9 @@
 import { AppError } from "../errors/AppError";
-import { ICreateRoomRequestDTO } from "../http/controllers/CreateRoomController";
+import { createRoomControllerBodySchema } from "../http/controllers/CreateRoomController";
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
+import zod from 'zod'
+
+type CreateRoomUseCaseDTO = zod.infer<typeof createRoomControllerBodySchema>
 
 export class CreateRoomUseCase {
   private roomsRepository: IRoomsRepository
@@ -9,8 +12,11 @@ export class CreateRoomUseCase {
     this.roomsRepository = roomsRepository
   }
 
-  async execute({ number, movie_theater_id, technologyIds, seats }: ICreateRoomRequestDTO) {
-    const roomExists = await this.roomsRepository.findByNumberAndMovieTheater(number, movie_theater_id)
+  async execute(data: CreateRoomUseCaseDTO) {
+    const roomExists = await this.roomsRepository.findByNumberAndMovieTheater({
+      number: data.number,
+      movie_theater_id: data.movie_theater_id 
+    })
     
     if (roomExists) {
       throw new AppError('Número da sala já existe', 409)
@@ -24,7 +30,7 @@ export class CreateRoomUseCase {
     // }
 
     // await this.roomsRepository.create(newData)
-    const room = await this.roomsRepository.create({ number, movie_theater_id, technologyIds, seats })
+    const room = await this.roomsRepository.create(data)
 
     return room
   }
