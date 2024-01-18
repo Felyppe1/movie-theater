@@ -1,5 +1,28 @@
 import { MovieTheater, Prisma } from "@prisma/client";
 
+export type MovieTheatersCreateDTO = {
+  name: string
+  street: string
+  number: string
+  state_id: string
+  city_id: string
+}
+
+export type MovieTheatersFindById = {
+  id: string
+}
+
+export type MovieTheatersFindByName = {
+  name: string
+}
+
+export type MovieTheatersAddMovie = {
+  id: string
+  movieId: string
+}
+
+export type MovieTheatersRemoveMovie = MovieTheatersAddMovie
+
 type MovieTheaterSubset = {
   id: string
   name: string
@@ -9,10 +32,10 @@ type MovieTheaterSubset = {
 }
 
 export interface IMovieTheatersRepository {
-  create(data: Prisma.MovieTheaterUncheckedCreateInput): Promise<MovieTheater>
+  create(data: MovieTheatersCreateDTO): Promise<MovieTheater>
   getAll(): Promise<MovieTheaterSubset[]>
-  findById(id: string): Promise<MovieTheater | null>
-  findByName(name: string): Promise<MovieTheater | null>
-  addMovie(id: string, movieId: string): Promise<MovieTheater>
-  removeMovie(id: string, movieId: string): Promise<MovieTheater>
+  findById(data: MovieTheatersFindById): Promise<MovieTheater | null>
+  findByName(data: MovieTheatersFindByName): Promise<MovieTheater | null>
+  addMovie(data: MovieTheatersAddMovie): Promise<MovieTheater>
+  removeMovie(data: MovieTheatersRemoveMovie): Promise<MovieTheater>
 }

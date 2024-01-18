@@ -27,12 +27,11 @@ export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
 
   const movieMutation = useMutation({
     mutationFn: async (movieId: string) => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie`, {
+      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie/${movieId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ movieId })
+        }
       })
 
       return response.json()

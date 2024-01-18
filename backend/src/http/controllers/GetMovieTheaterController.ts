@@ -11,7 +11,7 @@ export class GetMovieTheaterController {
   async handle(request: Request, response: Response) {
     const { id } = request.params
 
-    const movieTheater = await this.getMovieTheaterUseCase.execute(id)
+    const movieTheater = await this.getMovieTheaterUseCase.execute({ id })
 
     return response.status(200).json(movieTheater)
   }

@@ -1,9 +1,9 @@
 import { MovieTheater, Prisma } from "@prisma/client";
-import { IMovieTheatersRepository } from "../IMovieTheatersRepository";
+import { IMovieTheatersRepository, MovieTheatersAddMovie, MovieTheatersCreateDTO, MovieTheatersFindById, MovieTheatersFindByName, MovieTheatersRemoveMovie } from "../IMovieTheatersRepository";
 import { prisma } from "../../lib/prisma";
 
 export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
-  async create(data: Prisma.MovieTheaterUncheckedCreateInput) {
+  async create(data: MovieTheatersCreateDTO) {
     const movieTheater = await prisma.movieTheater.create({ data })
     
     return movieTheater
@@ -23,7 +23,7 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     return movieTheaters
   }
 
-  async findById(id: string): Promise<MovieTheater | null> {
+  async findById({ id }: MovieTheatersFindById): Promise<MovieTheater | null> {
     const movieTheater = await prisma.movieTheater.findUnique({
       where: {
         id: id
@@ -55,7 +55,7 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     return movieTheater
   }
 
-  async findByName(name: string): Promise<MovieTheater | null> {
+  async findByName({ name }: MovieTheatersFindByName): Promise<MovieTheater | null> {
     const movieTheater = await prisma.movieTheater.findUnique({
       where: {
         name
@@ -65,7 +65,7 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     return movieTheater
   }
 
-  async addMovie(id: string, movieId: string): Promise<MovieTheater> {
+  async addMovie({ id, movieId }: MovieTheatersAddMovie): Promise<MovieTheater> {
     const movieTheater = await prisma.movieTheater.update({
       where: {
         id: id
@@ -85,7 +85,7 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     return movieTheater
   }
 
-  async removeMovie(id: string, movieId: string): Promise<MovieTheater> {
+  async removeMovie({ id, movieId }: MovieTheatersRemoveMovie): Promise<MovieTheater> {
     const movieTheater = await prisma.movieTheater.update({
       where: {
         id: id

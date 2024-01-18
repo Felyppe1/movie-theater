@@ -1,6 +1,10 @@
 import { AppError } from "../errors/AppError";
 import { IMovieTheatersRepository } from "../repositories/IMovieTheatersRepository";
 
+type GetMovieTheaterUseCaseDTO = {
+  id: string
+}
+
 export class GetMovieTheaterUseCase {
   private movieTheatersRepository: IMovieTheatersRepository
 
@@ -8,8 +12,8 @@ export class GetMovieTheaterUseCase {
     this.movieTheatersRepository = movieTheatersRepository
   }
 
-  async execute(id: string) {
-    const movieTheater = await this.movieTheatersRepository.findById(id)
+  async execute({ id }: GetMovieTheaterUseCaseDTO) {
+    const movieTheater = await this.movieTheatersRepository.findById({ id })
     if (!movieTheater) {
       throw new AppError('Cinema não encontrado', 409)
     }

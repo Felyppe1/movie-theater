@@ -23,6 +23,6 @@ movieTheatersRoutes.post('/:id/movie', (request, response) => {
   return makeAddMovieToTheaterController().handle(request, response)
 })
 
-movieTheatersRoutes.delete('/:id/movie', (request, response) => {
+movieTheatersRoutes.delete('/:id/movie/:movieId', (request, response) => {
   return makeRemoveMovieFromTheaterController().handle(request, response)
 })

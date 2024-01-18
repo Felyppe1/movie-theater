@@ -32,6 +32,6 @@ export class CreateMovieController {
 
     const movie = await this.createMovieUseCase.execute(data)
 
-    return response.status(201).json({ data: movie })
+    return response.status(201).json(movie)
   }
 }
