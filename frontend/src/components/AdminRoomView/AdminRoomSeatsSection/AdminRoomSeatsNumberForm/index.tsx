@@ -2,6 +2,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { UseFormReturn } from "react-hook-form"
+import { cn } from "@/lib/utils"
 
 type FormProps = {
   rows: number
@@ -17,7 +18,7 @@ export function AdminRoomSeatsNumberForm({ seatsNumberForm, handleSubmitSeatsNum
   return (
     <form onSubmit={seatsNumberForm.handleSubmit(handleSubmitSeatsNumberForm)} className='flex items-end gap-x-[1rem]'>
       <div>
-        <Label>Linhas</Label>
+        <Label className={cn(seatsNumberForm.formState.errors?.rows && 'text-destructive')}>Linhas</Label>
         <Input 
           type='number' 
           {...seatsNumberForm.register('rows', { valueAsNumber: true })}
@@ -25,7 +26,7 @@ export function AdminRoomSeatsNumberForm({ seatsNumberForm, handleSubmitSeatsNum
         />
       </div>
       <div>
-        <Label>Colunas</Label>
+        <Label className={cn(seatsNumberForm.formState.errors?.columns && 'text-destructive')}>Colunas</Label>
         <Input 
           type='number' 
           {...seatsNumberForm.register('columns', { valueAsNumber: true })}

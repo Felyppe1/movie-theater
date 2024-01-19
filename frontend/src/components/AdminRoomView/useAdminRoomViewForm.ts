@@ -1,6 +1,6 @@
 import { createRoom, updateRoom } from '@/api/rooms';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import zod from 'zod'
 import { toast } from '../ui/use-toast';
@@ -33,6 +33,7 @@ export type AddRoomForm = zod.infer<typeof adminRoomViewFormSchema>
 
 export function useAdminRoomViewForm({ number = '', technologyIds = [], seats = [] }: AddRoomForm) {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   
   const form = useForm({
     resolver: zodResolver(adminRoomViewFormSchema),
@@ -61,7 +62,8 @@ export function useAdminRoomViewForm({ number = '', technologyIds = [], seats = 
     onError: (error) => {
       toast({ description: error.message, variant: 'destructive' })
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['room', response.id] })
       toast({ description: 'Sala atualizada com sucesso', variant: 'success' })
       form.reset(form.getValues())
     }

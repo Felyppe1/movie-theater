@@ -59,6 +59,8 @@ export const updateRoom = async ({ data, room_id }: UpdateRoomProps) => {
       const error = await response.json()
       throw new Error(error.message)
     }
+
+    return response.json()
 }
 
 export const deleteRoom = async ({ room_id }: DeleteRoomProps) => {

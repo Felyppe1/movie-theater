@@ -11,8 +11,8 @@ import { AddRoomForm, SeatProps } from "../useAdminRoomViewForm"
 import { Button } from "@/components/ui/button"
 
 const seatsNumberFormValidationSchema = zod.object({
-  rows: zod.number().min(0).max(40),
-  columns: zod.number().min(0).max(30)
+  rows: zod.number().min(1).max(40),
+  columns: zod.number().min(1).max(30)
 })
 type SeatsNumberForm = zod.infer<typeof seatsNumberFormValidationSchema>
 
@@ -82,6 +82,7 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
     }
     
     setColumns(columns)
+    setSelectedSeatIndexes([])
     form.setValue('seats', seats, { shouldDirty: true, shouldValidate: true })
   }
 
