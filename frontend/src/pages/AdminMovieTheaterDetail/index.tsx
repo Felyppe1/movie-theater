@@ -2,12 +2,13 @@ import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { useParams } from "react-router-dom"
 import { Toaster } from "@/components/ui/toaster"
 import { useQuery } from "@tanstack/react-query"
-import { env } from "@/env"
 import { RoomsList } from "./RoomsList"
 import { DatabaseMovie } from "./DatabaseMovie"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
 import { SelectedMovie } from "./SelectedMovie"
+import { fetchMoviesUnrelatedToTheater } from "@/api/movies"
+import { env } from "@/env"
 
 export type RoomProps = {
   id: string
@@ -55,16 +56,8 @@ export function AdminMovieTheaterDetail() {
   })
 
   const { data: movies, status: movieStatus } = useQuery<MovieProps[]>({
-    queryKey: ['movies'],
-    queryFn: async () => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movies/movie-theater/${id}/unrelated`, { method: 'GET' })
-      
-      if (!response.ok) {
-        throw new Error('Ocorreu um erro')
-      }
-
-      return response.json()
-    }
+    queryKey: ['moviesUnrelatedToTheater', id],
+    queryFn: fetchMoviesUnrelatedToTheater
   })
 
 

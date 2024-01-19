@@ -1,6 +1,6 @@
 import { Movie } from ".prisma/client";
 import { prisma } from "../../lib/prisma";
-import { MovieCreateDTO, IMoviesRepository, MovieFindByTmdbIdDTO, MoviefindManyUnrelatedToTheaterDTO, MovieDeleteDTO } from "../IMoviesRepository";
+import { MovieCreateDTO, IMoviesRepository, MovieFindByTmdbIdDTO, MoviefindManyUnrelatedToTheaterDTO, MovieDeleteDTO, MovieFindByIdDTO } from "../IMoviesRepository";
 
 export class PrismaMoviesRepository implements IMoviesRepository {
   async create({ genres, ...data }: MovieCreateDTO): Promise<Movie> {
@@ -21,6 +21,14 @@ export class PrismaMoviesRepository implements IMoviesRepository {
       where: {
         tmdb_id: tmdbId
       }
+    })
+
+    return movie
+  }
+
+  async findById({ id }: MovieFindByIdDTO): Promise<Movie | null> {
+    const movie = await prisma.movie.findUnique({
+      where: { id }
     })
 
     return movie

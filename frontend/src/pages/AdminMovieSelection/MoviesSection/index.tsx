@@ -8,11 +8,11 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { Movie } from "@/@types/Movie"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { env } from "@/env"
 import { Badge } from "@/components/ui/badge"
 import { Genre } from "@/@types/Genre"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { deleteMovie } from "@/api/movies"
 
 
 type MoviesSectionProps = {
@@ -23,31 +23,15 @@ type MoviesSectionProps = {
 
 export function MoviesSection({ movie }: MoviesSectionProps) {
   const queryClient = useQueryClient()
-  const removeMovieMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movies/${id}`, { 
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-
-      if (!response.ok) {
-        if (response.status == 409) {
-          const error = await response.json()
-          throw new Error(error.message)
-        }
-
-        throw new Error(response.message)
-      }
-    },
+  const deleteMovieMutation = useMutation({
+    mutationFn: deleteMovie,
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] })
     }
   })
 
   const handleRemoveMovie = () => {
-    removeMovieMutation.mutate(movie.id)
+    deleteMovieMutation.mutate(movie.id)
   }
   
   return (

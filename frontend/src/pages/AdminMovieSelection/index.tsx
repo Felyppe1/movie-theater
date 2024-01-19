@@ -6,6 +6,7 @@ import { MoviesSection } from "./MoviesSection"
 import { TmdbMovie } from "@/@types/TmdbMovie"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
+import { fetchMovies } from "@/api/movies"
 
 type ApiMoviesProps = {
   results: TmdbMovie[]
@@ -54,24 +55,9 @@ export function AdminMovieSelection() {
     },
   })
 
-  const { data: movies } = useQuery({
+  const { data: movies } = useQuery<MovieProps[]>({
     queryKey: ['movies'],
-    queryFn: async (): Promise<MovieProps[]> => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { 
-        method: 'GET',
-      })
-      
-      if (!response.ok) {
-        if (response.status === 409) {
-          const error = await response.json()
-          throw new Error(error.message)
-        }
-
-        throw new Error('Algo deu errado')
-      }
-  
-      return response.json()
-    },
+    queryFn: fetchMovies,
     select: (data) => {
       data.forEach(movie => movieTmdbIds.add(movie.tmdb_id))
       return data

@@ -15,7 +15,7 @@ export class GetMovieTheaterUseCase {
   async execute({ id }: GetMovieTheaterUseCaseDTO) {
     const movieTheater = await this.movieTheatersRepository.findById({ id })
     if (!movieTheater) {
-      throw new AppError('Cinema não encontrado', 409)
+      throw new AppError('Cinema não encontrado', 404)
     }
     
     return movieTheater

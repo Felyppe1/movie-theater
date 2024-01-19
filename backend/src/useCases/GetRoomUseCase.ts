@@ -15,7 +15,7 @@ export class GetRoomUseCase {
   async execute({ id }: GetRoomUseCaseDTO) {
     const room = await this.roomsRepository.findById({ id })
     if (!room) {
-      throw new AppError('Sala não encontrada', 409)
+      throw new AppError('Sala não encontrada', 404)
     }
     
     return room

@@ -37,7 +37,7 @@ export function DatabaseMovie({ movie, movieTheaterId }: DatabaseMovieProps) {
       return response.json()
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['movies'] })
+      queryClient.invalidateQueries({ queryKey: ['moviesUnrelatedToTheater', movieTheaterId] })
       queryClient.invalidateQueries({ queryKey: ['movieTheater', movieTheaterId] })
     }
   })

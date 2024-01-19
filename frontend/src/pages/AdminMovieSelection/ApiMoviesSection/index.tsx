@@ -9,10 +9,12 @@ import { cn } from "@/lib/utils"
 import { ptBR } from 'date-fns/locale'
 import { AddMovieForm, useAddMovieForm } from "./useAddMovieForm"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { TmdbMovie, TmdbMovieDetails } from "@/@types/TmdbMovie"
+import { TmdbMovie } from "@/@types/TmdbMovie"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { getTmdbMovie } from "@/api/movies"
+import { createMovie } from "@/api/movies"
 
 
 type ApiMoviesSectionProps = {
@@ -20,33 +22,14 @@ type ApiMoviesSectionProps = {
   movieTmdbIds: Set<number>
 }
 
-type AddMovieMutationProps = Omit<AddMovieForm, 'genres'> & {
-  genres: { id: number }[]
-}
+
 
 export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps) {
   const queryClient = useQueryClient()
 
-  const { data: movieDetail, status: movieDetailStatus, refetch } = useQuery({
+  const { status: movieDetailStatus, refetch } = useQuery({
     queryKey: ['apiMovie', movie.id],
-    queryFn: async (): Promise<TmdbMovieDetails> => {
-      console.log(!!movieDetail)
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${movie.id}?language=pt-BR`, { 
-        method: 'GET',
-        headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
-      })
-
-      if (!response.ok) {
-        if (response.status === 409) {
-          const error = await response.json()
-          throw new Error(error.message)
-        }
-  
-        throw new Error('Algo deu errado')
-      }
-
-      return response.json()
-    },
+    queryFn: getTmdbMovie,
     select: (data) => {
       form.setValue('tmdb_id', data.id)
       form.setValue('name', data.title)
@@ -68,27 +51,8 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
 
   const { form } = useAddMovieForm()
 
-  const addMovieMutation = useMutation({
-    mutationFn: async (data: AddMovieMutationProps) => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movies`, { 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-
-      if (!response.ok) {
-        if (response.status == 409) {
-          const error = await response.json()
-          throw new Error(error.message)
-        }
-
-        throw new Error(response.message)
-      }
-
-      return response.json()
-    },
+  const createMovieMutation = useMutation({
+    mutationFn: createMovie,
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] })
     }
@@ -103,7 +67,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
     console.log(cleanedData.max_date)
     console.log(typeof cleanedData.max_date)
 
-    addMovieMutation.mutate(cleanedData)
+    createMovieMutation.mutate(cleanedData)
   }
 
   const onCloseMovieDetail = () => {

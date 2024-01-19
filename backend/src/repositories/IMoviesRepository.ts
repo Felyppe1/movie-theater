@@ -22,13 +22,16 @@ export type MoviefindManyUnrelatedToTheaterDTO = {
   movieTheaterId: string
 }
 
-export type MovieDeleteDTO = {
+export type MovieFindByIdDTO = {
   id: string
 }
+
+export type MovieDeleteDTO = MovieFindByIdDTO
 
 export interface IMoviesRepository {
   create(data: MovieCreateDTO): Promise<Movie>
   findByTmdbId(data: MovieFindByTmdbIdDTO): Promise<Movie | null>
+  findById(data: MovieFindByIdDTO): Promise<Movie | null>
   findManyUnrelatedToTheater(data: MoviefindManyUnrelatedToTheaterDTO): Promise<Movie[] | null>
   getAll(): Promise<Movie[] | null>
   delete(data: MovieDeleteDTO): Promise<void>
