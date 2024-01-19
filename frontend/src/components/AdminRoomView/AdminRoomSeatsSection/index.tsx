@@ -137,7 +137,7 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
 
     setSelectedSeatIndexes([])
 
-    form.setValue('seats', alteredSeats)
+    form.setValue('seats', alteredSeats, { shouldDirty: true })
   }
 
   return (

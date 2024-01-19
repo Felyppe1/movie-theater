@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
-import { SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
-import { useSubmitRoomForm } from "./useSubmitRoomForm"
+import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 import { Toaster } from "../ui/toaster"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { fetchTechnologies } from "@/api/technologies"
+import { deleteRoom } from "@/api/rooms"
+import { toast } from "../ui/use-toast"
+import { useNavigate } from "react-router-dom"
 
 interface AdminRoomViewProps {
   number?: string,
@@ -19,24 +21,54 @@ interface AdminRoomViewProps {
 }
 
 export function AdminRoomView({ 
+  movie_theater_id,
+  room_id ,
   number = '', 
   selectedTechnologyIds = [], 
-  seats = [], 
-  movie_theater_id, room_id 
+  seats = []
 }: AdminRoomViewProps) {
+  const navigate = useNavigate()
 
   const { data: technologies, status, error } = useQuery<TechnologyProps[]>({
     queryKey: ['technologies'],
     queryFn: fetchTechnologies
   })
 
-  const { form } = useAdminRoomViewForm({
+  const deleteMutation = useMutation({
+    mutationFn: deleteRoom,
+    onError: (error) => {
+      toast({ description: error.message, variant: 'destructive' })
+    },
+    onSuccess: () => {
+      toast({ description: 'Sala excluída com sucesso', variant: 'success' })
+    },
+    onSettled: () => {
+      navigate(`/admin/movie-theater/${movie_theater_id}`)
+    }
+  })
+
+  const { form, createMutation, updateMutation } = useAdminRoomViewForm({
     number, 
     seats,
     technologyIds: selectedTechnologyIds
   })
 
-  const { handleAddRoomForm, handleDeleteRoom, isLoading } = useSubmitRoomForm({ room_id, movie_theater_id })
+  const handleSubmitRoomViewForm = ({ technologyIds, seats, ...formData }: AddRoomForm) => {
+    const cleanedData = {
+      ...formData,
+      movie_theater_id,
+      technologyIds,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      seats: seats?.map(({ selected, ...seat }) => seat),
+      id: room_id ?? undefined
+    }
+
+    room_id ? updateMutation.mutate({ data: cleanedData, room_id }) : createMutation.mutate({ data: cleanedData })
+  }
+
+  const handleDeleteRoom = (room_id: string) => {
+    deleteMutation.mutate({ room_id })
+  }
 
   return status === 'pending' ? (
     <p>Carregando...</p>
@@ -47,7 +79,7 @@ export function AdminRoomView({
     <Toaster />
     <Form {...form}>
     <form 
-      onSubmit={form.handleSubmit(handleAddRoomForm)} 
+      onSubmit={form.handleSubmit(handleSubmitRoomViewForm)} 
       className='space-y-8 pt-[1.5rem]'
     >
       <FormField
@@ -115,12 +147,21 @@ export function AdminRoomView({
     
     <div className='flex gap-x-[1rem]'>
       {room_id &&
-        <Button type='submit' onClick={handleDeleteRoom} disabled={isLoading} size='lg' variant='destructive' className='mt-[3rem]'>Excluir</Button>
+        <Button 
+          type='submit' 
+          onClick={() => handleDeleteRoom(room_id)} 
+          disabled={deleteMutation.isPending || updateMutation.isPending} 
+          size='lg' 
+          variant='destructive' 
+          className='mt-[3rem]'
+        >
+          Excluir
+        </Button>
       }
       <Button 
         type='submit' 
-        onClick={form.handleSubmit(handleAddRoomForm)} 
-        disabled={isLoading || !form.formState.isDirty}
+        onClick={form.handleSubmit(handleSubmitRoomViewForm)} 
+        disabled={createMutation.isPending || updateMutation.isPending || !form.formState.isDirty}
         size='lg' 
         className='mt-[3rem]'
       >
