@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
-import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
+import { SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 import { useSubmitRoomForm } from "./useSubmitRoomForm"
 import { Toaster } from "../ui/toaster"
 import { useQuery } from "@tanstack/react-query"
-import { env } from "@/env"
+import { fetchTechnologies } from "@/api/technologies"
 
 interface AdminRoomViewProps {
   number?: string,
@@ -27,15 +27,7 @@ export function AdminRoomView({
 
   const { data: technologies, status, error } = useQuery<TechnologyProps[]>({
     queryKey: ['technologies'],
-    queryFn: async () => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/technologies`, { method: 'GET' })
-
-      if (!response.ok) {
-        throw new Error('Algo deu errado')
-      }
-  
-      return response.json()
-    }
+    queryFn: fetchTechnologies
   })
 
   const { form } = useAdminRoomViewForm({
