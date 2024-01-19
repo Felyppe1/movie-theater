@@ -60,7 +60,7 @@ export const addMovieToTheater = async ({ movieTheaterId, movieId }: AddMovieToT
   })
 
   if (!response.ok) {
-    if (response.status === 404) {
+    if (response.status === 404 || response.status === 409) {
       const error = await response.json()
       throw new Error(error.message)
     }
