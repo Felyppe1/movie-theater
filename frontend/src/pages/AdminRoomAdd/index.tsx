@@ -1,6 +1,6 @@
+import { getMovieTheater } from "@/api/movieTheaters";
 import { AdminRoomView } from "@/components/AdminRoomView";
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
-import { env } from "@/env";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
@@ -26,20 +26,7 @@ export function AdminRoomAdd() {
 
   const { data: movieTheater, status, error } = useQuery<MovieTheaterProps>({
     queryKey: ['movieTheater', id],
-    queryFn: async ({ queryKey }) => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${queryKey[1]}`, { method: 'GET' })
-      
-      if (!response.ok) {
-        if (response.status === 409) {
-          const error = await response.json()
-          throw new Error(error.message)
-        }
-
-        throw new Error('Algo deu errado')
-      }
-  
-      return response.json()
-    },
+    queryFn: getMovieTheater,
     retry: false
   })
   

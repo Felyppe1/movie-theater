@@ -3,19 +3,16 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
-import { env } from "@/env"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ptBR } from 'date-fns/locale'
 import { AddMovieForm, useAddMovieForm } from "./useAddMovieForm"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { TmdbMovie } from "@/@types/TmdbMovie"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { getTmdbMovie } from "@/api/movies"
-import { createMovie } from "@/api/movies"
-
 
 type ApiMoviesSectionProps = {
   movie: TmdbMovie
@@ -23,10 +20,7 @@ type ApiMoviesSectionProps = {
 }
 
 
-
 export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps) {
-  const queryClient = useQueryClient()
-
   const { status: movieDetailStatus, refetch } = useQuery({
     queryKey: ['apiMovie', movie.id],
     queryFn: getTmdbMovie,
@@ -49,14 +43,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
     refetch() // TODO: only refetch once
   }
 
-  const { form } = useAddMovieForm()
-
-  const createMovieMutation = useMutation({
-    mutationFn: createMovie,
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['movies'] })
-    }
-  })
+  const { form, mutation } = useAddMovieForm()
 
   const handleSubmitAddMovieForm = (data: AddMovieForm) => {
     const cleanedData = {
@@ -64,10 +51,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
       genres: data.genres.map(({ id, name }) => ({ id: id })),
     }
 
-    console.log(cleanedData.max_date)
-    console.log(typeof cleanedData.max_date)
-
-    createMovieMutation.mutate(cleanedData)
+    mutation.mutate(cleanedData)
   }
 
   const onCloseMovieDetail = () => {
@@ -127,7 +111,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                     <div className='flex gap-x-[.5rem]'>
                       {form.getValues().genres?.map(genre => {
                         return (
-                          <Badge>{genre.name}</Badge>
+                          <Badge key={genre.id}>{genre.name}</Badge>
                         )
                       })}
                     </div>

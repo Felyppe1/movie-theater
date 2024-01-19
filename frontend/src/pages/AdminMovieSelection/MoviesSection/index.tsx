@@ -13,6 +13,7 @@ import { Genre } from "@/@types/Genre"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { deleteMovie } from "@/api/movies"
+import { toast } from "@/components/ui/use-toast"
 
 
 type MoviesSectionProps = {
@@ -25,8 +26,9 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
   const queryClient = useQueryClient()
   const deleteMovieMutation = useMutation({
     mutationFn: deleteMovie,
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] })
+      toast({ description: 'Filme removido com sucesso', variant: 'success',  })
     }
   })
 
@@ -57,7 +59,7 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
             <div className='flex gap-x-[.5rem]'>
               {movie.genres?.map(genre => {
                 return (
-                  <Badge>{genre.name}</Badge>
+                  <Badge key={genre.id}>{genre.name}</Badge>
                 )
               })}
             </div>

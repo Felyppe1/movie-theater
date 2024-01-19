@@ -61,10 +61,8 @@ export async function createMovie(data: CreateMovieProps) {
       throw new Error(error.message)
     }
 
-    throw new Error(response.message)
+    throw new Error('Ocorreu um erro')
   }
-
-  return response.json()
 }
 
 export async function deleteMovie(id: string) {

@@ -7,6 +7,7 @@ import { TmdbMovie } from "@/@types/TmdbMovie"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
 import { fetchMovies } from "@/api/movies"
+import { Toaster } from "@/components/ui/toaster"
 
 type ApiMoviesProps = {
   results: TmdbMovie[]
@@ -80,13 +81,14 @@ export function AdminMovieSelection() {
     <p>{error.message}</p>
   ) : (
     <>
+      <Toaster />
       <AdminMainHeader h1='Seleção de Filmes' p='Selecionar filmes para o banco de dados dos cinemas' />
       <section className='pb-[3rem] border-b'>
         <h2 className='text-2xl font-semibold text-secondary-foreground py-[1rem]'>Filmes disponíveis</h2>
         <ul onScroll={onMoviesListScroll} className='max-w-[35rem] h-[72vh] overflow-y-scroll'>
           {apiMovies?.map((movie) => {
             return (
-              <ApiMoviesSection 
+              <ApiMoviesSection
                 movie={movie}
                 movieTmdbIds={movieTmdbIds}
               />

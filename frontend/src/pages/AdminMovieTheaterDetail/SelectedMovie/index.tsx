@@ -12,8 +12,8 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
-import { env } from "@/env"
 import { Link } from "react-router-dom"
+import { removeMovieFromTheater } from "@/api/movieTheaters"
 
 type SelectedMovieProps = {
   movie: Movie & {
@@ -26,16 +26,7 @@ export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
   const queryClient = useQueryClient()
 
   const movieMutation = useMutation({
-    mutationFn: async (movieId: string) => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie/${movieId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-
-      return response.json()
-    },
+    mutationFn: removeMovieFromTheater,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['moviesUnrelatedToTheater', movieTheaterId] })
       queryClient.invalidateQueries({ queryKey: ['movieTheater', movieTheaterId] })
@@ -43,7 +34,10 @@ export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
   })
 
   const handleRemoveMovie = () => {
-    movieMutation.mutate(movie.id)
+    movieMutation.mutate({
+      movieTheaterId,
+      movieId: movie.id
+    })
   }
 
   return (

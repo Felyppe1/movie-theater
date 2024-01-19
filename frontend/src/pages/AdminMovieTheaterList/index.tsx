@@ -1,8 +1,8 @@
+import { fetchMovieTheaters } from "@/api/movieTheaters";
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
 import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/toaster";
-import { env } from "@/env";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table"
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
@@ -54,20 +54,7 @@ const columns: ColumnDef<MovieTheater>[] = [
 export function AdminMovieTheaterList() {
   const { data: movieTheaters, status, error } = useQuery<MovieTheater[]>({
     queryKey: ['movieTheaters'],
-    queryFn: async () => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters`, { method: 'GET' })
-      
-      if (!response.ok) {
-        if (response.status === 409) {
-          const error = await response.json()
-          throw new Error(error.message)
-        }
-
-        throw new Error('Algo deu errado')
-      }
-  
-      return response.json()
-    }
+    queryFn: fetchMovieTheaters
   })
 
   return status === 'pending' ? (

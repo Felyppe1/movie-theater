@@ -1,4 +1,7 @@
+import { createMovie } from "@/api/movies"
+import { toast } from "@/components/ui/use-toast"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import zod from 'zod'
 
@@ -24,6 +27,8 @@ const movieSelectionValidationSchema = zod.object({
 export type AddMovieForm = zod.infer<typeof movieSelectionValidationSchema>
 
 export function useAddMovieForm() {
+  const queryClient = useQueryClient()
+
   const form = useForm<AddMovieForm>({
     resolver: zodResolver(movieSelectionValidationSchema),
     defaultValues: {
@@ -41,6 +46,14 @@ export function useAddMovieForm() {
   })
 
   form.watch('max_date')
+
+  const mutation = useMutation({
+    mutationFn: createMovie,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['movies'] })
+      toast({ description: 'Filme selecionado com sucesso', variant: 'success',  })
+    }
+  })
   
-  return { form }
+  return { form, mutation }
 }

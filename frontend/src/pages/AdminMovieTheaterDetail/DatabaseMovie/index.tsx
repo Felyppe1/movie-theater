@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
-import { env } from "@/env"
+import { addMovieToTheater } from "@/api/movieTheaters"
 
 type DatabaseMovieProps = {
   movie: Movie & {
@@ -25,17 +25,7 @@ export function DatabaseMovie({ movie, movieTheaterId }: DatabaseMovieProps) {
   const queryClient = useQueryClient()
 
   const movieMutation = useMutation({
-    mutationFn: async (movieId: string) => {
-      const response = await fetch(`${env.VITE_BACKEND_URL}/movie-theaters/${movieTheaterId}/movie`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ movieId })
-      })
-
-      return response.json()
-    },
+    mutationFn: addMovieToTheater,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['moviesUnrelatedToTheater', movieTheaterId] })
       queryClient.invalidateQueries({ queryKey: ['movieTheater', movieTheaterId] })
@@ -43,7 +33,10 @@ export function DatabaseMovie({ movie, movieTheaterId }: DatabaseMovieProps) {
   })
 
   const handleSelectMovie = () => {
-    movieMutation.mutate(movie.id)
+    movieMutation.mutate({
+      movieTheaterId,
+      movieId: movie.id
+    })
   }
 
   return (
