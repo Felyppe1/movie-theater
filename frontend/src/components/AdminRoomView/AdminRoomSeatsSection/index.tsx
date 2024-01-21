@@ -64,7 +64,7 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
   })
 
   function handleSubmitSeatsNumberForm({ rows, columns }: SeatsNumberForm) {
-    event.preventDefault()
+    event?.preventDefault()
 
     const seats: SeatProps[] = []
     

@@ -8,6 +8,7 @@ import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
 import { fetchMovies } from "@/api/movies"
 import { Toaster } from "@/components/ui/toaster"
+import { UIEventHandler } from "react"
 
 type ApiMoviesProps = {
   results: TmdbMovie[]
@@ -65,8 +66,8 @@ export function AdminMovieSelection() {
     }
   })
 
-  const onMoviesListScroll = (e) => {
-    const element = e.target
+  const onMoviesListScroll: UIEventHandler<HTMLUListElement> = (e) => {
+    const element = e.currentTarget
     const distanceToBottom = element.scrollHeight - (element.scrollTop + element.clientHeight)
 
     if (distanceToBottom < 300) {

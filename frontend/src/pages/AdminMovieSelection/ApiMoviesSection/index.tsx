@@ -48,6 +48,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
   const handleSubmitAddMovieForm = (data: AddMovieForm) => {
     const cleanedData = {
       ...data,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       genres: data.genres.map(({ id, name }) => ({ id: id })),
     }
 
@@ -56,7 +57,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
 
   const onCloseMovieDetail = () => {
     // form.resetField('max_date') // TODO: make it work
-    form.setValue('max_date', undefined)
+    form.setValue('max_date', null)
     form.setValue('quantity_avaiable', 0)
     form.clearErrors(['max_date', 'quantity_avaiable'])
   }
@@ -174,7 +175,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
                             mode="single"
                             selected={form.getValues().max_date!}
                             onSelect={(date) => {
-                              form.setValue('max_date', date)
+                              form.setValue('max_date', date!)
                               form.trigger('max_date')
                             }}
                             disabled={(date) =>

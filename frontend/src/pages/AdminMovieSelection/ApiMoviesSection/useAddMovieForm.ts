@@ -19,8 +19,8 @@ const movieSelectionValidationSchema = zod.object({
   duration: zod.number().min(1),
   release_date: zod.date(),
   poster_path: zod.string().min(1),
-  max_date: zod.date({
-    required_error: 'Selecione uma data limite de exibição'
+  max_date: zod.date().nullable().refine((data) => data !== null, {
+    message: 'Selecione uma data limite de exibição',
   }),
   quantity_avaiable: zod.number().min(1)
 })
@@ -40,7 +40,7 @@ export function useAddMovieForm() {
       duration: 0,
       release_date: new Date(),
       poster_path: '',
-      max_date: undefined,
+      max_date: null,
       quantity_avaiable: 0
     }
   })
