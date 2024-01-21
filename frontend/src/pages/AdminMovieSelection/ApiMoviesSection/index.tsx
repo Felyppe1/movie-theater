@@ -49,7 +49,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
     const cleanedData = {
       ...data,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      genres: data.genres.map(({ id, name }) => ({ id: id })),
+      genres: data.genres.map(({ id }) => ({ id: id })),
     }
 
     mutation.mutate(cleanedData)
