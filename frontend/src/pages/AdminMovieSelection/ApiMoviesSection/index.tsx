@@ -62,17 +62,17 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
   }
 
   return (
-    <li key={movie.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
-      <img src={`https://image.tmdb.org/t/p/w185/${movie?.poster_path}`} className='w-[7rem] sm:w-[8.5rem]' alt="" />
+    <li key={movie.id} className='flex gap-2 max-w-[25rem] mt-[1rem] pr-2'>
+      <img src={`https://image.tmdb.org/t/p/w185/${movie?.poster_path}`} className='w-[5rem] xs:w-[7rem] sm:w-[8.5rem]' alt="" />
       <div className='flex flex-col justify-between'>
         <div>
-          <p className='text-sm line-clamp-2'>
+          <p className='text-sm line-clamp-1 xs:line-clamp-2'>
             <strong>Título:</strong> {movie?.title}
           </p>
           <p className='text-sm hidden sm:block'>
             <strong>Título original:</strong> {movie?.original_title}
           </p>
-          <p className='text-sm mt-[.25rem] line-clamp-4'>
+          <p className='text-sm mt-[.25rem] line-clamp-3 xs:line-clamp-4'>
             <strong>Sinopse:</strong> {movie?.overview}
           </p>
         </div>

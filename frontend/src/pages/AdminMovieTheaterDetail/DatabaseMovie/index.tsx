@@ -42,8 +42,8 @@ export function DatabaseMovie({ movie, movieTheaterId }: DatabaseMovieProps) {
     <li className='snap-center'>
       <AdminMovieDetails 
         Trigger={
-          <button className='rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 '>
-            <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" className='rounded-md w-full' />
+          <button className='rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-[6rem] sm:w-[8rem] overflow-hidden'>
+            <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" />
           </button>
         }
         description='Filme disponível para exibir no seu cinema.'

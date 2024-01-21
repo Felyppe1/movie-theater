@@ -144,22 +144,22 @@ export function AdminRoomSeatsSection({ form }: AdminSeatsSectionProps) {
   return (
     <div className='mt-[2rem]'>
       <Label className={`text-base ${form.formState.errors?.seats && 'text-destructive'}`}>Formato da sala</Label>
-      <div className='flex justify-between items-end' >
+      <div className='flex flex-wrap justify-between items-end gap-4' >
         <AdminRoomSeatsNumberForm 
           seatsNumberForm={seatsNumberForm} 
           handleSubmitSeatsNumberForm={handleSubmitSeatsNumberForm}
         />
           
-        <div className='flex items-center gap-x-[.25rem]'>
+        <div className='flex flex-col-reverse xs:flex-row items-start xs:items-center gap-[.25rem] flex-wrap shrink-0'>
           {selectedSeatIndexes.length > 0 &&
-            <>
-            <Button onClick={handleRemoveAllSelectedSeats} size='tiny' variant='outline'>
-              <IoCloseOutline style={{ fontSize: '1.25rem' }} />
-            </Button>
-            <span className='text-sm'>
-              {selectedSeatIndexes.length} selecionadas
-            </span>
-            </>
+            <div className='flex items-center gap-1'>
+              <Button onClick={handleRemoveAllSelectedSeats} size='tiny' variant='outline'>
+                <IoCloseOutline style={{ fontSize: '1.25rem' }} />
+              </Button>
+              <span className='text-sm'>
+                {selectedSeatIndexes.length} selecionadas
+              </span>
+            </div>
           }
 
           <AdminRoomSeatPropsForm

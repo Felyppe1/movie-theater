@@ -67,7 +67,7 @@ export function AdminMovieTheaterDetail() {
         {movieTheater.movies?.length == 0 ? (
             <p>Nenhum filme selecionado</p>
           ) : (
-            <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] p-[.5rem] overflow-x-auto overscroll-contain snap-x'>
+            <ul className='flex overflow-x-auto gap-[.5rem] p-[.5rem]'>
               {movieTheater.movies?.map(movie => {
                 return (
                   <SelectedMovie movie={movie} movieTheaterId={id!} key={movie.id} />
@@ -88,7 +88,7 @@ export function AdminMovieTheaterDetail() {
           movies?.length == 0 ? (
             <p>Não há filmes</p>
           ) : (
-            <ul className='grid grid-flow-col auto-cols-[17%] gap-[.5rem] p-[.5rem] overflow-x-auto overscroll-contain snap-x'>
+            <ul className='flex overflow-x-auto gap-[.5rem] p-[.5rem]'>
               {movies?.map(movie => {
                 if (movie.quantity_avaiable > 0) {
                   return (

@@ -16,13 +16,13 @@ interface AdminRoomSeatsNumberForm {
 
 export function AdminRoomSeatsNumberForm({ seatsNumberForm, handleSubmitSeatsNumberForm }: AdminRoomSeatsNumberForm) {
   return (
-    <form onSubmit={seatsNumberForm.handleSubmit(handleSubmitSeatsNumberForm)} className='flex items-end gap-x-[1rem]'>
+    <form onSubmit={seatsNumberForm.handleSubmit(handleSubmitSeatsNumberForm)} className='flex items-end gap-x-[.5rem]'>
       <div>
         <Label className={cn(seatsNumberForm.formState.errors?.rows && 'text-destructive')}>Linhas</Label>
         <Input 
           type='number' 
           {...seatsNumberForm.register('rows', { valueAsNumber: true })}
-          className='h-7 mt-1 w-[7rem]'
+          className='h-7 mt-1 max-w-[7rem]'
         />
       </div>
       <div>
@@ -30,7 +30,7 @@ export function AdminRoomSeatsNumberForm({ seatsNumberForm, handleSubmitSeatsNum
         <Input 
           type='number' 
           {...seatsNumberForm.register('columns', { valueAsNumber: true })}
-          className='h-7 mt-1 w-[7rem]'
+          className='h-7 mt-1 max-w-[7rem]'
         />
       </div>              
       <Button type='submit' size={'sm'} variant={'outline'}>Atualizar</Button>

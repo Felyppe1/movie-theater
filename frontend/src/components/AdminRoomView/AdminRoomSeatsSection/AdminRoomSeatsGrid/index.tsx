@@ -16,7 +16,7 @@ export function AdminRoomSeatsGrid({ addRoomForm, columnsNumber, handleSelectSea
             <button
               onClick={() => { handleSelectSeat(seat, index) }}
               key={`${seat.column}-${seat.row}`}
-              className={`flex max-w-[1.5rem] w-[1.5rem] h-[1.5rem] rounded-sm cursor-pointer
+              className={`flex w-[1.5rem] aspect-square rounded-sm cursor-pointer
                 ${seat.selected
                   ? 'bg-primary/60 hover:bg-primary/50' 
                   : seat.exists 

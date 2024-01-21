@@ -85,7 +85,7 @@ export function AdminMovieSelection() {
       <AdminMainHeader h1='Seleção de Filmes' p='Selecionar filmes para o banco de dados dos cinemas' />
       <section className='pb-[3rem] border-b'>
         <h2 className='text-2xl font-semibold text-secondary-foreground py-[1rem]'>Filmes disponíveis</h2>
-        <ul onScroll={onMoviesListScroll} className='max-w-[35rem] h-[72vh] overflow-y-scroll'>
+        <ul onScroll={onMoviesListScroll} className='max-w-[35rem] h-[72vh] mr-[15vw] overflow-y-scroll'>
           {apiMovies?.map((movie) => {
             return (
               <ApiMoviesSection
