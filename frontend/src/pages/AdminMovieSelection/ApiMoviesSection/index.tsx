@@ -63,13 +63,13 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
 
   return (
     <li key={movie.id} className='flex gap-2 max-w-[25rem] mt-[1rem] mr-[2rem]'>
-      <img src={`https://image.tmdb.org/t/p/w185/${movie?.poster_path}`} className='w-[8.5rem]' alt="" />
+      <img src={`https://image.tmdb.org/t/p/w185/${movie?.poster_path}`} className='w-[7rem] sm:w-[8.5rem]' alt="" />
       <div className='flex flex-col justify-between'>
         <div>
-          <p className='text-sm'>
+          <p className='text-sm line-clamp-2'>
             <strong>Título:</strong> {movie?.title}
           </p>
-          <p className='text-sm'>
+          <p className='text-sm hidden sm:block'>
             <strong>Título original:</strong> {movie?.original_title}
           </p>
           <p className='text-sm mt-[.25rem] line-clamp-4'>
@@ -94,7 +94,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
               </SheetTrigger>
               <SheetContent 
                 onCloseAutoFocus={onCloseMovieDetail} 
-                className='overflow-y-auto'
+                className='overflow-y-auto w-full sm:max-w-[30rem]'
               >
                 <SheetHeader>
                   <SheetTitle>Informações do filme</SheetTitle>

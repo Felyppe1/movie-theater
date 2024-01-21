@@ -103,14 +103,12 @@ export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
           </div>
           </>
         }
-        Footer={
-          <>
-          <Button onClick={handleRemoveMovie} variant='destructive'>Remover</Button>
+        Footer={[
+          <Button onClick={handleRemoveMovie} variant='destructive'>Remover</Button>,
           <Button asChild>
             <Link to={`/admin/movie-theater/${movieTheaterId}`}>Criar sessão</Link>
           </Button>
-          </>
-        }
+        ]}
       />
     </li>
   )

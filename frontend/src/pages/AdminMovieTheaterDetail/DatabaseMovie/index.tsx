@@ -102,9 +102,9 @@ export function DatabaseMovie({ movie, movieTheaterId }: DatabaseMovieProps) {
           </div>
           </>
         }
-        Footer={
+        Footer={[
           <Button onClick={handleSelectMovie}>Selecionar</Button>
-        }
+        ]}
       />
     </li>
   )

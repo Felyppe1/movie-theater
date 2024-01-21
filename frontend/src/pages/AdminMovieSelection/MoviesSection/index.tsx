@@ -36,11 +36,11 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
   }
   
   return (
-    <li className='snap-center'>
+    <li>
       <AdminMovieDetails
         Trigger={
-          <button className='rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 '>
-            <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" className='rounded-md w-full' />
+          <button className='rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-[6rem] sm:w-[8rem] overflow-hidden'>
+            <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" />
           </button>
         }
         description='Você pode editar ou excluir o filme do banco de dados.'
@@ -99,12 +99,10 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
           </div>
           </>
         }
-        Footer={
-          <>
-          <Button variant='destructive' onClick={handleRemoveMovie}>Remover</Button>
+        Footer={[
+          <Button variant='destructive' onClick={handleRemoveMovie}>Remover</Button>, 
           <Button>Editar (not working)</Button>
-          </>
-        }
+        ]}
       />
     </li>
   )

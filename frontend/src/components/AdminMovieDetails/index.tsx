@@ -2,7 +2,6 @@ import { Genre } from "@/@types/Genre"
 import { Movie } from "@/@types/Movie"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
 import { ReactNode } from "react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
@@ -14,7 +13,7 @@ type AdminMovieDetailsProps = {
     genres: Genre[]
   },
   BodyBottom: ReactNode
-  Footer: ReactNode
+  Footer: ReactNode[]
 }
 
 export function AdminMovieDetails({ Trigger, description, movie, BodyBottom, Footer }: AdminMovieDetailsProps) {
@@ -24,7 +23,7 @@ export function AdminMovieDetails({ Trigger, description, movie, BodyBottom, Foo
         {Trigger}
       </SheetTrigger>
       <SheetContent
-        className={cn('overflow-y-auto')}
+        className='overflow-y-auto w-full sm:max-w-[30rem]'
       >
         <SheetHeader>
           <SheetTitle>Informações do filme</SheetTitle>
@@ -66,7 +65,13 @@ export function AdminMovieDetails({ Trigger, description, movie, BodyBottom, Foo
         </div>
 
         <SheetFooter>
-          {Footer}
+          {Footer.map(element => {
+            return (
+              <SheetClose asChild>
+                {element}
+              </SheetClose>
+            )
+          })}
         </SheetFooter>
       </SheetContent>
     </Sheet>
