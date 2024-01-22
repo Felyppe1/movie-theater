@@ -2342,6 +2342,11 @@ async function main() {
 		}
 	]
 
+  await prisma.state.deleteMany({})
+  await prisma.city.deleteMany({})
+  await prisma.technology.deleteMany({})
+  await prisma.genre.deleteMany({})
+
   for (const state of states) {
     await prisma.state.create({
       data: {
