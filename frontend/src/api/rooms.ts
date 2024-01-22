@@ -55,9 +55,13 @@ export const updateRoom = async ({ data, room_id }: UpdateRoomProps) => {
       body: JSON.stringify(data)
     })
 
-    if (response.status === 409) {
-      const error = await response.json()
-      throw new Error(error.message)
+    if (!response.ok) {
+      if (response.status === 404) {
+        const error = await response.json()
+        throw new Error(error.message)
+      }
+      
+      throw new Error('Ocorreu um erro')
     }
 
     return response.json()

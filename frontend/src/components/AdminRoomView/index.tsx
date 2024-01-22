@@ -60,7 +60,6 @@ export function AdminRoomView({
       technologyIds,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       seats: seats?.map(({ selected, ...seat }) => seat),
-      id: room_id ?? undefined
     }
 
     room_id ? updateMutation.mutate({ data: cleanedData, room_id }) : createMutation.mutate({ data: cleanedData })
