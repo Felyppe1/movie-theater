@@ -30,7 +30,7 @@ export function AdminRoomDetail() {
 
   return (
     <>
-    <AdminMainHeader h1='Cinemas' p={`Alterar sala do cinema`} />
+    <AdminMainHeader h1='Cinemas' p={`Alterar sala do cinema`} backLink={`/admin/movie-theater/${room?.movie_theater_id}`} />
     {status === 'pending' ? (
       <p>Carregando...</p>
     ) : status === 'error' ? (

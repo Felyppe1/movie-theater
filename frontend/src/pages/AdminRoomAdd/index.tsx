@@ -36,7 +36,7 @@ export function AdminRoomAdd() {
     <p>{error.message}</p>
   ) : (
     <>
-      <AdminMainHeader h1='Cinemas' p={`Adicionar sala ao ${movieTheater?.name}`} />
+      <AdminMainHeader h1='Cinemas' p={`Adicionar sala ao ${movieTheater?.name}`} backLink={`/admin/movie-theater/${id}`} />
       <AdminRoomView movie_theater_id={movieTheater.id} />
     </>
   )

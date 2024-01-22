@@ -15,7 +15,7 @@ export function AdminMovieTheaterAdd() {
   return (
     <>
       <Toaster />
-      <AdminMainHeader h1='Cinemas' p='Cadastro de um novo cinema' />
+      <AdminMainHeader h1='Cinemas' p='Cadastro de um novo cinema' backLink='/admin/movie-theater' />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleCreateMovieTheater)} className="space-y-6 pt-[1.5rem]">
           <FormFields form={form} />

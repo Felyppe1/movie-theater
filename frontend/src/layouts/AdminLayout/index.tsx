@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { Link, Outlet, useLocation } from "react-router-dom"
-import { AdminHamburger } from "./AdminHamburger"
 
 export function AdminLayout() {
     const location = useLocation()
@@ -17,9 +16,6 @@ export function AdminLayout() {
                 </Button>
             </nav>
             <main className={'min-h-screen p-[1rem] pb-[5rem] ml-0 lg:ml-[18rem] bg-background max-w-[55rem]'}>
-                <header className='flex lg:hidden mb-[1rem]'>
-                  <AdminHamburger />
-                </header>
                 <Outlet />
             </main>
         </div>

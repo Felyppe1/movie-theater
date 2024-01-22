@@ -55,7 +55,7 @@ export function AdminMovieTheaterDetail() {
   ) : (
     <>
       <Toaster />
-      <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} />
+      <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} backLink='/admin/movie-theater' />
 
       <RoomsList rooms={movieTheater?.Room} id={id} />
 

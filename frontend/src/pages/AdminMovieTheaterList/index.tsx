@@ -64,7 +64,7 @@ export function AdminMovieTheaterList() {
   ) : (
     <>
       <Toaster />
-      <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' />
+      <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' backLink='/admin' />
       <div className='pt-[1.5rem]'>
         <Button asChild>
           <Link to='/admin/movie-theater/add'>

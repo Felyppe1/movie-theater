@@ -26,7 +26,7 @@ export function AdminHamburger() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button type='button' size='tiny' className='flex flex-col gap-1 w-[2.5rem] p-1.5'>
+        <Button type='button' size='tiny' className='flex lg:hidden flex-col gap-1 w-[2.5rem] p-1.5'>
           <span className='w-full h-1 rounded-md bg-background'></span>
           <span className='w-full h-1 rounded-md bg-background'></span>
           <span className='w-full h-1 rounded-md bg-background'></span>
