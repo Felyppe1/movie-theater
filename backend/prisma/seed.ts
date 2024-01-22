@@ -2342,8 +2342,8 @@ async function main() {
 		}
 	]
 
-  await prisma.state.deleteMany({})
   await prisma.city.deleteMany({})
+  await prisma.state.deleteMany({})
   await prisma.technology.deleteMany({})
   await prisma.genre.deleteMany({})
 
