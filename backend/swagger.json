@@ -1,0 +1,295 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Movie Theater Documentation",
+    "description": "This is the documentation of the movie theater backend API",
+    "version": "1.0.0",
+    "contact": {
+      "email": "felyppe.nunes1@gmail.com"
+    }
+  },
+  "paths": {
+    "/movies": {
+      "post": {
+        "tags": ["Movie"],
+        "summary": "Create a new movie",
+        "description": "Necessary data to create a movie",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestMovie"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseMovie"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Movie already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filme já cadastrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Movie"],
+        "summary": "Get all movies",
+        "description": "Movies in the database",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseMovie"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/{id}": {
+      "delete": {
+        "tags": ["Movie"],
+        "summary": "Delete a movie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Movie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filme não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/movie-theater/{id}/unrelated": {
+      "get": {
+        "tags": ["Movie"],
+        "summary": "Get all movies unrelated to a theater",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie theater ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseMovie"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Movie theater not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cinema não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequestMovie": {
+        "type": "object",
+        "properties": {
+          "tmdb_id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "original_name": {
+            "type": "string"
+          },
+          "synopsis": {
+            "type": "string"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": "number"
+              },
+              "required": ["id"]
+            }
+          },
+          "duration": {
+            "type": "number"
+          },
+          "release_date": {
+            "type": "string"
+          },
+          "poster_path": {
+            "type": "string"
+          },
+          "max_date": {
+            "type": "string"
+          },
+          "directors": {
+            "type": "string"
+          },
+          "quantity_avaiable": {
+            "type": "number"
+          }
+        },
+        "required": ["tmdb_id", "name", "original_name", "synopsis", "genres", "duration", "release_date", "poster_path", "max_date", "quantity_avaiable"],
+        "example": {
+          "tmdb_id": 0,
+          "name": "string",
+          "original_name": "string",
+          "synopsis": "string",
+          "genres": [
+            { "id": 0 }
+          ],
+          "duration": 0,
+          "release_date": "2023-12-14T00:00:00.000Z",
+          "poster_path": "/string.jpg",
+          "max_date": "2024-01-25T03:00:00.000Z",
+          "quantity_avaiable": 0
+        }
+      },
+      "ResponseMovie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tmdb_id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "original_name": {
+            "type": "string"
+          },
+          "synopsis": {
+            "type": "string"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": ["id"]
+            }
+          },
+          "duration": {
+            "type": "number"
+          },
+          "release_date": {
+            "type": "string"
+          },
+          "poster_path": {
+            "type": "string"
+          },
+          "max_date": {
+            "type": "string"
+          },
+          "directors": {
+            "type": "string"
+          },
+          "quantity_avaiable": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "id": "string",
+          "tmdb_id": 0,
+          "name": "string",
+          "original_name": "string",
+          "synopsis": "string",
+          "genres": [
+            {
+              "id": 0,
+              "name": "string"
+            }
+          ],
+          "duration": 0,
+          "release_date": "2023-12-14T00:00:00.000Z",
+          "poster_path": "/string.jpg",
+          "max_date": "2024-01-25T03:00:00.000Z",
+          "quantity_avaiable": 0
+        }
+      }
+    }
+  }
+}

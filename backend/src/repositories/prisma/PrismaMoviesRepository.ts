@@ -10,6 +10,9 @@ export class PrismaMoviesRepository implements IMoviesRepository {
         genres: {
           connect: genres
         }
+      },
+      include: {
+        genres: true
       }
     })
 

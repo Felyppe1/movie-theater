@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import swaggerUi from 'swagger-ui-express'
-import swaggerFile from './swagger.json'
+import swaggerFile from '../swagger.json'
 import 'express-async-errors'
 import { env } from './env'
 import { router } from './http/routes'
