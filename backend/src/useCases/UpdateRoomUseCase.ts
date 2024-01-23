@@ -20,6 +20,14 @@ export class UpdateRoomUseCase {
       throw new AppError('Sala não encontrada', 404)
     }
 
+    const hasRoomNumber = await this.roomsRepository.findByNumberAndMovieTheater({
+      movie_theater_id: data.movie_theater_id,
+      number: data.number
+    })
+    if (hasRoomNumber) {
+      throw new AppError('Número da sala já cadastrado', 409)
+    }
+
     const room = await this.roomsRepository.update(data)
 
     return room

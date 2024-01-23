@@ -47,7 +47,7 @@ export const getRoom = async ({ queryKey }: QueryFunctionContext) => {
 }
 
 export const updateRoom = async ({ data, room_id }: UpdateRoomProps) => {
-    const response = await fetch(`${env.VITE_BACKEND_URL}/rooms/${room_id ?? ''}`, {
+    const response = await fetch(`${env.VITE_BACKEND_URL}/rooms/${room_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -72,8 +72,12 @@ export const deleteRoom = async ({ room_id }: DeleteRoomProps) => {
     { method: 'DELETE' }
   )
 
-  if (response.status === 409) {
-    const error = await response.json()
-    throw new error(error.message)
+  if (!response.ok) {
+    if (response.status === 404) {
+      const error = await response.json()
+      throw new Error(error.message)
+    }
+
+    throw new Error('Ocorreu um erro')
   }
 }

@@ -41,8 +41,6 @@ export function AdminRoomView({
     },
     onSuccess: () => {
       toast({ description: 'Sala excluída com sucesso', variant: 'success' })
-    },
-    onSettled: () => {
       navigate(`/admin/movie-theater/${movie_theater_id}`)
     }
   })

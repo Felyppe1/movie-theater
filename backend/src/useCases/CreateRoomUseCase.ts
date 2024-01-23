@@ -19,7 +19,7 @@ export class CreateRoomUseCase {
     })
     
     if (roomExists) {
-      throw new AppError('Número da sala já existe', 409)
+      throw new AppError('Número da sala já cadastrado', 409)
     }
 
     // const newData = {
