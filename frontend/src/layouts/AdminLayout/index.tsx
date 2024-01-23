@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { Toaster } from "@/components/ui/toaster"
 import { Link, Outlet, useLocation } from "react-router-dom"
 
 export function AdminLayout() {
@@ -16,6 +17,7 @@ export function AdminLayout() {
                 </Button>
             </nav>
             <main className={'min-h-screen p-[1rem] pb-[5rem] ml-0 lg:ml-[18rem] bg-background max-w-[55rem]'}>
+                <Toaster />
                 <Outlet />
             </main>
         </div>

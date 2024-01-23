@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
 import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
-import { Toaster } from "../ui/toaster"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { fetchTechnologies } from "@/api/technologies"
 import { deleteRoom } from "@/api/rooms"
@@ -73,7 +72,6 @@ export function AdminRoomView({
     <p>{error.message}</p>
   ) : ( 
     <>
-    <Toaster />
     <Form {...form}>
     <form 
       onSubmit={form.handleSubmit(handleSubmitRoomViewForm)} 

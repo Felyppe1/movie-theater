@@ -13,7 +13,7 @@ export function AdminMainHeader({ h1, p, backLink }: AdminHeaderProps) {
     <header>
       <div className='flex justify-between items-center mb-[1rem]'>
         <Link to={backLink}>
-          <FaArrowLeft size={26} />
+          <FaArrowLeft size={26} className={`${backLink == '' && 'opacity-40 cursor-default' }`} />
         </Link>
         <AdminHamburger />
       </div>

@@ -3,7 +3,6 @@ import { DataTable } from "@/components/ui/DataTable"
 import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 import { LoadingDisplay } from "@/components/ui/LoadingDisplay";
 import { Button } from "@/components/ui/button"
-import { Toaster } from "@/components/ui/toaster";
 import { useFetchMovieTheaters } from "@/hooks/api/useFetchMovieTheaters";
 import { ColumnDef } from "@tanstack/react-table"
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
@@ -61,7 +60,6 @@ export function AdminMovieTheaterList() {
     <ErrorDisplay message={error.message} />
   ) : (
     <>
-      <Toaster />
       <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' backLink='/admin' />
       <div className='pt-[1.5rem]'>
         <Button asChild>

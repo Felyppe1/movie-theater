@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { MovieTheaterAddForm, useMovieTheaterAddForm } from './useMovieTheaterAddForm'
 import { FormFields } from "./FormFields"
-import { Toaster } from "@/components/ui/toaster"
 
 export function AdminMovieTheaterAdd() {
   const { form, mutation } = useMovieTheaterAddForm()
@@ -14,7 +13,6 @@ export function AdminMovieTheaterAdd() {
 
   return (
     <>
-      <Toaster />
       <AdminMainHeader h1='Cinemas' p='Cadastro de um novo cinema' backLink='/admin/movie-theater' />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleCreateMovieTheater)} className="space-y-6 pt-[1.5rem]">

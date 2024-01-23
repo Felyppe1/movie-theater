@@ -1,6 +1,5 @@
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
 import { useParams } from "react-router-dom"
-import { Toaster } from "@/components/ui/toaster"
 import { useQuery } from "@tanstack/react-query"
 import { RoomsList } from "./RoomsList"
 import { DatabaseMovie } from "./DatabaseMovie"
@@ -54,7 +53,6 @@ export function AdminMovieTheaterDetail() {
     <p>{error.message}</p>
   ) : (
     <>
-      <Toaster />
       <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} backLink='/admin/movie-theater' />
 
       <RoomsList rooms={movieTheater?.Room} id={id} />

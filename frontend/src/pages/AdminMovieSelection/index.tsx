@@ -7,7 +7,6 @@ import { TmdbMovie } from "@/@types/TmdbMovie"
 import { Movie } from "@/@types/Movie"
 import { Genre } from "@/@types/Genre"
 import { fetchMovies } from "@/api/movies"
-import { Toaster } from "@/components/ui/toaster"
 import { UIEventHandler } from "react"
 
 type ApiMoviesProps = {
@@ -79,7 +78,6 @@ export function AdminMovieSelection() {
   
   return (
     <>
-      <Toaster />
       <AdminMainHeader h1='Seleção de Filmes' p='Selecionar filmes para o banco de dados dos cinemas' backLink='/admin' />
 
       <section className='pb-[3rem] border-b'>
