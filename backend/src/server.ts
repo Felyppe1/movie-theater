@@ -1,4 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
+import swaggerUi from 'swagger-ui-express'
+import swaggerFile from './swagger.json'
 import 'express-async-errors'
 import { env } from './env'
 import { router } from './http/routes'
@@ -13,6 +15,8 @@ app.use(express.json())
 app.use(cors({
   origin: `${env.FRONTEND_URL}`
 }))
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use(router)
 
