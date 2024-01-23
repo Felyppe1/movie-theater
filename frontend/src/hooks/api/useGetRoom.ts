@@ -1,15 +1,28 @@
-import { Room } from "@/@types/Room";
-import { Seat } from "@/@types/Seat";
-import { Technology } from "@/@types/Technology";
 import { getRoom } from "@/api/rooms";
 import { useQuery } from "@tanstack/react-query";
 
-type RoomProps = Room & {
-  seats: Seat[]
-  technologies: Pick<Technology, 'id'>[]
+type Seat = {
+  id: number
+  row: string
+  column: string
+  exists: boolean
+  type: string
+  room_id: string
 }
 
-type UseGetRoomProps = Pick<Room, 'id'>
+type Technology = {
+  id: string
+}
+
+type RoomProps = {
+  id: string
+  number: string
+  movie_theater_id: string
+  seats: Seat[]
+  technologies: Technology[]
+}
+
+type UseGetRoomProps = Pick<RoomProps, 'id'>
 
 export function useGetRoom({ id }: UseGetRoomProps) {
   return useQuery<RoomProps>({

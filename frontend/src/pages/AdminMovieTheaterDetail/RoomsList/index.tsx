@@ -1,13 +1,14 @@
-import { Room } from "@/@types/Room"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
 import { Link } from "react-router-dom"
 
 type RoomsListProps = {
-  rooms: (Room & {
+  rooms: {
+    id: string;
+    number: string
     _count: { seats: number }
-  })[]
+  }[]
   id?: string
 }
 

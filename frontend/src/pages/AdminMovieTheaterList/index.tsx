@@ -1,9 +1,10 @@
-import { fetchMovieTheaters } from "@/api/movieTheaters";
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
+import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
+import { LoadingDisplay } from "@/components/ui/LoadingDisplay";
 import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/toaster";
-import { useQuery } from "@tanstack/react-query";
+import { useFetchMovieTheaters } from "@/hooks/api/useFetchMovieTheaters";
 import { ColumnDef } from "@tanstack/react-table"
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -52,15 +53,12 @@ const columns: ColumnDef<MovieTheater>[] = [
 ]
 
 export function AdminMovieTheaterList() {
-  const { data: movieTheaters, status, error } = useQuery<MovieTheater[]>({
-    queryKey: ['movieTheaters'],
-    queryFn: fetchMovieTheaters
-  })
+  const { data: movieTheaters, status, error } = useFetchMovieTheaters()
 
   return status === 'pending' ? (
-    <p>Carregando...</p>
+    <LoadingDisplay />
   ) : status === 'error' ? (
-    <p>{error.message}</p>
+    <ErrorDisplay message={error.message} />
   ) : (
     <>
       <Toaster />
