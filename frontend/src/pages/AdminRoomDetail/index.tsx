@@ -1,40 +1,22 @@
-import { getRoom } from "@/api/rooms"
 import { AdminRoomView } from "@/components/AdminRoomView"
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader"
-import { useQuery } from "@tanstack/react-query"
+import { ErrorDisplay } from "@/components/ui/ErrorDisplay"
+import { LoadingDisplay } from "@/components/ui/LoadingDisplay"
+import { useGetRoom } from "@/hooks/api/useGetRoom"
 import { useParams } from "react-router-dom"
-
-type SeatProps = {
-  row: string
-  column: string
-  exists: boolean
-  type: string
-}
-
-type RoomProps = {
-  id: string
-  number: string
-  movie_theater_id: string
-  seats: SeatProps[]
-  technologies: { id: string }[]
-}
 
 export function AdminRoomDetail() {
   const { id } = useParams()
 
-  const { data: room, status, error } = useQuery<RoomProps>({
-    queryKey: ['room', id],
-    queryFn: getRoom,
-    retry: false
-  })
+  const { data: room, status, error } = useGetRoom({ id: id! })
 
   return (
     <>
     <AdminMainHeader h1='Cinemas' p={`Alterar sala do cinema`} backLink={`/admin/movie-theater/${room?.movie_theater_id}`} />
     {status === 'pending' ? (
-      <p>Carregando...</p>
+      <LoadingDisplay />
     ) : status === 'error' ? (
-      <p>{error.message}</p>
+      <ErrorDisplay message={error.message} />
     ) : (
       <>
       <AdminRoomView
