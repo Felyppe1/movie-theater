@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { deleteMovie } from "@/api/movies"
 import { toast } from "@/components/ui/use-toast"
 import { AdminMovieDetails } from "@/components/AdminMovieDetails"
+import { AdminMovieCard } from "@/components/ui/AdminMovieCard"
 
 
 type MoviesSectionProps = {
@@ -39,9 +40,7 @@ export function MoviesSection({ movie }: MoviesSectionProps) {
     <li>
       <AdminMovieDetails
         Trigger={
-          <button className='rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-[6rem] sm:w-[8rem] overflow-hidden'>
-            <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" />
-          </button>
+          <AdminMovieCard poster_path={movie.poster_path} />
         }
         description='Você pode editar ou excluir o filme do banco de dados.'
         movie={movie}

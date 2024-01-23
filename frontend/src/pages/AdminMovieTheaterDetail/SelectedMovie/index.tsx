@@ -13,6 +13,7 @@ import { Genre } from "@/@types/Genre"
 import { Link } from "react-router-dom"
 import { removeMovieFromTheater } from "@/api/movieTheaters"
 import { AdminMovieDetails } from "@/components/AdminMovieDetails"
+import { AdminMovieCard } from "@/components/ui/AdminMovieCard"
 
 type SelectedMovieProps = {
   movie: Movie & {
@@ -43,9 +44,7 @@ export function SelectedMovie({ movie, movieTheaterId }: SelectedMovieProps) {
     <li className='snap-center'>
       <AdminMovieDetails
         Trigger={
-          <button className='rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-[6rem] sm:w-[8rem] overflow-hidden'>
-            <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" />
-          </button>
+          <AdminMovieCard poster_path={movie.poster_path} />
         }
         description="Crie sessões ou remova o filme do seu cinema."
         movie={movie}
