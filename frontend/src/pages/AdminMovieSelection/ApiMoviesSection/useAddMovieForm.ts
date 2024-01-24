@@ -50,8 +50,14 @@ export function useAddMovieForm() {
   const mutation = useMutation({
     mutationFn: createMovie,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['movies'] })
       toast({ description: 'Filme selecionado com sucesso', variant: 'success',  })
+    },
+    onError: (error) => {
+      toast({ description: error.message, variant: 'destructive' })
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['movies'] })
+      queryClient.invalidateQueries({ queryKey: ['apiMovies'] })
     }
   })
   
