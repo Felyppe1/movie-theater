@@ -175,6 +175,27 @@
           }
         }
       }
+    },
+    "/places": {
+      "get": {
+        "tags": ["Place"],
+        "summary": "Get all places",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/State"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -324,6 +345,41 @@
         "example": {
           "id": "string",
           "name": "string"
+        }
+      },
+      "State": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "cities": {
+            "type": "items",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "string",
+          "name": "string",
+          "cities": [
+            {
+              "id": "string",
+              "name": "string"
+            }
+          ]
         }
       }
     }

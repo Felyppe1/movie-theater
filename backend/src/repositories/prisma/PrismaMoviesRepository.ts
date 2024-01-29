@@ -1,4 +1,3 @@
-import { Movie } from ".prisma/client";
 import { prisma } from "../../lib/prisma";
 import { MovieCreateDTO, IMoviesRepository, MovieFindByTmdbIdDTO, MoviefindManyUnrelatedToTheaterDTO, MovieDeleteDTO, MovieFindByIdDTO } from "../IMoviesRepository";
 
