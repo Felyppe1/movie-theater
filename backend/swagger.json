@@ -154,6 +154,27 @@
           }
         }
       }
+    },
+    "/technologies": {
+      "get": {
+        "tags": ["Technology"],
+        "summary": "Get all technologies",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Technology"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -288,6 +309,21 @@
           "poster_path": "/string.jpg",
           "max_date": "2024-01-25T03:00:00.000Z",
           "quantity_avaiable": 0
+        }
+      },
+      "Technology": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "name": "string"
         }
       }
     }

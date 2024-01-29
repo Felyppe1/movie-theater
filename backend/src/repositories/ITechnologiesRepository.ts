@@ -1,4 +1,7 @@
-import { Technology } from "@prisma/client";
+type Technology = {
+  id: string
+  name: string
+}
 
 export interface ITechnologiesRepository {
   getAll(): Promise<Technology[]>
