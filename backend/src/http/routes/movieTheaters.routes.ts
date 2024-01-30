@@ -4,6 +4,7 @@ import { makeFetchMovieTheatersController } from "../controllers/factories/makeF
 import { makeGetMovieTheaterController } from "../controllers/factories/makeGetMovieTheaterController";
 import { makeAddMovieToTheaterController } from "../controllers/factories/makeAddMovieToTheaterController";
 import { makeRemoveMovieFromTheaterController } from "../controllers/factories/makeRemoveMovieFromTheaterController";
+import { ensureAuthenticated } from "../../middlewares/ensureAuthenticated";
 
 export const movieTheatersRoutes = Router()
 
@@ -19,6 +20,7 @@ movieTheatersRoutes.get('/:id', (request, response) => {
   return makeGetMovieTheaterController().handle(request, response)
 })
 
+movieTheatersRoutes.use(ensureAuthenticated)
 movieTheatersRoutes.post('/:id/movie', (request, response) => {
   return makeAddMovieToTheaterController().handle(request, response)
 })

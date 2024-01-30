@@ -11,7 +11,9 @@ datasource db {
 }
 
 enum ROLE {
-  USER
+  NORMAL
+  THEATER_ADMIN
+  MOVIE_CURATOR
   ADMIN
 }
 
@@ -23,13 +25,13 @@ enum SEX {
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
-  password_hash String
+  password      String
   full_name     String
   social_name   String?
   cpf           String   @unique
   sex           SEX
   date_of_birth DateTime
-  role          ROLE     @default(USER)
+  role          ROLE     @default(NORMAL)
   created_at    DateTime @default(now())
 
   cellphone    Cellphone @relation(fields: [cellphone_id], references: [id])
@@ -41,7 +43,21 @@ model User {
   state    State  @relation(fields: [state_id], references: [id])
   state_id String
 
+  userTokens UserTokens[]
+
   @@map("users")
+}
+
+model UserTokens {
+  id            String   @id @default(uuid())
+  refresh_token String
+  expires_date  DateTime
+  created_at    DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("user_tokens")
 }
 
 model Cellphone {

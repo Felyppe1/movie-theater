@@ -1,50 +1,54 @@
 import { AppError } from "../errors/AppError";
-import { prisma } from "../lib/prisma";
-import { ICreateUserDTO } from "./dtos/ICreateUserDTO";
-import { IUsersRepository } from "../repositories/IUsersRepository";
+import { IUsersRepository } from "../repositories/IUsersRepository"
+import zod from 'zod'
+import { createUserControllerBodyScheme } from "../http/controllers/CreateUserController"
+import { hash } from 'bcrypt'
+import { ICellphonesRepository } from "../repositories/ICellphonesRepository";
+
+type CreateUserUseCaseDTO = zod.infer<typeof createUserControllerBodyScheme>
 
 export class CreateUserUseCase {
-    private usersRepository: IUsersRepository
+  private usersRepository: IUsersRepository
+  private cellphonesRepository: ICellphonesRepository
 
-    constructor(usersRepository: IUsersRepository) {
-        this.usersRepository = usersRepository
+  constructor(
+    usersRepository: IUsersRepository, 
+    cellphonesRepository: ICellphonesRepository
+  ) {
+    this.usersRepository = usersRepository
+    this.cellphonesRepository = cellphonesRepository
+  }
+
+  async execute({ email, password, cellphone, ...data}: CreateUserUseCaseDTO) {
+    const cellphoneExists = await this.cellphonesRepository.findByDDDAndNumber({
+      ddd: cellphone.ddd,
+      number: cellphone.number
+    })
+    if (cellphoneExists) {
+      throw new AppError('Celular já cadastrado', 409)
     }
 
-    async execute({ email, password, full_name, social_name, cpf, sex, date_of_birth, cellphone, state_id, city_id }: ICreateUserDTO): Promise<void> {
-        const normalized_email = email.toLowerCase()
+    const newCellphone = await this.cellphonesRepository.create({
+      ddd: cellphone.ddd,
+      number: cellphone.number
+    })
 
-        const userExists = await this.usersRepository.findByEmail(normalized_email)
-        if (userExists) {
-            throw new AppError('User already exists', 400)
-        }
+    const normalized_email = email.toLowerCase()
 
-        const cellphone_ddd = cellphone.substring(0, 2)
-        const cellphone_number = cellphone.substring(2)
-        
-        await this.usersRepository.create({
-            email: normalized_email,
-            password_hash: password,
-            full_name,
-            social_name,
-            cpf,
-            sex,
-            date_of_birth,
-            cellphone: {
-                create: {
-                    ddd: cellphone_ddd,
-                    number: cellphone_number
-                }
-            },
-            city: {
-                connect: {
-                    id: city_id
-                }
-            },
-            state: {
-                connect: {
-                    id: state_id
-                }
-            }
-        })
+    const userExists = await this.usersRepository.findByEmail({ email: normalized_email })
+    if (userExists) {
+      throw new AppError('Email já cadastrado', 409)
     }
+
+    const password_hash = await hash(password, 6)
+
+    const user = await this.usersRepository.create({
+      ...data,
+      cellphone_id: newCellphone.id,
+      email: normalized_email, 
+      password: password_hash,
+    })
+
+    return user
+  }
 }

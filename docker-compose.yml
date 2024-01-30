@@ -5,7 +5,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=felyppe
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=movie-theater
     volumes:
