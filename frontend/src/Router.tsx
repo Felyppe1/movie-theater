@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Admin } from "./pages/Admin";
 import { Home } from "./pages/Home";
+import { PlayingNow } from "./pages/PlayingNow";
 import { AdminLayout } from "./layouts/AdminLayout";
 import { WebLayout } from "./layouts/WebLayout";
 import { Login } from "./pages/Login";
@@ -16,6 +17,7 @@ export function Router() {
         <Routes>
             <Route path="/" element={<WebLayout />} >
                 <Route index element={<Home />} />
+                <Route path="em-cartaz/" element={<PlayingNow />} />
             </Route>
 
             <Route path="user/">

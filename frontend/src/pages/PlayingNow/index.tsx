@@ -2,9 +2,8 @@ import { fetchMovies } from "@/api/movies"
 import { ErrorDisplay } from "@/components/ui/ErrorDisplay"
 import { LoadingDisplay } from "@/components/ui/LoadingDisplay"
 import { useQuery } from "@tanstack/react-query"
-import { Link } from "react-router-dom"
 
-export function Home() {
+export function PlayingNow() {
   const { data: movies, status } = useQuery({
     queryKey: ['nowPlayingMovies'],
     queryFn: fetchMovies
@@ -12,19 +11,15 @@ export function Home() {
 
   return (
     <>
-      <section className='flex flex-col px-[10rem] pt-[3rem] pb-[5rem]'>
-        <h2 className='text-2xl mb-[2rem] font-bold text-secondary hover:text-secondary/90'>
-          <Link to='/em-cartaz'>
-            Em Cartaz {'>'}
-          </Link>
-        </h2>
+      <section className='px-[10rem] pt-[3rem] pb-[5rem]'>
+        <h1 className='text-3xl mb-[2rem] font-semibold'>Em Cartaz - Niterói</h1>
         {status == 'pending'
         ? <LoadingDisplay />
         : status == 'error' 
           ? <ErrorDisplay /> 
           : (
-            <ul className='flex gap-[1rem]'>
-              {movies?.slice(0, 6).map(movie => {
+            <ul className='flex flex-wrap gap-[1rem]'>
+              {movies?.map(movie => {
                 return (
                   <li 
                     key={movie.id} 

@@ -33,6 +33,9 @@ export function AdminHamburger() {
         </Button>
       </SheetTrigger>
       <SheetContent side='left' className='w-full max-w-[18rem] sm:max-w-[18rem] lg:max-w-[18rem] px-2 py-10 overflow-y-auto'>
+        <Button asChild variant='link' size={"sm"}>
+          <Link to='/'>Ir ao site</Link>
+        </Button>
 
         <SheetClose asChild>
           <Button asChild variant={path.includes('/admin/movie-theater') ? 'secondary' : 'link'} size='sm' className='w-full'>
