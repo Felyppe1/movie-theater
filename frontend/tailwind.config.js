@@ -23,6 +23,9 @@ module.exports = {
       ...defaultTheme.screens
     },
     extend: {
+      backgroundImage: {
+        'tickets': "url('/src/assets/background.svg')"
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

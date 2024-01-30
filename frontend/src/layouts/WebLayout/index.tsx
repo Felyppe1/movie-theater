@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { LuMapPin } from "react-icons/lu"
 import { FaRegUser } from "react-icons/fa6"
 import { Link, Outlet, useLocation } from "react-router-dom"
+import { Logo } from "@/components/ui/Logo"
 
 export function WebLayout() {
   const location = useLocation()
@@ -9,9 +10,11 @@ export function WebLayout() {
   
   return (
     <div className='website'>
-      <header className='bg-background text-foreground h-[5rem] px-[10rem] text-lg font-semibold'>
+      <header className='bg-background text-foreground h-[5rem] px-[10rem] text-base font-semibold'>
         <nav className='flex justify-between items-center h-full'>
-          <Link to='/' className='text-semibold'>LOGO DO CINEMA</Link>
+          <Link to='/' className='text-semibold'>
+            <Logo />
+          </Link>
           <button className='flex items-center gap-2'>
             <LuMapPin size={24} />
             <div className='flex flex-col items-start'>
@@ -34,18 +37,28 @@ export function WebLayout() {
               `
             }>Cinemas</Link>
             </li>
-            <li className='h-full'>
-              <Link to='/admin' className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary 
-              `
-            }>Admin</Link>
-            </li>
           </ul>
-          <Link to='' className='flex items-center gap-2'>
-            <FaRegUser color='text-secondary' size={20} />
-            <span>
-              Conectar-se
-            </span>
-          </Link>
+          {1 != 1 ? (
+            <div className='flex gap-[2rem] h-full'>
+              <Link 
+                to='/admin' 
+                className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary`}
+              >
+                Admin
+              </Link>
+              <div className='flex flex-col justify-center'>
+                <button className='self-end w-fit leading-none text-[90%] font-normal underline'>Sair</button>
+                <button>felyppe.nunes1@gmail.com</button>
+              </div>
+            </div>
+          ) : (
+            <Link to='' className='flex items-center gap-2'>
+              <FaRegUser color='text-secondary' size={20} />
+              <span>
+                Conectar-se
+              </span>
+            </Link>
+          )}
         </nav>
       </header>
       <main className='bg-background min-h-screen text-white'>
