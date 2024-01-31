@@ -1,32 +1,34 @@
-import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
-import { LoginForm } from "./LoginForm"
-  
-export function Login() {
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { SignupForm } from "./SignupForm";
+
+export function Signup() {
   return (
     <div className="mx-auto flex flex-col justify-center space-y-6 max-w-[24rem] w-full">
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Entre na sua conta
+          Crie uma conta
         </h1>
         <p className="text-sm text-muted-foreground">
-          Insira seu email e senha para conectar-se
+          Preencha seus dados para registrar-se
         </p>
       </div>
-      <LoginForm />
+
+      <SignupForm />
+
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            Não tem uma conta?
+            Já tem uma conta?
           </span>
         </div>
       </div>
       <Button variant="outline" type="button" asChild>
-        <Link to='/cadastrar'>
-          Cadastrar-se
+        <Link to='/login'>
+          Entrar
         </Link>
       </Button>
     </div>

@@ -12,6 +12,7 @@ import { AdminRoomDetail } from "./pages/AdminRoomDetail";
 import { AdminRoomAdd } from "./pages/AdminRoomAdd";
 import { AdminMovieSelection } from "./pages/AdminMovieSelection";
 import { AuthenticationLayout } from "./layouts/AuthenticationLayout";
+import { Signup } from "./pages/Signup";
 
 export function Router() {
     return (
@@ -23,6 +24,7 @@ export function Router() {
 
             <Route path="/" element={<AuthenticationLayout />}>
                 <Route path="login/" element={<Login />} />
+                <Route path="cadastrar/" element={<Signup />} />
             </Route>
 
             <Route path="admin/" element={<AdminLayout />} >
