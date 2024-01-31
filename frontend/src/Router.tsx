@@ -11,6 +11,7 @@ import { AdminMovieTheaterAdd } from "./pages/AdminMovieTheaterAdd";
 import { AdminRoomDetail } from "./pages/AdminRoomDetail";
 import { AdminRoomAdd } from "./pages/AdminRoomAdd";
 import { AdminMovieSelection } from "./pages/AdminMovieSelection";
+import { AuthenticationLayout } from "./layouts/AuthenticationLayout";
 
 export function Router() {
     return (
@@ -20,7 +21,7 @@ export function Router() {
                 <Route path="em-cartaz/" element={<PlayingNow />} />
             </Route>
 
-            <Route path="user/">
+            <Route path="/" element={<AuthenticationLayout />}>
                 <Route path="login/" element={<Login />} />
             </Route>
 

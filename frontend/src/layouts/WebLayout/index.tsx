@@ -38,21 +38,23 @@ export function WebLayout() {
             }>Cinemas</Link>
             </li>
           </ul>
-          {1 != 1 ? (
+          {'LOGGED' == 'FALSE' ? (
             <div className='flex gap-[2rem] h-full'>
-              <Link 
-                to='/admin' 
-                className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary`}
-              >
-                Admin
-              </Link>
+              {'ROLE' == 'ADMIN' && (
+                <Link 
+                  to='/admin' 
+                  className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary`}
+                >
+                  Admin
+                </Link>
+              )}
               <div className='flex flex-col justify-center'>
                 <button className='self-end w-fit leading-none text-[90%] font-normal underline'>Sair</button>
-                <button>felyppe.nunes1@gmail.com</button>
+                <button>felyppe.nunes@gmail.com</button>
               </div>
             </div>
           ) : (
-            <Link to='' className='flex items-center gap-2'>
+            <Link to='/login' className='flex items-center gap-2'>
               <FaRegUser color='text-secondary' size={20} />
               <span>
                 Conectar-se
