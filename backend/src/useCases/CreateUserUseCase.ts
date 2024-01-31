@@ -28,17 +28,17 @@ export class CreateUserUseCase {
       throw new AppError('Celular já cadastrado', 409)
     }
 
-    const newCellphone = await this.cellphonesRepository.create({
-      ddd: cellphone.ddd,
-      number: cellphone.number
-    })
-
     const normalized_email = email.toLowerCase()
 
     const userExists = await this.usersRepository.findByEmail({ email: normalized_email })
     if (userExists) {
       throw new AppError('Email já cadastrado', 409)
     }
+
+    const newCellphone = await this.cellphonesRepository.create({
+      ddd: cellphone.ddd,
+      number: cellphone.number
+    })
 
     const password_hash = await hash(password, 6)
 
