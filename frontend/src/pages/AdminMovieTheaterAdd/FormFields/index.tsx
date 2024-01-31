@@ -1,10 +1,11 @@
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { MovieTheaterAddForm } from "../useMovieTheaterAddForm"
-import { env } from "@/env"
+import { useQuery } from "@tanstack/react-query"
+import { fetchPlaces } from "@/api/places"
 
 type City = {
   id: string
@@ -22,36 +23,16 @@ type FormFieldsProps = {
 }
 
 export function FormFields({ form }: FormFieldsProps) {
-  const [states, setStates] = useState<StatesProps[]>([])
   const [selectedState, setSelectedState] = useState({} as StatesProps | undefined)
 
-  useEffect(() => {
-    const url = `${env.VITE_BACKEND_URL}/places/`
-    const conf = {
-      method: 'GET'
-    }
-
-    fetch(url, conf)
-      .then(response => {
-        if (!response.ok) {
-          throw (response.status)
-        }
-
-        return response.json()
-      })
-      .then(data => {
-        setStates(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-  }, [])
+  const { data: states } = useQuery<StatesProps[]>({
+    queryKey: ['places'],
+    queryFn: fetchPlaces
+  })
 
   const handleStateChange = (value: string) => {
-    setSelectedState(states.find(state => state.id == value))
+    setSelectedState(states?.find(state => state.id == value))
   }
-
 
   return (
     <>
