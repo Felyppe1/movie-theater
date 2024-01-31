@@ -6,6 +6,7 @@ import { CgSpinner } from "react-icons/cg"
 import { useLoginForm } from "../useLoginForm"
 import { LoginFormProps } from "../useLoginForm"
 import { useState } from "react"
+import { toast } from "@/components/ui/use-toast"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -21,6 +22,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
     setStatus('pending')
     setTimeout(() => {
       setStatus('settled')
+      toast({ description: 'Não funciona ainda', variant: 'default' })
     }, 1000)
   }
 

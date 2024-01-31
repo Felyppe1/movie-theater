@@ -4,7 +4,7 @@ import { LoginForm } from "./LoginForm"
   
 export function Login() {
   return (
-    <div className="mx-auto flex flex-col justify-center space-y-6 max-w-[24rem] w-full">
+    <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
           Entre na sua conta
@@ -29,6 +29,6 @@ export function Login() {
           Cadastrar-se
         </Link>
       </Button>
-    </div>
+    </>
   )
 }

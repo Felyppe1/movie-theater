@@ -262,7 +262,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
                 <Input {...form.register('cellphone.number')} maxLength={9} className='mt-1' />
               </div>
           </div> */}
-          <Button type="submit" disabled={mutation.status == 'pending'}>
+          <Button type="submit" disabled={mutation.status == 'pending'} className='w-full'>
             {mutation.status == 'pending' && (
               <span className='animate-spin mr-2'>
                 <CgSpinner size={20} />
