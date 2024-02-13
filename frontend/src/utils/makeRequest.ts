@@ -1,7 +1,28 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 import { env } from "@/env"
+import { useAuthStore } from '@/store/auth'
+import { RefreshToken } from '@/@types/Auth'
 
 axios.defaults.baseURL = env.VITE_BACKEND_URL
+
+axios.interceptors.response.use(response => response, async error => {
+  if (error.response.status === 401) {
+    const response = await axios.post<RefreshToken>('/refresh-token', {
+      refresh_token: useAuthStore.getState().refreshToken
+    })
+
+    if (response.status === 200) {
+      const newRefreshToken = response.data.new_refresh_token
+
+      useAuthStore.setState({ refreshToken: newRefreshToken })
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newRefreshToken}`
+
+      return axios(error.config)
+    }
+  }
+
+  return Promise.reject(error)
+})
 
 export async function makeRequest(url: string, config: AxiosRequestConfig) {
   try {

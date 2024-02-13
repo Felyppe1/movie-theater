@@ -5,25 +5,15 @@ import { cn } from "@/lib/utils"
 import { CgSpinner } from "react-icons/cg"
 import { useLoginForm } from "../useLoginForm"
 import { LoginFormProps } from "../useLoginForm"
-import { useState } from "react"
-import { toast } from "@/components/ui/use-toast"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className, ...props }: UserAuthFormProps) {
-  const [status, setStatus] = useState<'settled' | 'pending'>('settled')
-  
-  const { form } = useLoginForm()
+  const { form, mutation } = useLoginForm()
   const { register, handleSubmit } = form
 
   async function onSubmit(data: LoginFormProps) {
-    event.preventDefault()
-
-    setStatus('pending')
-    setTimeout(() => {
-      setStatus('settled')
-      toast({ description: 'Não funciona ainda', variant: 'default' })
-    }, 1000)
+    mutation.mutate(data)
   }
 
   return (
@@ -42,7 +32,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={status == 'pending'}
+              disabled={mutation.status == 'pending'}
             />
           </div>
           <div className="grid gap-1">
@@ -56,11 +46,11 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
               type="password"
               autoCapitalize="none"
               autoCorrect="off"
-              disabled={status == 'pending'}
+              disabled={mutation.status == 'pending'}
             />
           </div>
-          <Button disabled={status == 'pending'}>
-            {status == 'pending' && (
+          <Button disabled={mutation.status == 'pending'}>
+            {mutation.status == 'pending' && (
               <span className='animate-spin mr-2'>
                 <CgSpinner size={20} />
               </span>

@@ -3,10 +3,12 @@ import { LuMapPin } from "react-icons/lu"
 import { FaRegUser } from "react-icons/fa6"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { Logo } from "@/components/ui/Logo"
+import { useAuthStore } from "@/store/auth"
 
 export function WebLayout() {
   const location = useLocation()
   const path = location.pathname
+  const user = useAuthStore(state => state.user)
   
   return (
     <div className='website'>
@@ -38,9 +40,9 @@ export function WebLayout() {
             }>Cinemas</Link>
             </li>
           </ul>
-          {'LOGGED' == 'FALSE' ? (
+          {user ? (
             <div className='flex gap-[2rem] h-full'>
-              {'ROLE' == 'ADMIN' && (
+              {user.role == 'ADMIN' && (
                 <Link 
                   to='/admin' 
                   className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary`}
