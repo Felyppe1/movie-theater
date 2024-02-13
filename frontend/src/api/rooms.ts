@@ -1,5 +1,4 @@
 import { AddRoomForm } from "@/components/AdminRoomView/useAdminRoomViewForm"
-import { env } from "@/env"
 import { makeRequest } from "@/utils/makeRequest"
 import { QueryFunctionContext } from "@tanstack/react-query"
 
@@ -16,31 +15,25 @@ type DeleteRoomProps = {
 }
 
 export const createRoom = async ({ data }: CreateRoomProps) => {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/rooms`, {
+  return await makeRequest('/rooms', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
+    data
   })
 }
 
 export const getRoom = async ({ queryKey }: QueryFunctionContext) => {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/rooms/${queryKey[1]}`, { method: 'GET' })
+  return await makeRequest(`/rooms/${queryKey[1]}`, { method: 'GET' })
 }
 
 export const updateRoom = async ({ data, room_id }: UpdateRoomProps) => {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/rooms/${room_id}`, {
+  return await makeRequest(`/rooms/${room_id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
+    data
   })
 }
 
 export const deleteRoom = async ({ room_id }: DeleteRoomProps) => {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/rooms/${room_id}`,
+  return await makeRequest(`/rooms/${room_id}`,
     { method: 'DELETE' }
   )
 }

@@ -32,8 +32,8 @@ export function useMovieTheaterAddForm() {
 
   const mutation = useMutation({
     mutationFn: createMovieTheater,
-    onError: () => {
-      toast({ description: 'Nome de cinema já cadastrado', variant: 'destructive' })
+    onError: (error) => {
+      toast({ description: error.message, variant: 'destructive' })
     },
     onSuccess: () => {
       toast({ description: 'Cinema cadastrado com sucesso', variant: 'success',  })

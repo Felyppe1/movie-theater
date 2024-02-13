@@ -1,18 +1,30 @@
-export async function makeRequest(url: string, config: RequestInit) {
-  const response = await fetch(url, config)
+import axios, { AxiosRequestConfig, AxiosError } from 'axios'
+import { env } from "@/env"
 
-  if (!response.ok) {
-    if (response.status === 409 || response.status === 404) {
-      const error = await response.json()
-      throw new Error(error.message)
+axios.defaults.baseURL = env.VITE_BACKEND_URL
+
+export async function makeRequest(url: string, config: AxiosRequestConfig) {
+  try {
+    const response = await axios(url, config)
+
+    if (response.status === 204) {
+      return null
     }
 
-    throw new Error('Ocorreu um erro')
+    return response.data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 409 || error.response?.status === 404) {
+        throw {
+          message: error.response?.data.message,
+          status: error.response?.status
+        }
+      }
+  
+      throw {
+        message: 'Ocorreu um erro',
+        status: error.response?.status
+      }
+    }
   }
-
-  if (response.status === 204) {
-    return null
-  }
-
-  return response.json()
 }

@@ -8,13 +8,13 @@ type CreateMovieProps = Omit<AddMovieForm, 'genres'> & {
 }
 
 export async function fetchMovies() {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/movies`, { 
+  return await makeRequest('/movies', { 
     method: 'GET',
   })
 }
 
 export async function fetchMoviesUnrelatedToTheater({ queryKey }: QueryFunctionContext) {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/movies/movie-theater/${queryKey[1]}/unrelated`, {
+  return await makeRequest(`/movies/movie-theater/${queryKey[1]}/unrelated`, {
     method: 'GET'
   })
 }
@@ -27,20 +27,14 @@ export async function getTmdbMovie({ queryKey }: QueryFunctionContext) {
 }
 
 export async function createMovie(data: CreateMovieProps) {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/movies`, { 
+  return await makeRequest('/movies', { 
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
+    data
   })
 }
 
 export async function deleteMovie(id: string) {
-  return await makeRequest(`${env.VITE_BACKEND_URL}/movies/${id}`, { 
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    }
+  return await makeRequest(`/movies/${id}`, { 
+    method: 'DELETE'
   })
 }
