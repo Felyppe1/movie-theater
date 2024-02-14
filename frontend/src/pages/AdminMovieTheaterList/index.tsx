@@ -54,22 +54,24 @@ const columns: ColumnDef<MovieTheater>[] = [
 export function AdminMovieTheaterList() {
   const { data: movieTheaters, status, error } = useFetchMovieTheaters()
 
-  return status === 'pending' ? (
-    <LoadingDisplay />
-  ) : status === 'error' ? (
-    <ErrorDisplay message={error.message} />
-  ) : (
+  return (
     <>
       <AdminMainHeader h1='Cinemas' p='Lista de cinemas do sistema' backLink='/admin' />
-      <div className='pt-[1.5rem]'>
-        <Button asChild>
-          <Link to='/admin/movie-theater/add'>
-            <FaPlus className='mr-2 h-4 w-4' />
-            Cadastrar  
-          </Link>
-        </Button>
-        <DataTable columns={columns} data={movieTheaters} />
-      </div>
+      {status === 'pending' ? (
+        <LoadingDisplay />
+      ) : status === 'error' ? (
+        <ErrorDisplay message={error.message} />
+      ) : (
+        <div className='pt-[1.5rem]'>
+          <Button asChild>
+            <Link to='/admin/movie-theater/add'>
+              <FaPlus className='mr-2 h-4 w-4' />
+              Cadastrar  
+            </Link>
+          </Button>
+          <DataTable columns={columns} data={movieTheaters} />
+        </div>
+      )}
     </>
   )
 }

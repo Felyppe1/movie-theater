@@ -34,7 +34,7 @@ export async function ensureAuthenticated(request: ExtendedRequest, response: Re
     
     const user = await usersRepository.findById({ id: user_id }) 
     if (!user) {
-      throw new AppError('Usuário não existe', 404)
+      throw new AppError('Usuário não existe', 401)
     }
 
     request.user = {

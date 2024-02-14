@@ -5,6 +5,16 @@ import { RefreshToken } from '@/@types/Auth'
 
 axios.defaults.baseURL = env.VITE_BACKEND_URL
 
+axios.interceptors.request.use((config) => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`
+  }
+
+  return config
+})
+
 axios.interceptors.response.use(response => response, async error => {
   if (error.response.status === 401) {
     const response = await axios.post<RefreshToken>('/users/refresh-token', {
@@ -14,12 +24,10 @@ axios.interceptors.response.use(response => response, async error => {
     if (response.status === 200) {
       const newToken = response.data.new_token
       const newRefreshToken = response.data.new_refresh_token
-
+      
       useAuthStore.setState({ accessToken: newToken })
       useAuthStore.setState({ refreshToken: newRefreshToken })
       
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
-
       return axios(error.config)
     }
   }

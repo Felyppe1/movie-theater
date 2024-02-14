@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { User } from '@/@types/Auth'
 
-interface IAuthContext {
+interface IAuthStore {
   accessToken: string | undefined
   refreshToken: string | undefined
   user: Pick<User, 'email' | 'role'> | undefined
@@ -12,7 +12,7 @@ interface IAuthContext {
   clearAuthStore: () => void
 }
 
-export const useAuthStore = create<IAuthContext>()(
+export const useAuthStore = create<IAuthStore>()(
   persist(
     (set) => ({
       accessToken: undefined,
