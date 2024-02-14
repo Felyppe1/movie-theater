@@ -4,12 +4,14 @@ import { FaRegUser } from "react-icons/fa6"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { Logo } from "@/components/ui/Logo"
 import { useAuthStore } from "@/store/auth"
+import { useLogout } from "@/hooks/api/useLogout"
 
 export function WebLayout() {
   const location = useLocation()
   const path = location.pathname
   const user = useAuthStore(state => state.user)
-  
+  const { handleLogout } = useLogout()
+
   return (
     <div className='website'>
       <header className='bg-background text-foreground h-[5rem] px-[10rem] text-base font-semibold'>
@@ -51,7 +53,7 @@ export function WebLayout() {
                 </Link>
               )}
               <div className='flex flex-col justify-center'>
-                <button className='self-end w-fit leading-none text-[90%] font-normal underline'>Sair</button>
+                <button onClick={handleLogout} className='self-end w-fit leading-none text-[90%] font-normal underline'>Sair</button>
                 <button>felyppe.nunes@gmail.com</button>
               </div>
             </div>

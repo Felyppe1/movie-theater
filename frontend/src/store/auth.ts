@@ -8,7 +8,8 @@ interface IAuthContext {
   user: Pick<User, 'email' | 'role'> | undefined
   setAccessToken: (accessToken: string | undefined) => void
   setRefreshToken: (refreshToken: string | undefined) => void
-  setUser: (user: User) => void
+  setUser: (user: User | undefined) => void
+  clearAuthStore: () => void
 }
 
 export const useAuthStore = create<IAuthContext>()(
@@ -40,7 +41,17 @@ export const useAuthStore = create<IAuthContext>()(
             user
           }
         })
-      }
+      },
+      clearAuthStore: () => {
+        set((state) => {
+          return {
+            ...state,
+            accessToken: undefined,
+            refreshToken: undefined,
+            user: undefined
+          }
+        })
+      },
     }),
     {
       name: 'user'

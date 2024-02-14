@@ -21,6 +21,17 @@ type SignupProps = {
   social_name?: string
 }
 
+type LogoutProps = {
+  refreshToken: string | undefined
+}
+
+export async function signup(data: SignupProps) {
+  return await makeRequest('/users/', {
+    method: 'POST',
+    data
+  })
+}
+
 export async function login(data: LoginProps) {
   return await makeRequest('/users/login', {
     method: 'POST',
@@ -28,9 +39,8 @@ export async function login(data: LoginProps) {
   })
 }
 
-export async function signup(data: SignupProps) {
-  return await makeRequest('/users/', {
-    method: 'POST',
-    data
+export async function logout({ refreshToken }: LogoutProps) {
+  return await makeRequest(`/users/logout/${refreshToken}`, {
+    method: 'DELETE'
   })
 }
