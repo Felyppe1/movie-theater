@@ -220,7 +220,9 @@
             "items": {
               "type": "object",
               "properties": {
-                "id": "number"
+                "id": {
+                  "type": "number"
+                }
               },
               "required": ["id"]
             }
@@ -290,8 +292,7 @@
                 "name": {
                   "type": "string"
                 }
-              },
-              "required": ["id"]
+              }
             }
           },
           "duration": {
