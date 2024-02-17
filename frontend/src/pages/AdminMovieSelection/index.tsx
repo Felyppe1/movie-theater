@@ -4,17 +4,11 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { ApiMoviesSection } from "./ApiMoviesSection"
 import { MoviesSection } from "./MoviesSection"
 import { TmdbMovie } from "@/@types/TmdbMovie"
-import { Movie } from "@/@types/Movie"
-import { Genre } from "@/@types/Genre"
 import { fetchMovies } from "@/api/movies"
 import { UIEventHandler } from "react"
 
 type ApiMoviesProps = {
   results: TmdbMovie[]
-}
-
-type MovieProps = Movie & {
-    genres: Genre[]
 }
 
 export function AdminMovieSelection() {
@@ -56,7 +50,7 @@ export function AdminMovieSelection() {
     }
   })
 
-  const movies = useQuery<MovieProps[]>({
+  const movies = useQuery({
     queryKey: ['movies'],
     queryFn: fetchMovies,
     select: (data) => {

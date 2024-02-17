@@ -6,3 +6,5 @@ export type Seat = {
   type: string
   room_id: string
 }
+
+export type SeatCreate = Omit<Seat, 'id' | 'room_id'>

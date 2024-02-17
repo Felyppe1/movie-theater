@@ -52,7 +52,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
       genres: data.genres.map(({ id }) => ({ id: id })),
     }
 
-    mutation.mutate(cleanedData)
+    mutation.mutate(cleanedData) // FIX
   }
 
   const onCloseMovieDetail = () => {

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { User } from '@/@types/Auth'
+import { User } from '@/@types/User'
 
 interface IAuthStore {
   accessToken: string | undefined

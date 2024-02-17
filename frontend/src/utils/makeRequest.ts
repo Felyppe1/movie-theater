@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 import { env } from "@/env"
 import { useAuthStore } from '@/store/auth'
-import { RefreshToken } from '@/@types/Auth'
+import { RefreshToken } from '@/@types/User'
 
 axios.defaults.baseURL = env.VITE_BACKEND_URL
 

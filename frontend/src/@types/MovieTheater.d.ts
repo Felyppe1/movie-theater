@@ -1,3 +1,8 @@
+import { City } from "@prisma/client"
+import { State } from "./Places"
+import { Movie, MovieGeneral } from "./Movie"
+import { Room } from "./Room"
+
 export type MovieTheater = {
   id: string
   name: string
@@ -8,3 +13,23 @@ export type MovieTheater = {
   state_id: string
   city_id: string
 }
+
+export type MovieTheaterAdditional = MovieTheater & {
+  city: City
+  state: State
+}
+
+export type MovieTheaterGeneral = MovieTheaterAdditional & {
+  movies: MovieGeneral[]
+}
+
+export type MovieTheaterFull = MovieTheaterGeneral & {
+  rooms: Room[]
+}
+
+
+// export type MovieTheaterRelations = MovieTheater & {
+//   city?: City
+//   state?: State
+//   movies?: MovieGeneral[]
+// }
