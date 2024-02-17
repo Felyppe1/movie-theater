@@ -1,31 +1,13 @@
-import { SEX, User } from "@prisma/client"
+import { User, UserGeneral } from "../@Types/User"
 
-type Cellphone = {
-  ddd: string
-  number: string
-}
+export type UserCreateDTO = Omit<User, 'id' | 'role' | 'created_at'>
 
-export type UserCreateDTO = {
-  email: string
-  password: string
-  full_name: string
-  social_name?: string
-  cpf: string
-  sex: SEX
-  date_of_birth: Date
-  cellphone_id: string
-  city_id: string
-  state_id: string
-}
+export type UserFindByEmailDTO = Pick<User, 'email'>
 
-export type UserFindByEmailDTO = Pick<UserCreateDTO, 'email'>
-
-export type UserFindByIdDTO = {
-  id: string
-}
+export type UserFindByIdDTO = Pick<User, 'id'>
 
 export interface IUsersRepository {
   create(data: UserCreateDTO): Promise<User>
-  findByEmail(data: UserFindByEmailDTO): Promise<User | null>
-  findById(data: UserFindByIdDTO): Promise<User | null>
+  findByEmail(data: UserFindByEmailDTO): Promise<UserGeneral | null>
+  findById(data: UserFindByIdDTO): Promise<UserGeneral | null>
 }

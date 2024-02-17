@@ -1,22 +1,13 @@
-import { UserTokens } from "@prisma/client"
+import { UserTokens } from "../@Types/UserTokens"
 
-export interface UserTokensCreateDTO {
-  user_id: string
-  expires_date: Date
-  refresh_token: string
-}
+export type UserTokensCreateDTO = Omit<UserTokens, 'id' | 'created_at'>
 
-export type UserTokensFindByUserIdAndRefreshToken = {
-  user_id: string
-  refresh_token: string
-}
+export type UserTokensFindByUserIdAndRefreshTokenDTO = Pick<UserTokens, 'user_id' | 'refresh_token'>
 
-export type UserTokensDeleteById = {
-  id: string
-}
+export type UserTokensDeleteByIdDTO = Pick<UserTokens, 'id'>
 
 export interface IUserTokensRepository {
   create(data: UserTokensCreateDTO): Promise<UserTokens>
-  findByUserIdAndRefreshToken(data: UserTokensFindByUserIdAndRefreshToken): Promise<UserTokens | null>
-  deleteById(data: UserTokensDeleteById): Promise<void>
+  findByUserIdAndRefreshToken(data: UserTokensFindByUserIdAndRefreshTokenDTO): Promise<UserTokens | null>
+  deleteById(data: UserTokensDeleteByIdDTO): Promise<void>
 }

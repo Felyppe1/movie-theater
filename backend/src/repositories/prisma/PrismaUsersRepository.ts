@@ -10,7 +10,12 @@ export class PrismaUsersRepository implements IUsersRepository {
 
   async findById({ id }: UserFindByIdDTO) {
     const user = await prisma.user.findUnique({
-      where: { id: id }
+      where: { id: id },
+      include: {
+        state: true,
+        city: true,
+        cellphone: true
+      }
     })
 
     return user
@@ -18,7 +23,12 @@ export class PrismaUsersRepository implements IUsersRepository {
 
   async findByEmail({ email }: UserFindByEmailDTO) {
     const user = await prisma.user.findUnique({
-        where: { email: email }
+      where: { email: email },
+      include: {
+        state: true,
+        city: true,
+        cellphone: true
+      }
     })
     
     return user
