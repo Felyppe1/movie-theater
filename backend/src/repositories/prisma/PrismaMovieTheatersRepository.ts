@@ -33,7 +33,7 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
             genres: true
           }
         },
-        Room: {
+        rooms: {
           include: {
             _count: {
               select: {

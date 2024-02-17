@@ -17,7 +17,7 @@ export type MovieTheatersAddMovieDTO = Pick<MovieTheater, 'id'> & {
 export type MovieTheatersRemoveMovieDTO = MovieTheatersAddMovieDTO
 
 export type MovieTheaterFullEdited = MovieTheaterGeneral & {
-  Room: (
+  rooms: (
     Room & { 
     _count: { 
       seats: number 

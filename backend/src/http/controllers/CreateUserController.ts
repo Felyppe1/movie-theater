@@ -11,7 +11,7 @@ export const createUserControllerBodyScheme = zod.object({
   email: zod.string().min(1),
   password: zod.string().min(1),
   full_name: zod.string().min(1),
-  social_name: zod.string().optional(),
+  social_name: zod.string().nullable(),
   cpf: zod.string().length(11),
   sex: zod.enum(['M', 'F']),
   date_of_birth: zod.coerce.date(),

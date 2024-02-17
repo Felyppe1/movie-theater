@@ -16,7 +16,7 @@ type MovieTheaterProps = {
   updated_at: Date
   state_id: string
   city_id: string
-  Room: Room[]
+  rooms: Room[]
 }
 
 type UseGetMovieTheaterProps = Pick<MovieTheaterProps, 'id'>

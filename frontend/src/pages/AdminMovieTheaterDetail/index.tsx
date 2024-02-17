@@ -28,7 +28,7 @@ type MovieTheaterProps = {
   updated_at: Date
   state_id: string
   city_id: string
-  Room: RoomProps[]
+  rooms: RoomProps[]
   movies: MovieProps[]
 }
 
@@ -55,7 +55,7 @@ export function AdminMovieTheaterDetail() {
     <>
       <AdminMainHeader h1='Cinemas' p={`Informações do cinema ${movieTheater?.name}`} backLink='/admin/movie-theater' />
 
-      <RoomsList rooms={movieTheater?.Room} id={id} />
+      <RoomsList rooms={movieTheater?.rooms} id={id} />
 
       <section className='mt-[2rem]'>
         <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>

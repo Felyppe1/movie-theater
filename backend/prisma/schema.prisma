@@ -64,7 +64,8 @@ model Cellphone {
   id     String @id @default(uuid())
   ddd    String
   number String
-  User   User[]
+  
+  user   User[]
 
   @@map("cellphones")
 }
@@ -73,9 +74,9 @@ model State {
   id   String @id @default(uuid())
   name String @unique
 
-  cities       City[]
-  users        User[]
-  MovieTheater MovieTheater[]
+  cities         City[]
+  users          User[]
+  movie_theaters MovieTheater[]
 
   @@map("states")
 }
@@ -87,8 +88,8 @@ model City {
   state    State  @relation(fields: [state_id], references: [id])
   state_id String
 
-  users        User[]
-  MovieTheater MovieTheater[]
+  users          User[]
+  movie_theaters MovieTheater[]
 
   @@map("cities")
 }
@@ -107,15 +108,17 @@ model MovieTheater {
   city    City   @relation(fields: [city_id], references: [id])
   city_id String
 
-  Room   Room[]
+  rooms  Room[]
   movies Movie[]
+
+  @@map("movie_theaters")
 }
 
 model Room {
   id     String @id @default(uuid())
   number String
 
-  movieTheater     MovieTheater @relation(fields: [movie_theater_id], references: [id], onDelete: Cascade)
+  movie_theater    MovieTheater @relation(fields: [movie_theater_id], references: [id], onDelete: Cascade)
   movie_theater_id String
 
   seats        Seat[]
@@ -159,8 +162,8 @@ model Movie {
   max_date          DateTime
   quantity_avaiable Int
 
-  genres        Genre[]
-  movieTheaters MovieTheater[]
+  genres         Genre[]
+  movie_theaters MovieTheater[]
 
   @@map("movies")
 }

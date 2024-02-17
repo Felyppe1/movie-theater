@@ -24,7 +24,7 @@ export type MovieTheaterGeneral = MovieTheaterAdditional & {
 }
 
 export type MovieTheaterFull = MovieTheaterGeneral & {
-  Room: Room[]
+  rooms: Room[]
 }
 
 
