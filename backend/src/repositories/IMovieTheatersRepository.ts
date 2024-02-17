@@ -1,41 +1,35 @@
-import { MovieTheater, Prisma } from "@prisma/client";
+import { Movie } from "../@Types/Movie"
+import { MovieTheater, MovieTheaterAdditional, MovieTheaterFull, MovieTheaterGeneral } from "../@Types/MovieTheater"
+import { Room } from "../@Types/Room"
 
-export type MovieTheatersCreateDTO = {
-  name: string
-  street: string
-  number: string
-  state_id: string
-  city_id: string
+export type MovieTheatersCreateDTO = Pick<MovieTheater, 
+  'name' | 'street' | 'number' | 'state_id' | 'city_id'
+>
+
+export type MovieTheatersFindByIdDTO = Pick<MovieTheater, 'id'>
+
+export type MovieTheatersFindByNameDTO = Pick<MovieTheater, 'name'>
+
+export type MovieTheatersAddMovieDTO = Pick<MovieTheater, 'id'> & {
+  movieId: Movie['id']
 }
 
-export type MovieTheatersFindById = {
-  id: string
-}
+export type MovieTheatersRemoveMovieDTO = MovieTheatersAddMovieDTO
 
-export type MovieTheatersFindByName = {
-  name: string
-}
-
-export type MovieTheatersAddMovie = {
-  id: string
-  movieId: string
-}
-
-export type MovieTheatersRemoveMovie = MovieTheatersAddMovie
-
-type MovieTheaterSubset = {
-  id: string
-  name: string
-  street: string
-  number: string
-  updated_at: Date
+export type MovieTheaterFullEdited = MovieTheaterGeneral & {
+  Room: (
+    Room & { 
+    _count: { 
+      seats: number 
+    }}
+  )[]
 }
 
 export interface IMovieTheatersRepository {
   create(data: MovieTheatersCreateDTO): Promise<MovieTheater>
-  getAll(): Promise<MovieTheaterSubset[]>
-  findById(data: MovieTheatersFindById): Promise<MovieTheater | null>
-  findByName(data: MovieTheatersFindByName): Promise<MovieTheater | null>
-  addMovie(data: MovieTheatersAddMovie): Promise<MovieTheater>
-  removeMovie(data: MovieTheatersRemoveMovie): Promise<MovieTheater>
+  getAll(): Promise<MovieTheaterAdditional[]>
+  findById(data: MovieTheatersFindByIdDTO): Promise<MovieTheaterFullEdited | null>
+  findByName(data: MovieTheatersFindByNameDTO): Promise<MovieTheater | null>
+  addMovie(data: MovieTheatersAddMovieDTO): Promise<MovieTheaterGeneral>
+  removeMovie(data: MovieTheatersRemoveMovieDTO): Promise<MovieTheaterGeneral>
 }

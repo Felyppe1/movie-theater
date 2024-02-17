@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import { MovieCreateDTO, IMoviesRepository, MovieFindByTmdbIdDTO, MoviefindManyUnrelatedToTheaterDTO, MovieDeleteDTO, MovieFindByIdDTO } from "../IMoviesRepository";
+import { MovieCreateDTO, IMoviesRepository, MovieFindByTmdbIdDTO, MovieFindManyUnrelatedToTheaterDTO, MovieDeleteDTO, MovieFindByIdDTO } from "../IMoviesRepository";
 
 export class PrismaMoviesRepository implements IMoviesRepository {
   async create({ genres, ...data }: MovieCreateDTO) {
@@ -36,7 +36,7 @@ export class PrismaMoviesRepository implements IMoviesRepository {
     return movie
   }
 
-  async findManyUnrelatedToTheater({ movieTheaterId }: MoviefindManyUnrelatedToTheaterDTO) {
+  async findManyUnrelatedToTheater({ movieTheaterId }: MovieFindManyUnrelatedToTheaterDTO) {
     const movies = await prisma.movie.findMany({
       where: {
         movieTheaters: {

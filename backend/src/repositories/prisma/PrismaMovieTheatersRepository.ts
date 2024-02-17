@@ -1,5 +1,5 @@
 import { MovieTheater, Prisma } from "@prisma/client";
-import { IMovieTheatersRepository, MovieTheatersAddMovie, MovieTheatersCreateDTO, MovieTheatersFindById, MovieTheatersFindByName, MovieTheatersRemoveMovie } from "../IMovieTheatersRepository";
+import { IMovieTheatersRepository, MovieTheatersAddMovieDTO, MovieTheatersCreateDTO, MovieTheatersFindByIdDTO, MovieTheatersFindByNameDTO, MovieTheatersRemoveMovieDTO } from "../IMovieTheatersRepository";
 import { prisma } from "../../lib/prisma";
 
 export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
@@ -11,28 +11,30 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
   
   async getAll() {
     const movieTheaters = await prisma.movieTheater.findMany({
-      select: {
-        id: true,
-        name: true,
-        street: true,
-        number: true,
-        updated_at: true
+      include: {
+        city: true,
+        state: true
       }
     })
     
     return movieTheaters
   }
 
-  async findById({ id }: MovieTheatersFindById): Promise<MovieTheater | null> {
+  async findById({ id }: MovieTheatersFindByIdDTO) {
     const movieTheater = await prisma.movieTheater.findUnique({
       where: {
         id: id
       },
       include: {
+        city: true,
+        state: true,
+        movies: {
+          include: {
+            genres: true
+          }
+        },
         Room: {
-          select: {
-            id: true,
-            number: true,
+          include: {
             _count: {
               select: {
                 seats: {
@@ -43,11 +45,6 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
               }
             }
           }
-        },
-        movies: {
-          include: {
-            genres: true
-          }
         }
       }
     })
@@ -55,7 +52,7 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     return movieTheater
   }
 
-  async findByName({ name }: MovieTheatersFindByName): Promise<MovieTheater | null> {
+  async findByName({ name }: MovieTheatersFindByNameDTO) {
     const movieTheater = await prisma.movieTheater.findUnique({
       where: {
         name
@@ -65,7 +62,7 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     return movieTheater
   }
 
-  async addMovie({ id, movieId }: MovieTheatersAddMovie): Promise<MovieTheater> {
+  async addMovie({ id, movieId }: MovieTheatersAddMovieDTO) {
     const movieTheater = await prisma.movieTheater.update({
       where: {
         id: id
@@ -78,14 +75,20 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
         }
       },
       include: {
-        movies: true
+        city: true,
+        state: true,
+        movies: {
+          include: {
+            genres: true
+          }
+        }
       }
     })
 
     return movieTheater
   }
 
-  async removeMovie({ id, movieId }: MovieTheatersRemoveMovie): Promise<MovieTheater> {
+  async removeMovie({ id, movieId }: MovieTheatersRemoveMovieDTO) {
     const movieTheater = await prisma.movieTheater.update({
       where: {
         id: id
@@ -94,6 +97,15 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
         movies: {
           disconnect: {
             id: movieId
+          }
+        }
+      },
+      include: {
+        city: true,
+        state: true,
+        movies: {
+          include: {
+            genres: true
           }
         }
       }

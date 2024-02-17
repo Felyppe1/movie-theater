@@ -1,7 +1,5 @@
-type Technology = {
-  id: string
-  name: string
-}
+import { Technology } from "../@Types/Technology";
+
 
 export interface ITechnologiesRepository {
   getAll(): Promise<Technology[]>

@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 import { RoomsCreateDTO, IRoomsRepository, RoomsUpdateDTO, RoomsFindByIdDTO, RoomsFindByNumberAndMovieTheaterDTO, RoomsDeleteDTO } from "../IRoomsRepository";
 
 export class PrismaRoomsRepository implements IRoomsRepository {
-  async create({ number, movie_theater_id, technologyIds, seats }: RoomsCreateDTO): Promise<Room> {
+  async create({ number, movie_theater_id, technologyIds, seats }: RoomsCreateDTO) {
     const room = await prisma.room.create({
       data: {
         number,
@@ -14,13 +14,24 @@ export class PrismaRoomsRepository implements IRoomsRepository {
         technologies: {
           connect: technologyIds.map(technologyId => ({ id: technologyId }))
         }
+      },
+      include: {
+        seats: {
+          select: {
+            row: true,
+            column: true,
+            exists: true,
+            type: true
+          }
+        },
+        technologies: true
       }
     })
 
     return room
   }
 
-  async findById({ id }: RoomsFindByIdDTO): Promise<Room | null> {
+  async findById({ id }: RoomsFindByIdDTO) {
     const room = await prisma.room.findUnique({
       where: {
         id: id
@@ -34,18 +45,14 @@ export class PrismaRoomsRepository implements IRoomsRepository {
             type: true
           }
         },
-        technologies: {
-          select: {
-            id: true
-          }
-        }
+        technologies: true
       }
     })
 
     return room
   }
 
-  async findByNumberAndMovieTheater({ number, movie_theater_id }: RoomsFindByNumberAndMovieTheaterDTO): Promise<Room | null> {
+  async findByNumberAndMovieTheater({ number, movie_theater_id }: RoomsFindByNumberAndMovieTheaterDTO) {
     const room = await prisma.room.findFirst({
       where: {
         number,
@@ -56,7 +63,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
     return room
   }
 
-  async update({ id, number, seats, technologyIds }: RoomsUpdateDTO): Promise<Room> {
+  async update({ id, number, seats, technologyIds }: RoomsUpdateDTO) {
     const room =await prisma.room.update({
       where: {
         id: id
@@ -74,6 +81,17 @@ export class PrismaRoomsRepository implements IRoomsRepository {
             data: seats
           }
         }
+      },
+      include: {
+        seats: {
+          select: {
+            row: true,
+            column: true,
+            exists: true,
+            type: true
+          }
+        },
+        technologies: true
       }
     })
 

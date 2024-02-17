@@ -1,42 +1,27 @@
-import { Room } from "@prisma/client"
+import { Room, RoomGeneral } from "../@Types/Room"
+import { SeatCreate } from "../@Types/Seat"
+import { Technology } from "../@Types/Technology"
 
-type Seat = {
-  row: string
-  column: string
-  exists: boolean
-  type: string
+export type RoomsCreateDTO = Omit<Room, 'id'> & {
+  technologyIds: (Technology['id'])[]
+  seats: SeatCreate[]
 }
 
-export type RoomsCreateDTO = {
-  number: string
-  movie_theater_id: string
-  technologyIds: string[]
-  seats: Seat[]
-}
+export type RoomsFindByIdDTO = Pick<Room, 'id'>
 
-export type RoomsFindByIdDTO = {
-  id: string
-}
+export type RoomsFindByNumberAndMovieTheaterDTO = Pick<Room, 'number' | 'movie_theater_id'>
 
-export type RoomsFindByNumberAndMovieTheaterDTO = {
-  number: string
-  movie_theater_id: string
-}
-
-export type RoomsUpdateDTO = {
-  id: string
-  number: string
-  movie_theater_id: string
-  technologyIds: string[]
-  seats: Seat[]
+export type RoomsUpdateDTO = Room & {
+  technologyIds: (Technology['id'])[]
+  seats: SeatCreate[]
 }
 
 export type RoomsDeleteDTO = RoomsFindByIdDTO
 
 export interface IRoomsRepository {
-  create(data: RoomsCreateDTO): Promise<Room>
-  findById({ id }: RoomsFindByIdDTO): Promise<Room | null>
+  create(data: RoomsCreateDTO): Promise<RoomGeneral>
+  findById({ id }: RoomsFindByIdDTO): Promise<RoomGeneral | null>
   findByNumberAndMovieTheater(data: RoomsFindByNumberAndMovieTheaterDTO): Promise<Room | null>
-  update(data: RoomsUpdateDTO): Promise<Room>
+  update(data: RoomsUpdateDTO): Promise<RoomGeneral>
   delete(data: RoomsDeleteDTO): Promise<void>
 }

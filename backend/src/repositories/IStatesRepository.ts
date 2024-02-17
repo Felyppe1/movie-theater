@@ -1,12 +1,6 @@
-type State = {
-  id: string
-  name: string
-  cities: {
-    id: string
-    name: string
-  }[]
-}
+import { Places } from "../@Types/Places"
+
 
 export interface IStatesRepository {
-  getAll(): Promise<State[]>
+  getAll(): Promise<Places[]>
 }

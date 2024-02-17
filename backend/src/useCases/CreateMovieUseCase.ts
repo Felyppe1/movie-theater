@@ -1,4 +1,3 @@
-import { Movie } from ".prisma/client";
 import { createMovieControllerBodySchema } from "../http/controllers/CreateMovieController"
 import { IMoviesRepository } from "../repositories/IMoviesRepository"
 import { AppError } from "../errors/AppError";
@@ -13,7 +12,7 @@ export class CreateMovieUseCase {
     this.moviesRepository = moviesRepository
   }
 
-  async execute(data: CreateMovieUseCaseDTO): Promise<Movie> {
+  async execute(data: CreateMovieUseCaseDTO) {
     const movieExists = await this.moviesRepository.findByTmdbId({ tmdbId: data.tmdb_id })
     if (movieExists) {
       throw new AppError('Filme já cadastrado', 409)
