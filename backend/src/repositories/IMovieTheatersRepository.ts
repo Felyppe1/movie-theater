@@ -26,7 +26,7 @@ export type MovieTheaterFullEdited = MovieTheaterGeneral & {
 }
 
 export interface IMovieTheatersRepository {
-  create(data: MovieTheatersCreateDTO): Promise<MovieTheater>
+  create(data: MovieTheatersCreateDTO): Promise<MovieTheaterAdditional>
   getAll(): Promise<MovieTheaterAdditional[]>
   findById(data: MovieTheatersFindByIdDTO): Promise<MovieTheaterFullEdited | null>
   findByName(data: MovieTheatersFindByNameDTO): Promise<MovieTheater | null>

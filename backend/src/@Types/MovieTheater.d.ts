@@ -1,5 +1,4 @@
-import { City } from "@prisma/client"
-import { State } from "./Places"
+import { State, City } from "./Places"
 import { Movie, MovieGeneral } from "./Movie"
 import { Room } from "./Room"
 

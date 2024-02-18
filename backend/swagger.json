@@ -18,7 +18,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RequestMovie"
+                "$ref": "#/components/schemas/MovieRequest"
               }
             }
           }
@@ -29,7 +29,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseMovie"
+                  "$ref": "#/components/schemas/MovieGeneral"
                 }
               }
             }
@@ -64,7 +64,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ResponseMovie"
+                    "$ref": "#/components/schemas/MovieGeneral"
                   }
                 }
               }
@@ -130,7 +130,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ResponseMovie"
+                    "$ref": "#/components/schemas/MovieGeneral"
                   }
                 }
               }
@@ -148,6 +148,220 @@
                       "example": "Cinema não encontrado"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movie-theaters/": {
+      "post": {
+        "tags": ["Movie Theater"],
+        "summary": "Create new movie theater",
+        "description": "Necessary data to create a movie theater",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieTheaterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieTheaterAdditional"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Movie theater name already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nome de cinema já existe"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Movie Theater"],
+        "summary": "Get all movie theaters",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieGeneral"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movie-theaters/{id}": {
+      "get": {
+        "tags": ["Movie Theater"],
+        "summary": "Get a movie theater",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie theater ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieTheaterFullEdited"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Movie theater not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cinema não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "movie-theaters/{id}/movie": {
+      "post": {
+        "tags": ["Movie Theater"],
+        "summary": "Add a movie to the movie theater",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie theater ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "movieId": "string"
+                },
+                "example": {
+                  "movieId": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieTheaterGeneral"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Movie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cinema não encontrado  OU  Filme não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Movie theater already owns the movie",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filme já pertence ao cinema"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "movie-theaters/:id/movie/:movieId": {
+      "delete": {
+        "tags": ["Movie Theater"],
+        "summary": "Remove a movie from the movie theater",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie theater ID",
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "movieId",
+            "in": "path",
+            "description": "Movie ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieTheaterGeneral"
                 }
               }
             }
@@ -188,7 +402,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/State"
+                    "$ref": "#/components/schemas/Places"
                   }
                 }
               }
@@ -200,7 +414,7 @@
   },
   "components": {
     "schemas": {
-      "RequestMovie": {
+      "MovieRequest": {
         "type": "object",
         "properties": {
           "tmdb_id": {
@@ -262,7 +476,7 @@
           "quantity_avaiable": 0
         }
       },
-      "ResponseMovie": {
+      "Movie": {
         "type": "object",
         "properties": {
           "id": {
@@ -280,20 +494,6 @@
           },
           "synopsis": {
             "type": "string"
-          },
-          "genres": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "number"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            }
           },
           "duration": {
             "type": "number"
@@ -320,17 +520,295 @@
           "name": "string",
           "original_name": "string",
           "synopsis": "string",
-          "genres": [
-            {
-              "id": 0,
-              "name": "string"
-            }
-          ],
           "duration": 0,
           "release_date": "2023-12-14T00:00:00.000Z",
           "poster_path": "/string.jpg",
           "max_date": "2024-01-25T03:00:00.000Z",
           "quantity_avaiable": 0
+        }
+      },
+      "MovieGeneral": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Movie"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "genres": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Genre"
+                }
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "string",
+          "tmdb_id": 0,
+          "name": "string",
+          "original_name": "string",
+          "synopsis": "string",
+          "duration": 0,
+          "release_date": "2023-12-14T00:00:00.000Z",
+          "poster_path": "/string.jpg",
+          "max_date": "2024-01-25T03:00:00.000Z",
+          "quantity_avaiable": 0,
+          "genres": [
+            {
+              "id": 0,
+              "name": "string"
+            }
+          ]
+        }
+      },
+      "MovieTheaterRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "state_id": {
+            "type": "string"
+          },
+          "city_id": {
+            "type": "string"
+          }
+        },
+        "required": ["name", "street", "number", "state_id", "city_id"],
+        "example": {
+          "name": "string",
+          "street": "string",
+          "number": "string",
+          "state_id": "string",
+          "city_id": "string"
+        }
+      },
+      "MovieTheater": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "state_id": {
+            "type": "string"
+          },
+          "city_id": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "name": "string",
+          "street": "string",
+          "number": "string",
+          "created_at": "2023-12-14T00:00:00.000Z",
+          "state_id": "string",
+          "city_id": "string"
+        }
+      },
+      "MovieTheaterAdditional": {
+        "allOf": [
+          { "$ref": "#/components/schemas/MovieTheater" },
+          {
+            "type": "object",
+            "properties": {
+              "state": {
+                "$ref": "#/components/schemas/State"
+              },
+              "city": {
+                "$ref": "#/components/schemas/City"
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "string",
+          "name": "string",
+          "street": "string",
+          "number": "string",
+          "created_at": "2023-12-14T00:00:00.000Z",
+          "state_id": "string",
+          "city_id": "string",
+          "state": {
+            "id": "string",
+            "name": "string"
+          },
+          "city": {
+            "id": "string",
+            "name": "string",
+            "state_id": "string"
+          }
+        }
+      },
+      "MovieTheaterGeneral": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MovieTheaterAdditional"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "movies": {
+                "$ref": "#/components/schemas/MovieGeneral"
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "string",
+          "name": "string",
+          "street": "string",
+          "number": "string",
+          "created_at": "2023-12-14T00:00:00.000Z",
+          "state_id": "string",
+          "city_id": "string",
+          "state": {
+            "id": "string",
+            "name": "string"
+          },
+          "city": {
+            "id": "string",
+            "name": "string",
+            "state_id": "string"
+          },
+          "movies": [
+            {
+              "id": "string",
+              "tmdb_id": 0,
+              "name": "string",
+              "original_name": "string",
+              "synopsis": "string",
+              "duration": 0,
+              "release_date": "2023-12-14T00:00:00.000Z",
+              "poster_path": "/string.jpg",
+              "max_date": "2024-01-25T03:00:00.000Z",
+              "quantity_avaiable": 0,
+              "genres": [
+                {
+                  "id": 0,
+                  "name": "string"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "MovieTheaterFullEdited": {
+        "allOf": [
+          { "$ref": "#/components/schemas/MovieTheaterGeneral" },
+          {
+            "type": "object",
+            "properties": {
+              "rooms": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Room" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "_count": {
+                          "type": "object",
+                          "properties": {
+                            "seats": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "string",
+          "name": "string",
+          "street": "string",
+          "number": "string",
+          "created_at": "2023-12-14T00:00:00.000Z",
+          "state_id": "string",
+          "city_id": "string",
+          "state": {
+            "id": "string",
+            "name": "string"
+          },
+          "city": {
+            "id": "string",
+            "name": "string",
+            "state_id": "string"
+          },
+          "movies": [
+            {
+              "id": "string",
+              "tmdb_id": 0,
+              "name": "string",
+              "original_name": "string",
+              "synopsis": "string",
+              "duration": 0,
+              "release_date": "2023-12-14T00:00:00.000Z",
+              "poster_path": "/string.jpg",
+              "max_date": "2024-01-25T03:00:00.000Z",
+              "quantity_avaiable": 0,
+              "genres": [
+                {
+                  "id": 0,
+                  "name": "string"
+                }
+              ]
+            }
+          ],
+          "rooms": [
+            {
+              "id": "string",
+              "number": "string",
+              "movie_theater_id": "string",
+              "_count": {
+                "seats": 0
+              }
+            }
+          ]
+        }
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "movie_theater_id": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "number": "string",
+          "movie_theater_id": "string"
         }
       },
       "Technology": {
@@ -348,7 +826,56 @@
           "name": "string"
         }
       },
+      "Genre": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "name": "string"
+        }
+      },
       "State": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "name": "string"
+        }
+      },
+      "City": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "state_id": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "name": "string",
+          "state_id": "string"
+        }
+      },
+      "Places": {
         "type": "object",
         "properties": {
           "id": {

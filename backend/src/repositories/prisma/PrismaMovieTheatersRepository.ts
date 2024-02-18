@@ -4,7 +4,13 @@ import { prisma } from "../../lib/prisma";
 
 export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
   async create(data: MovieTheatersCreateDTO) {
-    const movieTheater = await prisma.movieTheater.create({ data })
+    const movieTheater = await prisma.movieTheater.create({
+      data,
+      include: {
+        city: true,
+        state: true
+      }
+    })
     
     return movieTheater
   }
