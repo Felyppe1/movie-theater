@@ -786,6 +786,105 @@
         }
       }
     },
+    "/users/logout/{refresh_token}": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Logout from user account",
+        "parameters": [
+          {
+            "name": "refresh_token",
+            "in": "path",
+            "description": "User's refresh token",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Refresh token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Refresh token não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/refresh_token": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Refresh access and refresh tokens",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refresh_token": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "refresh_token": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "new_token": {
+                      "type": "string"
+                    },
+                    "new_refresh_token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "new_token": "string",
+                    "new_refresh_token": "string"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Refresh token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Refresh token não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/technologies": {
       "get": {
         "tags": ["Technology"],
