@@ -73,7 +73,7 @@
         }
       }
     },
-    "/movies/{id}": {
+    "/movies/:id": {
       "delete": {
         "tags": ["Movie"],
         "summary": "Delete a movie",
@@ -109,7 +109,7 @@
         }
       }
     },
-    "/movies/movie-theater/{id}/unrelated": {
+    "/movies/movie-theater/:id/unrelated": {
       "get": {
         "tags": ["Movie"],
         "summary": "Get all movies unrelated to a theater",
@@ -218,7 +218,7 @@
         }
       }
     },
-    "/movie-theaters/{id}": {
+    "/movie-theaters/:id": {
       "get": {
         "tags": ["Movie Theater"],
         "summary": "Get a movie theater",
@@ -261,7 +261,7 @@
         }
       }
     },
-    "/movie-theaters/{id}/movie": {
+    "/movie-theaters/:id/movie": {
       "post": {
         "tags": ["Movie Theater"],
         "summary": "Add a movie to the movie theater",
@@ -447,7 +447,7 @@
         }
       }
     },
-    "/rooms/{id}": {
+    "/rooms/:id": {
       "get": {
         "tags": ["Room"],
         "summary": "Get a room",
@@ -786,7 +786,7 @@
         }
       }
     },
-    "/users/logout/{refresh_token}": {
+    "/users/logout/:refresh_token": {
       "post": {
         "tags": ["User"],
         "summary": "Logout from user account",
