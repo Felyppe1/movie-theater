@@ -261,7 +261,7 @@
         }
       }
     },
-    "movie-theaters/{id}/movie": {
+    "/movie-theaters/{id}/movie": {
       "post": {
         "tags": ["Movie Theater"],
         "summary": "Add a movie to the movie theater",
@@ -335,7 +335,7 @@
         }
       }
     },
-    "movie-theaters/:id/movie/:movieId": {
+    "/movie-theaters/:id/movie/:movieId": {
       "delete": {
         "tags": ["Movie Theater"],
         "summary": "Remove a movie from the movie theater",
@@ -362,6 +362,246 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MovieTheaterGeneral"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "post": {
+        "tags": ["Room"],
+        "summary": "Create a new room",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string"
+                  },
+                  "movie_theater_id": {
+                    "type": "string"
+                  },
+                  "technologyIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "seats": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/SeatCreate"
+                    }
+                  }
+                },
+                "example": {
+                  "number": "string",
+                  "movie_theater_id": "string",
+                  "technologyIds": [
+                    "string"
+                  ],
+                  "seats": [
+                    {
+                      "row": "0",
+                      "column": "0",
+                      "exists": true,
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomGeneral"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Room number already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Número da sala já cadastrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rooms/{id}": {
+      "get": {
+        "tags": ["Room"],
+        "summary": "Get a room",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Room ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomGeneral"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Room not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sala não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Room"],
+        "summary": "Update room",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Room ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "string"
+                  },
+                  "movie_theater_id": {
+                    "type": "string"
+                  },
+                  "technologyIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "seats": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/SeatCreate"
+                    }
+                  }
+                },
+                "example": {
+                  "number": "string",
+                  "movie_theater_id": "string",
+                  "technologyIds": [
+                    "string"
+                  ],
+                  "seats": [
+                    {
+                      "row": "0",
+                      "column": "0",
+                      "exists": true,
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomGeneral"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Room not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sala não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Room"],
+        "summary": "Delete a room",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Room ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Room not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sala não encontrada"
+                    }
+                  }
                 }
               }
             }
@@ -811,6 +1051,47 @@
           "movie_theater_id": "string"
         }
       },
+      "RoomGeneral": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Room" },
+          {
+            "type": "object",
+            "properties": {
+              "seats": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeatCreate"
+                }
+              },
+              "technologies": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Technology"
+                }
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "string",
+          "number": "string",
+          "movie_theater_id": "string",
+          "seats": [
+            {
+              "row": "0",
+              "column": "0",
+              "exists": true,
+              "type": "string"
+            }
+          ],
+          "technologies": [
+            {
+              "id": "string",
+              "name": "string"
+            }
+          ]
+        }
+      },
       "Technology": {
         "type": "object",
         "properties": {
@@ -908,6 +1189,29 @@
               "name": "string"
             }
           ]
+        }
+      },
+      "SeatCreate": {
+        "type": "object",
+        "properties": {
+          "row": {
+            "type": "string"
+          },
+          "column": {
+            "type": "string"
+          },
+          "exists": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "row": "0",
+          "column": "0",
+          "exists": true,
+          "type": "string"
         }
       }
     }
