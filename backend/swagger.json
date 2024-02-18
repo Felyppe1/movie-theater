@@ -609,6 +609,183 @@
         }
       }
     },
+    "/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "full_name": {
+                    "type": "string"
+                  },
+                  "social_name": {
+                    "type": "string"
+                  },
+                  "cpf": {
+                    "type": "string"
+                  },
+                  "sex": {
+                    "enum": ["M", "F"]
+                  },
+                  "date_of_birth": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "enum": ["NORMAL", "THEATER_ADMIN", "MOVIE_CURATOR", "ADMIN"]
+                  },
+                  "cellphone": {
+                    "type": "object",
+                    "properties": {
+                      "ddd": {
+                        "type": "string"
+                      },
+                      "number": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "state_id": {
+                    "type": "string"
+                  },
+                  "city_id": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "email": "string",
+                  "password": "string",
+                  "full_name": "string",
+                  "social_name": "string",
+                  "cpf": "string",
+                  "sex": "M",
+                  "date_of_birth": "2023-12-14T00:00:00.000Z",
+                  "role": "NORMAL",
+                  "created_at": "2023-12-14T00:00:00.000Z",
+                  "cellphone": {
+                    "ddd": "21",
+                    "number": "911112222"
+                  },
+                  "state_id": "string",
+                  "city_id": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email já cadastrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Log into user account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "email": "string",
+                  "password": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "$ref": "#/components/schemas/UserSexENUM"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Email or password incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email ou senha incorretos"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/technologies": {
       "get": {
         "tags": ["Technology"],
@@ -1092,6 +1269,132 @@
           ]
         }
       },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "full_name": {
+            "type": "string"
+          },
+          "social_name": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "sex": {
+            "$ref": "#/components/schemas/UserSexENUM"
+          },
+          "date_of_birth": {
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserRoleENUM"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "cellphone_id": {
+            "type": "string"
+          },
+          "state_id": {
+            "type": "string"
+          },
+          "city_id": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "email": "string",
+          "password": "string",
+          "full_name": "string",
+          "social_name": "string",
+          "cpf": "string",
+          "sex": "M",
+          "date_of_birth": "2023-12-14T00:00:00.000Z",
+          "role": "NORMAL",
+          "created_at": "2023-12-14T00:00:00.000Z",
+          "cellphone_id": "string",
+          "state_id": "string",
+          "city_id": "string"
+        }
+      },
+      "UserGeneral": {
+        "allOf": [
+          { "$ref": "#/components/schemas/User" },
+          {
+            "type": "object",
+            "properties": {
+              "cellphone": {
+                "$ref": "#/components/schemas/Cellphone"
+              },
+              "state": {
+                "$ref": "#/components/schemas/State"
+              },
+              "city": {
+                "$ref": "#/components/schemas/City"
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "string",
+          "email": "string",
+          "password": "string",
+          "full_name": "string",
+          "social_name": "string",
+          "cpf": "string",
+          "sex": "M",
+          "date_of_birth": "2023-12-14T00:00:00.000Z",
+          "role": "NORMAL",
+          "created_at": "2023-12-14T00:00:00.000Z",
+          "cellphone_id": "string",
+          "state_id": "string",
+          "city_id": "string",
+          "cellphone": {
+            "id": "string",
+            "ddd": "21",
+            "number": "911112222"
+          },
+          "state": {
+            "id": "string",
+            "name": "string"
+          },
+          "city": {
+            "id": "string",
+            "name": "string",
+            "state_id": "string"
+          }
+        }
+      },
+      "Cellphone": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ddd": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "string",
+          "ddd": "21",
+          "number": "911112222"
+        }
+      },
       "Technology": {
         "type": "object",
         "properties": {
@@ -1213,6 +1516,16 @@
           "exists": true,
           "type": "string"
         }
+      },
+      "UserSexENUM": {
+        "type": "string",
+        "enums": ["M", "F"],
+        "example": "M"
+      },
+      "UserRoleENUM": {
+        "type": "string",
+        "enum": ["NORMAL", "THEATER_ADMIN", "MOVIE_CURATOR", "ADMIN"],
+        "example": "M"
       }
     }
   }
