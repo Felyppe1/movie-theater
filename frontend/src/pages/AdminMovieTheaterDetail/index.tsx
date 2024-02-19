@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { RoomsList } from "./RoomsList"
 import { DatabaseMovie } from "./DatabaseMovie"
-import { Movie } from "@/@types/Movie"
-import { Genre } from "@/@types/Genre"
+import { MovieGeneral } from "@/@types/Movie"
 import { SelectedMovie } from "./SelectedMovie"
 import { fetchMoviesUnrelatedToTheater } from "@/api/movies"
 import { getMovieTheater } from "@/api/movieTheaters"
@@ -13,10 +12,6 @@ export type RoomProps = {
   id: string
   number: string
   _count: { seats: number }
-}
-
-type MovieProps = Movie & {
-  genres: Genre[]
 }
 
 type MovieTheaterProps = {
@@ -29,7 +24,7 @@ type MovieTheaterProps = {
   state_id: string
   city_id: string
   rooms: RoomProps[]
-  movies: MovieProps[]
+  movies: MovieGeneral[]
 }
 
 export function AdminMovieTheaterDetail() {
@@ -41,7 +36,7 @@ export function AdminMovieTheaterDetail() {
     retry: false
   })
 
-  const { data: movies, status: movieStatus } = useQuery<MovieProps[]>({
+  const { data: movies, status: movieStatus } = useQuery({
     queryKey: ['moviesUnrelatedToTheater', id],
     queryFn: fetchMoviesUnrelatedToTheater
   })

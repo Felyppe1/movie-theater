@@ -5,9 +5,8 @@ import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { Movie } from "@/@types/Movie"
+import { MovieGeneral } from "@/@types/Movie"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Genre } from "@/@types/Genre"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { deleteMovie } from "@/api/movies"
@@ -17,9 +16,7 @@ import { AdminMovieCard } from "@/components/ui/AdminMovieCard"
 
 
 type MoviesSectionProps = {
-  movie: Movie & {
-    genres: Genre[]
-  }
+  movie: MovieGeneral
 }
 
 export function MoviesSection({ movie }: MoviesSectionProps) {

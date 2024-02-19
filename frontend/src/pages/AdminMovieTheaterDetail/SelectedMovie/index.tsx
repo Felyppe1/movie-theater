@@ -8,17 +8,14 @@ import { ptBR } from "date-fns/locale"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Movie } from "@/@types/Movie"
-import { Genre } from "@/@types/Genre"
+import { MovieGeneral } from "@/@types/Movie"
 import { Link } from "react-router-dom"
 import { removeMovieFromTheater } from "@/api/movieTheaters"
 import { AdminMovieDetails } from "@/components/AdminMovieDetails"
 import { AdminMovieCard } from "@/components/ui/AdminMovieCard"
 
 type SelectedMovieProps = {
-  movie: Movie & {
-    genres: Genre[]
-  },
+  movie: MovieGeneral,
   movieTheaterId: string
 }
 
