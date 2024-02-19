@@ -209,7 +209,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MovieGeneral"
+                    "$ref": "#/components/schemas/MovieTheaterAdditional"
                   }
                 }
               }

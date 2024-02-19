@@ -1,3 +1,4 @@
+import { MovieTheaterAdditional } from "@/@types/MovieTheater";
 import { AdminMainHeader } from "@/components/ui/AdminMainHeader";
 import { DataTable } from "@/components/ui/DataTable"
 import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
@@ -8,15 +9,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-type MovieTheater = {
-  id: string
-  name: string
-  street: string
-  number: string
-  updated_at: Date
-}
 
-const columns: ColumnDef<MovieTheater>[] = [
+const columns: ColumnDef<MovieTheaterAdditional>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => {
