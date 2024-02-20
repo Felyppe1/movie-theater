@@ -8,7 +8,7 @@ interface IAuthStore {
   user: Pick<User, 'email' | 'role'> | undefined
   setAccessToken: (accessToken: string | undefined) => void
   setRefreshToken: (refreshToken: string | undefined) => void
-  setUser: (user: User | undefined) => void
+  setUser: (user: Pick<User, 'email' | 'role'> | undefined) => void
   clearAuthStore: () => void
 }
 

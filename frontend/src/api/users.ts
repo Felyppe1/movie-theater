@@ -1,38 +1,32 @@
+import { Cellphone } from "@/@types/Cellphone";
+import { User } from "@/@types/User";
 import { makeRequest } from "@/utils/makeRequest";
 
-type LoginProps = {
-  email: string
-  password: string
+
+type SignupProps = Omit<User, 'id' | 'role' | 'cellphone_id' | 'created_at'> & {
+  cellphone: Omit<Cellphone, 'id'>
 }
 
-type SignupProps = {
-  date_of_birth: Date
-  email: string
-  password: string
-  full_name: string
-  cpf: string
-  sex: "M" | "F"
-  cellphone: {
-      number: string
-      ddd: string
-  };
-  city_id: string
-  state_id: string
-  social_name?: string
+type LoginProps = Pick<User, 'email' | 'password'>
+
+type LoginResponse = {
+  user: Pick<User, 'email' | 'role'>
+  token: string
+  refresh_token: string
 }
 
 type LogoutProps = {
   refreshToken: string | undefined
 }
 
-export async function signup(data: SignupProps) {
+export async function signup(data: SignupProps): Promise<User> {
   return await makeRequest('/users/', {
     method: 'POST',
     data
   })
 }
 
-export async function login(data: LoginProps) {
+export async function login(data: LoginProps): Promise<LoginResponse> {
   return await makeRequest('/users/login', {
     method: 'POST',
     data
