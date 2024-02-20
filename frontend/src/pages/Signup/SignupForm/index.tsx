@@ -12,7 +12,7 @@ interface SignupFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function SignupForm({ ...props }: SignupFormProps) {
   const { places, handleStateChange, selectedState } = useFetchPlaces()
-  
+
   const { form, mutation } = useSignupForm()
 
   const handleSignup = (data: SignupFormType) => {

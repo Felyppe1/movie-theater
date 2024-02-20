@@ -9,6 +9,6 @@ export type City = {
   state_id: string
 }
 
-export type Places = State & {
+export type Place = State & {
   cities: Pick<City, 'id' | 'name'>[]
 }

@@ -1,4 +1,4 @@
-import { State, City } from "./Places"
+import { State, City } from "./Place"
 import { MovieGeneral } from "./Movie"
 import { Room } from "./Room"
 

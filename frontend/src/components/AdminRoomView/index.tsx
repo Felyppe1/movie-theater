@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
-import { AddRoomForm, SeatProps, TechnologyProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
+import { AddRoomForm, SeatProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { fetchTechnologies } from "@/api/technologies"
 import { deleteRoom } from "@/api/rooms"
@@ -28,7 +28,7 @@ export function AdminRoomView({
 }: AdminRoomViewProps) {
   const navigate = useNavigate()
 
-  const { data: technologies, status, error } = useQuery<TechnologyProps[]>({
+  const { data: technologies, status, error } = useQuery({
     queryKey: ['technologies'],
     queryFn: fetchTechnologies
   })

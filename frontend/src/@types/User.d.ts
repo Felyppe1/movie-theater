@@ -1,5 +1,5 @@
 import { Cellphone } from "./Cellphone"
-import { City, State } from "./Places"
+import { City, State } from "./Place"
 
 type ROLE = 'NORMAL' | 'THEATER_ADMIN' | 'MOVIE_CURATOR' | 'ADMIN'
 
