@@ -15,7 +15,7 @@ const signupFormScheme = zod.object({
   email: zod.string().email('Email inválido'),
   password: zod.string().min(8, 'A senha deve conter pelo menos 8 caracteres'),
   full_name: zod.string().min(1, 'O nome deve conter pelo menos 1 caractere'),
-  social_name: zod.string().optional(),
+  social_name: zod.string(),
   cpf: zod.string().length(11, 'O CPF deve conter 11 números'),
   sex: zod.enum(['M', 'F']),
   date_of_birth: zod.string()
