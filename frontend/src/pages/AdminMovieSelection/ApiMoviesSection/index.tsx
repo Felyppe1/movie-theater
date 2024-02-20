@@ -50,6 +50,7 @@ export function ApiMoviesSection({ movie, movieTmdbIds }: ApiMoviesSectionProps)
       ...data,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       genres: data.genres.map(({ id }) => ({ id: id })),
+      max_date: data.max_date!
     }
 
     mutation.mutate(cleanedData) // FIX
