@@ -54,7 +54,7 @@ export function WebLayout() {
               )}
               <div className='flex flex-col justify-center'>
                 <button onClick={handleLogout} className='self-end w-fit leading-none text-[90%] font-normal underline'>Sair</button>
-                <button>felyppe.nunes@gmail.com</button>
+                <button>{user.email}</button>
               </div>
             </div>
           ) : (
