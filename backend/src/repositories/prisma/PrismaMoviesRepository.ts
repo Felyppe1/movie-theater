@@ -39,7 +39,7 @@ export class PrismaMoviesRepository implements IMoviesRepository {
   async findManyUnrelatedToTheater({ movieTheaterId }: MovieFindManyUnrelatedToTheaterDTO) {
     const movies = await prisma.movie.findMany({
       where: {
-        movieTheaters: {
+        movie_theaters: {
           none: {
             id: movieTheaterId
           }
