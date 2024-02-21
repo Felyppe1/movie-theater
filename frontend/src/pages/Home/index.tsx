@@ -12,8 +12,8 @@ export function Home() {
 
   return (
     <>
-      <section className='flex flex-col px-[10rem] pt-[3rem] pb-[5rem]'>
-        <h2 className='text-2xl mb-[2rem] font-bold text-secondary hover:text-secondary/90'>
+      <section className='flex flex-col px-[2rem] sm:px-[5rem] xl:px-[10rem] pt-[3rem] pb-[5rem]'>
+        <h2 className='text-xl sm:text-2xl mb-[1rem] sm:mb-[2rem] font-bold text-secondary hover:text-secondary/90'>
           <Link to='/em-cartaz'>
             Em Cartaz {'>'}
           </Link>
@@ -23,7 +23,7 @@ export function Home() {
         : status == 'error' 
           ? <ErrorDisplay /> 
           : (
-            <ul className='flex gap-[1rem]'>
+            <ul className='flex gap-[.75rem] sm:gap-[1rem] overflow-hidden'>
               {movies?.slice(0, 6).map(movie => {
                 return (
                   <li 
@@ -31,11 +31,11 @@ export function Home() {
                     // className='bg-gradient-to-t from-blue-950 to-blue-900 to-20%'
                   >
                     <a href="" className='flex flex-col gap-1'>
-                      <div className='overflow-hidden rounded-sm w-full'>
-                        <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" className='transition-transform ease-in-out duration-300 hover:scale-[1.075] w-[12rem]' />
+                      <div className='overflow-hidden rounded-sm'>
+                        <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt="" className='transition-transform ease-in-out duration-300 hover:scale-[1.075] w-[7rem] sm:w-[8rem] lg:w-[11rem] xl:w-[12.5rem]' />
                       </div>
-                      <div className='max-w-[12rem]'>
-                        <span className='text-white text-lg font-semibold'>{movie.name}</span>
+                      <div className='w-[7rem] sm:w-[8rem] lg:w-[11rem] xl:w-[12.5rem]'>
+                        <span className='text-white text-sm lg:text-lg font-semibold'>{movie.name}</span>
                       </div>
                     </a>
                   </li>
