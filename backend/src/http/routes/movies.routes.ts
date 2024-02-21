@@ -4,10 +4,11 @@ import { makeFetchMovieTmdbIdsController } from "../controllers/factories/makeFe
 import { makeFetchMoviesController } from "../controllers/factories/makeFetchMoviesController";
 import { makeDeleteMovieController } from "../controllers/factories/makeDeleteMovieController";
 import { makeFetchMoviesUnrelatedToTheaterController } from "../controllers/factories/makeFetchMoviesUnrelatedToTheaterController";
+import { ensureAuthenticated } from "../../middlewares/ensureAuthenticated";
 
 export const moviesRoutes = Router()
 
-moviesRoutes.post('/', (request, response) => {
+moviesRoutes.post('/', ensureAuthenticated, (request, response) => {
   return makeCreateMovieController().handle(request, response)
 })
 
@@ -23,6 +24,6 @@ moviesRoutes.get('/movie-theater/:id/unrelated', (request, response) => {
   return makeFetchMoviesUnrelatedToTheaterController().handle(request, response)
 })
 
-moviesRoutes.delete('/:id', (request, response) => {
+moviesRoutes.delete('/:id', ensureAuthenticated, (request, response) => {
   return makeDeleteMovieController().handle(request, response)
 })

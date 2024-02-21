@@ -20,7 +20,13 @@ export class RefreshTokenUseCase {
   }
 
   async execute({ refresh_token }: RefreshTokenUseCaseDTO) {
-    const { sub: user_id } = verify(refresh_token, env.SECRET_REFRESH_TOKEN) as IPayload
+    let user_id: string
+    try {
+      const { sub } = verify(refresh_token, env.SECRET_REFRESH_TOKEN) as IPayload
+      user_id = sub
+    } catch(error) {
+      throw new AppError('Refresh token inválido', 400)
+    }
 
     const userToken = await this.userTokensRepository.findByUserIdAndRefreshToken({ user_id, refresh_token })
     if (!userToken) {

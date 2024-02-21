@@ -19,7 +19,7 @@ type IPayload = {
 export async function ensureAuthenticated(request: ExtendedRequest, response: Response, next: NextFunction) {
   const headerAuthorization = request.headers.authorization
   if (!headerAuthorization) {
-    throw new AppError('Token faltando', 401)
+    throw new AppError('Token de acesso faltando', 401)
   }
 
   const [, token] = headerAuthorization.split(' ')
@@ -44,7 +44,7 @@ export async function ensureAuthenticated(request: ExtendedRequest, response: Re
 
     next()
 
-  } catch {
-    throw new AppError('Token inválido', 401)
+  } catch(error) {
+    throw new AppError('Token de acesso inválido', 401)
   }
 }

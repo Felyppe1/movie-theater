@@ -6,7 +6,7 @@ import { RefreshToken } from '@/@types/User'
 axios.defaults.baseURL = env.VITE_BACKEND_URL
 
 axios.interceptors.response.use(response => response, async error => {
-  if (error.response.status === 401) {
+  if (error.response.status === 401) { // TODO: check if it is also from backend
     const response = await axios.post<RefreshToken>('/users/refresh-token', {
       refresh_token: useAuthStore.getState().refreshToken
     })

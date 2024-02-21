@@ -14,6 +14,11 @@
         "tags": ["Movie"],
         "summary": "Create a new movie",
         "description": "Necessary data to create a movie",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -33,6 +38,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
           },
           "409": {
             "description": "Movie already exists",
@@ -77,6 +85,11 @@
       "delete": {
         "tags": ["Movie"],
         "summary": "Delete a movie",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -89,6 +102,9 @@
         "responses": {
           "204": {
             "description": "Successful operation"
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
           },
           "404": {
             "description": "Movie not found",
@@ -160,6 +176,11 @@
         "tags": ["Movie Theater"],
         "summary": "Create new movie theater",
         "description": "Necessary data to create a movie theater",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -179,6 +200,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
           },
           "409": {
             "description": "Movie theater name already exists",
@@ -265,6 +289,11 @@
       "post": {
         "tags": ["Movie Theater"],
         "summary": "Add a movie to the movie theater",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -299,6 +328,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
           },
           "404": {
             "description": "Movie not found",
@@ -339,6 +371,11 @@
       "delete": {
         "tags": ["Movie Theater"],
         "summary": "Remove a movie from the movie theater",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -365,6 +402,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
           }
         }
       }
@@ -373,6 +413,11 @@
       "post": {
         "tags": ["Room"],
         "summary": "Create a new room",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -427,6 +472,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
           },
           "409": {
             "description": "Room number already exists",
@@ -492,6 +540,11 @@
       "put": {
         "tags": ["Room"],
         "summary": "Update room",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -556,6 +609,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
+          },
           "404": {
             "description": "Room not found",
             "content": {
@@ -577,6 +633,11 @@
       "delete": {
         "tags": ["Room"],
         "summary": "Delete a room",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -589,6 +650,9 @@
         "responses": {
           "204": {
             "description": "Successful operation"
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
           },
           "404": {
             "description": "Room not found",
@@ -822,7 +886,7 @@
         }
       }
     },
-    "/users/refresh_token": {
+    "/users/refresh-token": {
       "post": {
         "tags": ["User"],
         "summary": "Refresh access and refresh tokens",
@@ -861,6 +925,22 @@
                   "example": {
                     "new_token": "string",
                     "new_refresh_token": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Refresh token is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Refresh token inválido"
+                    }
                   }
                 }
               }
@@ -929,6 +1009,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat":"JWT"
+      }
+    },
     "schemas": {
       "MovieRequest": {
         "type": "object",
@@ -1625,6 +1712,16 @@
         "type": "string",
         "enum": ["NORMAL", "THEATER_ADMIN", "MOVIE_CURATOR", "ADMIN"],
         "example": "M"
+      },
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Token de acesso faltando ou inválido"
+          }
+        }
       }
     }
   }
