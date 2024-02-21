@@ -5,7 +5,7 @@ import { PrismaUsersRepository } from "../repositories/prisma/PrismaUsersReposit
 import { env } from "../env"
 import { ROLE } from "@prisma/client"
 
-interface ExtendedRequest extends Request {
+export interface ExtendedRequest extends Request {
   user: {
     id: string
     role: ROLE
