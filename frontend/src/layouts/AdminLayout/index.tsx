@@ -6,6 +6,8 @@ export function AdminLayout() {
   const location = useLocation()
   const path = location.pathname
 
+  document.documentElement.removeAttribute('class')
+
   return (
     <div className={'min-h-screen'}>
       <nav className={'hidden lg:flex flex-col gap-[.5rem] w-[18rem] fixed top-0 bottom-0 p-[.5rem] border-r bg-background'}>

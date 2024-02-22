@@ -13,8 +13,10 @@ export function WebLayout() {
   const user = useAuthStore(state => state.user)
   const { handleLogout } = useLogout()
 
+  document.documentElement.classList.add('website')
+
   return (
-    <div className='website'>
+    <div>
       <header className='bg-background text-foreground h-[5rem] px-[2rem] sm:px-[4rem] xl:px-[10rem] text-base font-semibold'>
         <nav className='flex justify-between items-center h-full'>
           <Link to='/' className='text-semibold'>
