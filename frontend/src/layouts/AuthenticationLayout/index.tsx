@@ -3,7 +3,7 @@ import LogoImg from '../../assets/logo.svg'
 import { Toaster } from "@/components/ui/toaster";
 
 export function AuthenticationLayout() {
-  document.documentElement.classList.add('authentication')
+  document.documentElement.className= 'authentication'
 
   return (
     <div className='h-screen'>

@@ -13,7 +13,7 @@ export function WebLayout() {
   const user = useAuthStore(state => state.user)
   const { handleLogout } = useLogout()
 
-  document.documentElement.classList.add('website')
+  document.documentElement.className = 'website'
 
   return (
     <div>
