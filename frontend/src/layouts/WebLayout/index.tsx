@@ -43,7 +43,7 @@ export function WebLayout() {
             }>Cinemas</Link>
             </li>
             {user?.role == 'ADMIN' && (
-              <li>
+              <li className='h-full'>
                 <Link 
                   to='/admin' 
                   className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary`}
