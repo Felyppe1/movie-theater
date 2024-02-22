@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import zod from 'zod'
 
 const loginFormScheme = zod.object({
@@ -23,7 +23,11 @@ export function useLoginForm() {
   })
 
   const { setUser, setAccessToken, setRefreshToken } = useAuthStore()
+
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const redirectTo = location?.state?.from?.pathname || '/'
 
   const mutation = useMutation({
     mutationFn: login,
@@ -32,7 +36,7 @@ export function useLoginForm() {
       setAccessToken(data.token)
       setRefreshToken(data.refresh_token)
       toast({ description: 'Login realizado com sucesso', variant: 'success' })
-      navigate('/')
+      navigate(redirectTo, { replace: true })
     },
     onError: (error) => {
       toast({ description: error.message, variant: 'destructive' })

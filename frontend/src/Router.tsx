@@ -13,6 +13,7 @@ import { AdminRoomAdd } from "./pages/AdminRoomAdd";
 import { AdminMovieSelection } from "./pages/AdminMovieSelection";
 import { AuthenticationLayout } from "./layouts/AuthenticationLayout";
 import { Signup } from "./pages/Signup";
+import { RequireAuth } from "./components/RequireAuth";
 
 export function Router() {
     return (
@@ -28,13 +29,15 @@ export function Router() {
             </Route>
 
             <Route path="admin/" element={<AdminLayout />} >
-                <Route index element={<Admin />} />
-                <Route path='movie-theater/' element={<AdminMovieTheaterList />} />
-                <Route path='movie-theater/:id/' element={<AdminMovieTheaterDetail />} />
-                <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
-                <Route path='movie-theater/:id/room/add/' element={<AdminRoomAdd />} />
-                <Route path='movie-theater/room/:id/' element={<AdminRoomDetail />} />
-                <Route path='movie-selection/' element={<AdminMovieSelection />} />
+                <Route element={<RequireAuth allowedRoles={['THEATER_ADMIN', 'MOVIE_CURATOR', 'ADMIN']} />}>
+                  <Route index element={<Admin />} />
+                  <Route path='movie-theater/' element={<AdminMovieTheaterList />} />
+                  <Route path='movie-theater/:id/' element={<AdminMovieTheaterDetail />} />
+                  <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
+                  <Route path='movie-theater/:id/room/add/' element={<AdminRoomAdd />} />
+                  <Route path='movie-theater/room/:id/' element={<AdminRoomDetail />} />
+                  <Route path='movie-selection/' element={<AdminMovieSelection />} />
+                </Route>
             </Route>
         </Routes>
     )
