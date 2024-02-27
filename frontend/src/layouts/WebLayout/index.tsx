@@ -44,7 +44,7 @@ export function WebLayout() {
               `
             }>Cinemas</Link>
             </li>
-            {user?.role == 'ADMIN' && (
+            {(user?.role === 'ADMIN' || user?.role === 'MOVIE_CURATOR' || user?.role === 'THEATER_ADMIN') && (
               <li className='h-full'>
                 <Link 
                   to='/admin' 
