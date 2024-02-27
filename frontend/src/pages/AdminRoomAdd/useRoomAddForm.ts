@@ -14,10 +14,12 @@ const seatSchema = zod.object({
   selected: zod.boolean().optional()
 })
 
+const seatsRowSchema = zod.array(seatSchema).min(1)
+
 const roomAddFormSchema = zod.object({
   number: zod.string().min(1).max(5),
   technologyIds: zod.array(zod.string().min(1)).min(1),
-  seats: zod.array(seatSchema).min(1)
+  seats: zod.array(seatsRowSchema).min(1)
 })
 export type RoomAddForm = zod.infer<typeof roomAddFormSchema>
 

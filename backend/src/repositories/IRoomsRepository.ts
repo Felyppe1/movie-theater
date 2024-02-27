@@ -4,7 +4,7 @@ import { Technology } from "../@Types/Technology"
 
 export type RoomsCreateDTO = Omit<Room, 'id'> & {
   technologyIds: (Technology['id'])[]
-  seats: SeatCreate[]
+  seats: SeatCreate[][]
 }
 
 export type RoomsFindByIdDTO = Pick<Room, 'id'>
@@ -13,7 +13,7 @@ export type RoomsFindByNumberAndMovieTheaterDTO = Pick<Room, 'number' | 'movie_t
 
 export type RoomsUpdateDTO = Room & {
   technologyIds: (Technology['id'])[]
-  seats: SeatCreate[]
+  seats: SeatCreate[][]
 }
 
 export type RoomsDeleteDTO = RoomsFindByIdDTO

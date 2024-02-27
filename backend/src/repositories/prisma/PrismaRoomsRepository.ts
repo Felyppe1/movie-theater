@@ -9,7 +9,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
         number,
         movie_theater_id,
         seats: {
-          create: seats
+          create: seats.flat()
         },
         technologies: {
           connect: technologyIds.map(technologyId => ({ id: technologyId }))
@@ -78,7 +78,7 @@ export class PrismaRoomsRepository implements IRoomsRepository {
             room_id: id
           },
           createMany: {
-            data: seats
+            data: seats.flat()
           }
         }
       },

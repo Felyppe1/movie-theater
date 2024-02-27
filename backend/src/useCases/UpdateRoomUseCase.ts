@@ -2,6 +2,7 @@ import { AppError } from "../errors/AppError";
 import { updateRoomControllerBodySchema } from "../http/controllers/UpdateRoomController";
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
 import zod from 'zod'
+import { convertSeatsToMatrix } from "../utils/convertSeatsToMatrix";
 
 type UpdateRoomUseCaseDTO = zod.infer<typeof updateRoomControllerBodySchema> & {
   id: string
@@ -30,6 +31,11 @@ export class UpdateRoomUseCase {
 
     const room = await this.roomsRepository.update(data)
 
-    return room
+    const alteredRoom = {
+      ...room,
+      seats: convertSeatsToMatrix(room.seats)
+    }
+
+    return alteredRoom
   }
 }

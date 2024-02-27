@@ -25,7 +25,7 @@ export function AdminRoomAddContent({ movie_theater_id }: AdminRoomAddContentPro
       ...data,
       movie_theater_id,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      seats: data.seats?.map(({ selected, ...seat }) => seat),
+      seats: data.seats?.map(seatsRow => seatsRow.map(({ selected, ...seat }) => seat)),
     }
     mutation.mutate(cleanedData)
   }

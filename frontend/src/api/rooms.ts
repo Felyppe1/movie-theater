@@ -5,7 +5,7 @@ import { makeRequest } from "@/utils/makeRequest"
 import { QueryFunctionContext } from "@tanstack/react-query"
 
 type CreateRoomProps = Omit<Room, 'id'> & {
-  seats: SeatCreate[],
+  seats: SeatCreate[][],
   technologyIds: Technology['id'][]
 }
 

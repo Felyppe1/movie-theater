@@ -2,6 +2,7 @@ import { AppError } from "../errors/AppError";
 import { createRoomControllerBodySchema } from "../http/controllers/CreateRoomController";
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
 import zod from 'zod'
+import { convertSeatsToMatrix } from "../utils/convertSeatsToMatrix";
 
 type CreateRoomUseCaseDTO = zod.infer<typeof createRoomControllerBodySchema>
 
@@ -32,6 +33,11 @@ export class CreateRoomUseCase {
     // await this.roomsRepository.create(newData)
     const room = await this.roomsRepository.create(data)
 
-    return room
+    const alteredRoom = {
+      ...room,
+      seats: convertSeatsToMatrix(room.seats)
+    }
+
+    return alteredRoom
   }
 }

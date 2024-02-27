@@ -8,6 +8,6 @@ export type Room = {
 }
 
 export type RoomGeneral = Room & {
-  seats: SeatCreate[]
+  seats: SeatCreate[][]
   technologies: Technology[]
 }

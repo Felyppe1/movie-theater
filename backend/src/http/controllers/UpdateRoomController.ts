@@ -9,10 +9,12 @@ const seatValidationSchema = zod.object({
   type: zod.string().min(1)
 })
 
+const seatsRowSchema = zod.array(seatValidationSchema).min(1)
+
 export const updateRoomControllerBodySchema = zod.object({
   number: zod.string().min(1).max(5),
   technologyIds: zod.array(zod.string().min(1)).min(1),
-  seats: zod.array(seatValidationSchema).min(1),
+  seats: zod.array(seatsRowSchema).min(1),
   movie_theater_id: zod.string().min(1),
 })
 

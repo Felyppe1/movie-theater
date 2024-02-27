@@ -1,5 +1,6 @@
 import { AppError } from "../errors/AppError";
 import { IRoomsRepository } from "../repositories/IRoomsRepository";
+import { convertSeatsToMatrix } from "../utils/convertSeatsToMatrix";
 
 type GetRoomUseCaseDTO = {
   id: string
@@ -17,7 +18,12 @@ export class GetRoomUseCase {
     if (!room) {
       throw new AppError('Sala não encontrada', 404)
     }
-    
-    return room
+
+    const alteredRoom = {
+      ...room,
+      seats: convertSeatsToMatrix(room.seats)
+    }
+
+    return alteredRoom
   }
 }

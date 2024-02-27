@@ -9,11 +9,10 @@ import { Dispatch, SetStateAction } from "react"
 
 interface AdminRoomSeatsNumberForm {
   roomForm: UseFormReturn<RoomForm>
-  setSelectedSeatIndexes: Dispatch<SetStateAction<number[]>>
-  setColumns: Dispatch<SetStateAction<number>>
+  setSelectedSeatIndexes: Dispatch<SetStateAction<string[]>>
 }
 
-export function AdminRoomSeatsNumberForm({ roomForm, setColumns, setSelectedSeatIndexes }: AdminRoomSeatsNumberForm) {
+export function AdminRoomSeatsNumberForm({ roomForm, setSelectedSeatIndexes }: AdminRoomSeatsNumberForm) {
   const { form: seatsNumberForm } = useRoomSeatsNumberForm()
   
   function handleSubmitSeatsNumberForm({ rows, columns }: SeatsNumberForm) {
@@ -22,8 +21,10 @@ export function AdminRoomSeatsNumberForm({ roomForm, setColumns, setSelectedSeat
     const seats: RoomForm['seats'] = []
     
     for (let i = 0; i < rows; i++) {
+      const seatsRow = []
+
       for (let j = 0; j < columns; j++) {
-        seats.push({
+        seatsRow.push({
           // id: `${i.toString() + j.toString()}`,
           row: i.toString(),
           column: j.toString(),
@@ -32,9 +33,10 @@ export function AdminRoomSeatsNumberForm({ roomForm, setColumns, setSelectedSeat
           selected: false
         })
       }
+
+      seats.push(seatsRow)
     }
     
-    setColumns(columns)
     setSelectedSeatIndexes([])
     roomForm.setValue('seats', seats, { shouldDirty: true, shouldValidate: true })
   }

@@ -35,7 +35,7 @@ export function AdminRoomDetailContent({ movie_theater_id, room }: AdminRoomAddC
       movie_theater_id,
       room_id: room.id,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      seats: data.seats?.map(({ selected, ...seat }) => seat),
+      seats: data.seats?.map(seatsRow => seatsRow.map(({ selected, ...seat }) => seat)),
     }
 
     mutation.mutate(cleanedData)

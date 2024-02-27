@@ -15,25 +15,27 @@ interface SeatPropsForm {
 
 type AdminRoomSeatPropsFormProps = {
   roomForm: UseFormReturn<RoomForm>
-  setSelectedSeatIndexes: Dispatch<SetStateAction<number[]>>
+  setSelectedSeatIndexes: Dispatch<SetStateAction<string[]>>
 }
 
 export function AdminRoomSeatPropsForm({ roomForm, setSelectedSeatIndexes }: AdminRoomSeatPropsFormProps) {
   const { form: seatPropsForm } = useRoomSeatPropsForm()
-  console.log(seatPropsForm.getValues().exists)
-  function handleSubmitSeatPropsForm({ exists, type }: SeatPropsForm) {
-    const alteredSeats = roomForm.getValues().seats!.map(seat => {
-      if (seat.selected) {
-        return {
-          ...seat,
-          selected: false,
-          type,
-          exists
-        }
-      }
 
-      return seat
-    })
+  function handleSubmitSeatPropsForm({ exists, type }: SeatPropsForm) {
+    const alteredSeats = roomForm.getValues().seats!.map(seatsRow => (
+      seatsRow.map(seat => {
+        if (seat.selected) {
+          return {
+            ...seat,
+            selected: false,
+            type,
+            exists
+          }
+        }
+
+        return seat
+      })
+    ))
 
     setSelectedSeatIndexes([])
 
