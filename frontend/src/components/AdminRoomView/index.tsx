@@ -51,6 +51,7 @@ export function AdminRoomView({
   })
 
   const handleSubmitRoomViewForm = ({ technologyIds, seats, ...formData }: AddRoomForm) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const cleanedData = {
       ...formData,
       movie_theater_id,
@@ -59,7 +60,7 @@ export function AdminRoomView({
       seats: seats?.map(({ selected, ...seat }) => seat),
     }
 
-    room_id ? updateMutation.mutate({ data: cleanedData, room_id }) : createMutation.mutate({ data: cleanedData })
+    // room_id ? updateMutation.mutate({ data: cleanedData, room_id }) : createMutation.mutate({ data: cleanedData })
   }
 
   const handleDeleteRoom = (room_id: string) => {
