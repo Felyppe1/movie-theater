@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AdminRoomSeatsSection } from "./AdminRoomSeatsSection"
-import { AddRoomForm, SeatProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
+import { SeatProps, useAdminRoomViewForm } from "./useAdminRoomViewForm"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { fetchTechnologies } from "@/api/technologies"
 import { deleteRoom } from "@/api/rooms"
@@ -50,18 +50,18 @@ export function AdminRoomView({
     technologyIds: selectedTechnologyIds
   })
 
-  const handleSubmitRoomViewForm = ({ technologyIds, seats, ...formData }: AddRoomForm) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const cleanedData = {
-      ...formData,
-      movie_theater_id,
-      technologyIds,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      seats: seats?.map(({ selected, ...seat }) => seat),
-    }
+  // const handleSubmitRoomViewForm = ({ technologyIds, seats, ...formData }: AddRoomForm) => {
+  //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   const cleanedData = {
+  //     ...formData,
+  //     movie_theater_id,
+  //     technologyIds,
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //     seats: seats?.map(({ selected, ...seat }) => seat),
+  //   }
 
-    // room_id ? updateMutation.mutate({ data: cleanedData, room_id }) : createMutation.mutate({ data: cleanedData })
-  }
+  //   // room_id ? updateMutation.mutate({ data: cleanedData, room_id }) : createMutation.mutate({ data: cleanedData })
+  // }
 
   const handleDeleteRoom = (room_id: string) => {
     deleteMutation.mutate({ room_id })
@@ -75,7 +75,7 @@ export function AdminRoomView({
     <>
     <Form {...form}>
     <form 
-      onSubmit={form.handleSubmit(handleSubmitRoomViewForm)} 
+      // onSubmit={form.handleSubmit(handleSubmitRoomViewForm)} 
       className='space-y-8 pt-[1.5rem]'
     >
       <FormField
@@ -156,7 +156,7 @@ export function AdminRoomView({
       }
       <Button 
         type='submit' 
-        onClick={form.handleSubmit(handleSubmitRoomViewForm)} 
+        // onClick={form.handleSubmit(handleSubmitRoomViewForm)} 
         disabled={createMutation.isPending || updateMutation.isPending || !form.formState.isDirty}
         size='lg' 
         className='mt-[3rem]'
