@@ -11,7 +11,6 @@ COPY . .
 EXPOSE 3333
 
 RUN npx prisma generate && \
-    apt update && \ 
-    apt install netcat-openbsd
+    apt update
 
-CMD ["bash", "-c", "until nc -z -v database 5432; do sleep 1; done && npx prisma migrate dev && npx prisma db seed && npm run dev"]
+CMD ["npm", "run", "dev"]
