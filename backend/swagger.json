@@ -757,8 +757,6 @@
                   "cpf": "string",
                   "sex": "M",
                   "date_of_birth": "2023-12-14T00:00:00.000Z",
-                  "role": "NORMAL",
-                  "created_at": "2023-12-14T00:00:00.000Z",
                   "cellphone": {
                     "ddd": "21",
                     "number": "911112222"
