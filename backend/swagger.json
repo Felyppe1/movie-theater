@@ -454,7 +454,10 @@
                   "seats": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/SeatCreate"
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SeatCreate"
+                      }
                     }
                   }
                 },
@@ -465,12 +468,14 @@
                     "string"
                   ],
                   "seats": [
-                    {
-                      "row": "0",
-                      "column": "0",
-                      "exists": true,
-                      "type": "string"
-                    }
+                    [
+                      {
+                        "row": "0",
+                        "column": "0",
+                        "exists": true,
+                        "type": "string"
+                      }
+                    ]
                   ]
                 }
               }
@@ -593,7 +598,10 @@
                   "seats": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/SeatCreate"
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SeatCreate"
+                      }
                     }
                   }
                 },
@@ -604,12 +612,14 @@
                     "string"
                   ],
                   "seats": [
-                    {
-                      "row": "0",
-                      "column": "0",
-                      "exists": true,
-                      "type": "string"
-                    }
+                    [
+                      {
+                        "row": "0",
+                        "column": "0",
+                        "exists": true,
+                        "type": "string"
+                      }
+                    ]
                   ]
                 }
               }
@@ -1445,7 +1455,10 @@
               "seats": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/SeatCreate"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SeatCreate"
+                  }
                 }
               },
               "technologies": {
@@ -1462,12 +1475,14 @@
           "number": "string",
           "movie_theater_id": "string",
           "seats": [
-            {
-              "row": "0",
-              "column": "0",
-              "exists": true,
-              "type": "string"
-            }
+            [
+              {
+                "row": "0",
+                "column": "0",
+                "exists": true,
+                "type": "string"
+              }
+            ]
           ],
           "technologies": [
             {
