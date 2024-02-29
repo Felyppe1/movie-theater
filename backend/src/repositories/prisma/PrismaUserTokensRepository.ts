@@ -10,7 +10,12 @@ export class PrismaUserTokensRepository implements IUserTokensRepository {
 
   async findByUserIdAndRefreshToken({ user_id, refresh_token }: UserTokensFindByUserIdAndRefreshTokenDTO) {
     const user = await prisma.userTokens.findFirst({
-      where: { user_id, refresh_token }
+      where: { 
+        user_id, refresh_token
+      },
+      include: {
+        user: true
+      }
     })
 
     return user

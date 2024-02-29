@@ -1,4 +1,4 @@
-import { UserTokens } from "../@Types/UserTokens"
+import { UserTokens, UserTokensFull } from "../@Types/UserTokens"
 
 export type UserTokensCreateDTO = Omit<UserTokens, 'id' | 'created_at'>
 
@@ -8,6 +8,6 @@ export type UserTokensDeleteByIdDTO = Pick<UserTokens, 'id'>
 
 export interface IUserTokensRepository {
   create(data: UserTokensCreateDTO): Promise<UserTokens>
-  findByUserIdAndRefreshToken(data: UserTokensFindByUserIdAndRefreshTokenDTO): Promise<UserTokens | null>
+  findByUserIdAndRefreshToken(data: UserTokensFindByUserIdAndRefreshTokenDTO): Promise<UserTokensFull | null>
   deleteById(data: UserTokensDeleteByIdDTO): Promise<void>
 }

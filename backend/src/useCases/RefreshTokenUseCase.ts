@@ -64,7 +64,12 @@ export class RefreshTokenUseCase {
 
     return {
       new_token,
-      new_refresh_token
+      new_refresh_token,
+      user: {
+        id: userToken.user.id,
+        email: userToken.user.email,
+        role: userToken.user.role
+      }
     }
   } 
 }

@@ -31,3 +31,7 @@ export type RefreshToken = {
   new_token: string
   new_refresh_token: string
 }
+
+export type RefreshTokenAdditional = RefreshToken & {
+  user: Pick<User, 'id' | 'email' | 'role'>
+}

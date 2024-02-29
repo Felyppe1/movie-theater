@@ -14,31 +14,63 @@ import { AdminMovieSelection } from "./pages/AdminMovieSelection";
 import { AuthenticationLayout } from "./layouts/AuthenticationLayout";
 import { Signup } from "./pages/Signup";
 import { RequireAuth } from "./components/RequireAuth";
+import { useAuthStore } from "./store/auth";
+import { useMutation } from "@tanstack/react-query";
+import { LoadingDisplay } from "./components/ui/LoadingDisplay";
+import { useEffect } from "react";
+import { getRefreshToken } from "./api/users";
 
 export function Router() {
-    return (
-        <Routes>
-            <Route path="/" element={<WebLayout />} >
-                <Route index element={<Home />} />
-                <Route path="em-cartaz/" element={<PlayingNow />} />
-            </Route>
+  const refreshToken = useAuthStore(state => state.refreshToken)
+  const clearAuthStore = useAuthStore(state => state.clearAuthStore)
 
-            <Route path="/" element={<AuthenticationLayout />}>
-                <Route path="login/" element={<Login />} />
-                <Route path="cadastrar/" element={<Signup />} />
-            </Route>
+  if (!refreshToken) {
+    clearAuthStore()
+  }
 
-            <Route path="admin/" element={<AdminLayout />} >
-                <Route element={<RequireAuth allowedRoles={['THEATER_ADMIN', 'MOVIE_CURATOR', 'ADMIN']} />}>
-                  <Route index element={<Admin />} />
-                  <Route path='movie-theater/' element={<AdminMovieTheaterList />} />
-                  <Route path='movie-theater/:id/' element={<AdminMovieTheaterDetail />} />
-                  <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
-                  <Route path='movie-theater/:id/room/add/' element={<AdminRoomAdd />} />
-                  <Route path='movie-theater/room/:id/' element={<AdminRoomDetail />} />
-                  <Route path='movie-selection/' element={<AdminMovieSelection />} />
-                </Route>
-            </Route>
-        </Routes>
-    )
+  const mutation = useMutation({
+    mutationFn: getRefreshToken,
+    onError: () => {
+      clearAuthStore()
+    },
+    onSuccess: (response) => {
+      useAuthStore.setState({ accessToken: response.new_token })
+      useAuthStore.setState({ refreshToken: response.new_refresh_token })
+      useAuthStore.setState({ user: response.user})
+    }
+  })
+
+  useEffect(() => {
+    return () => {
+      if (refreshToken) mutation.mutate({ refresh_token: refreshToken })
+    }
+  }, [])
+
+  if (mutation.status == 'pending') return <LoadingDisplay />
+  
+  return (
+    <Routes>
+      <Route path="/" element={<WebLayout />} >
+        <Route index element={<Home />} />
+        <Route path="em-cartaz/" element={<PlayingNow />} />
+      </Route>
+
+      <Route path="/" element={<AuthenticationLayout />}>
+        <Route path="login/" element={<Login />} />
+        <Route path="cadastrar/" element={<Signup />} />
+      </Route>
+
+      <Route path="admin/" element={<AdminLayout />} >
+        <Route element={<RequireAuth allowedRoles={['THEATER_ADMIN', 'MOVIE_CURATOR', 'ADMIN']} />}>
+          <Route index element={<Admin />} />
+          <Route path='movie-theater/' element={<AdminMovieTheaterList />} />
+          <Route path='movie-theater/:id/' element={<AdminMovieTheaterDetail />} />
+          <Route path='movie-theater/add/' element={<AdminMovieTheaterAdd />} />
+          <Route path='movie-theater/:id/room/add/' element={<AdminRoomAdd />} />
+          <Route path='movie-theater/room/:id/' element={<AdminRoomDetail />} />
+          <Route path='movie-selection/' element={<AdminMovieSelection />} />
+        </Route>
+      </Route>
+    </Routes>
+  )
 }

@@ -54,7 +54,8 @@ export const useAuthStore = create<IAuthStore>()(
       },
     }),
     {
-      name: 'user'
+      name: 'auth',
+      partialize: (state) => ({ refreshToken: state.refreshToken })
     }
   )
 )

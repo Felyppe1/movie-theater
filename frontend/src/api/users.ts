@@ -1,5 +1,5 @@
 import { Cellphone } from "@/@types/Cellphone";
-import { User } from "@/@types/User";
+import { RefreshTokenAdditional, User } from "@/@types/User";
 import { makeRequest } from "@/utils/makeRequest";
 
 
@@ -17,6 +17,10 @@ type LoginResponse = {
 
 type LogoutProps = {
   refreshToken: string | undefined
+}
+
+type GetRefreshTokenProps = {
+  refresh_token: string | undefined
 }
 
 export async function signup(data: SignupProps): Promise<User> {
@@ -38,3 +42,11 @@ export async function logout({ refreshToken }: LogoutProps) {
     method: 'DELETE'
   })
 }
+
+export async function getRefreshToken(data: GetRefreshTokenProps): Promise<RefreshTokenAdditional> {
+  return await makeRequest(`/users/refresh-token`, {
+    method: 'POST',
+    data
+  })
+}
+
