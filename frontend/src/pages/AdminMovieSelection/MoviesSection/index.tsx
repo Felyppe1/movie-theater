@@ -1,105 +1,37 @@
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { CalendarIcon } from "lucide-react"
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
-import { MovieGeneral } from "@/@types/Movie"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { deleteMovie } from "@/api/movies"
-import { toast } from "@/components/ui/use-toast"
-import { AdminMovieDetails } from "@/components/AdminMovieDetails"
-import { AdminMovieCard } from "@/components/ui/AdminMovieCard"
-
+import { fetchMovies } from "@/api/movies"
+import { useQuery } from "@tanstack/react-query"
+import { MovieItem } from "./MovieItem"
 
 type MoviesSectionProps = {
-  movie: MovieGeneral
+  movieTmdbIds: Set<number>
 }
 
-export function MoviesSection({ movie }: MoviesSectionProps) {
-  const queryClient = useQueryClient()
-  const deleteMovieMutation = useMutation({
-    mutationFn: deleteMovie,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['movies'] })
-      toast({ description: 'Filme removido com sucesso', variant: 'success',  })
+export function MoviesSection({ movieTmdbIds }: MoviesSectionProps) {
+  const movies = useQuery({
+    queryKey: ['movies'],
+    queryFn: fetchMovies,
+    select: (data) => {
+      data.forEach(movie => movieTmdbIds.add(movie.tmdb_id))
+      return data
     }
   })
-
-  const handleRemoveMovie = () => {
-    deleteMovieMutation.mutate(movie.id)
-  }
   
   return (
-    <li>
-      <AdminMovieDetails
-        Trigger={
-          <AdminMovieCard poster_path={movie.poster_path} />
+    <section className='mt-[2rem]'>
+      <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>Filmes no banco de dados</h2>
+      {movies.data?.length == 0 && (
+        <p>Não há filmes</p>
+      )}
+      <ul className='flex overflow-x-auto gap-[.5rem] p-[.5rem]'>
+        {movies.status === 'pending' 
+          ? <p>Carregando...</p>
+          : movies.data?.map((movie) => {
+              return (
+                <MovieItem movie={movie} />
+              )
+            })
         }
-        description='Você pode editar ou excluir o filme do banco de dados.'
-        movie={movie}
-        BodyBottom={
-          <>
-          <div className='flex flex-col gap-2'>
-            <strong className='font-medium text-sm mr-[.25rem]'>
-              Data de exibição limite:
-            </strong>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-[240px] pl-3 text-left font-normal",
-                    !movie.max_date && "text-muted-foreground"
-                  )}
-                >
-                  {format(movie.max_date!, 'PPP', { locale: ptBR })}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={movie.max_date!}
-                  // onSelect={(date) => {
-                  //   form.setValue('max_date', date)
-                  //   form.trigger('max_date')
-                  // }}
-                  disabled={(date) =>
-                    date < new Date()
-                  }
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <Label 
-              htmlFor="quantity_avaiable" 
-              // className={cn(form.formState.errors?.quantity_avaiable && 'text-destructive')}
-            >
-              Quantidade:
-            </Label>
-            <Input 
-              // {...form.register('quantity_avaiable', { valueAsNumber: true })}
-              value={movie.quantity_avaiable}
-              type='number'
-              readOnly
-              id='quantity_avaiable' 
-              className={cn('max-w-[5rem]')} 
-              min={0} 
-            />
-          </div>
-          </>
-        }
-        Footer={[
-          <Button variant='destructive' onClick={handleRemoveMovie}>Remover</Button>, 
-          <Button>Editar (not working)</Button>
-        ]}
-      />
-    </li>
+      </ul>
+    </section>
   )
 }
