@@ -1,56 +1,29 @@
-import { fetchTmdbStreamingMovies } from "@/api/movies"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { ApiMovieItem } from "./ApiMovieItem"
-import { UIEventHandler } from "react"
+import { useState } from "react"
+import { Switch } from "@/components/ui/switch"
+import { UpcomingMovies } from "./UpcomingMovies"
+import { StreamingMovies } from "./StreamingMovies"
+import { Button } from "@/components/ui/button"
 
 
 export function ApiMoviesSection() {
-  const apiMovies = useInfiniteQuery({
-    queryKey: ['apiMovies'],
-    queryFn: fetchTmdbStreamingMovies,
-    initialPageParam: 1,
-    getNextPageParam: (_lastPage, pages) => {
-      if (pages.length < 4) {
-        return pages.length + 1
-      } else {
-        return undefined
-      }
-    },
-    select: (data) => {
-      // const lastFetchedPage = data.pages.length - 1
-      // const lastPageData = data.pages[lastFetchedPage].results
-      // const currentMovies = movies ? [...movies] : []
-      // const updatedData = [...currentMovies, ...lastPageData]
-      return data.pages.flatMap((page) => page.results)
-    }
-  })
-
-  const onMoviesListScroll: UIEventHandler<HTMLUListElement> = (e) => {
-    const element = e.currentTarget
-    const distanceToBottom = element.scrollHeight - (element.scrollTop + element.clientHeight)
-
-    if (distanceToBottom < 300) {
-      if (apiMovies.hasNextPage && !apiMovies.isFetchingNextPage) {
-        apiMovies.fetchNextPage()
-      }
-    }
-  }
+  const [upcomingMovies, setUpcomingMovies] = useState(false)
   
   return (
     <section className='pb-[3rem] border-b'>
       <h2 className='text-2xl font-semibold text-secondary-foreground py-[1rem]'>Filmes disponíveis</h2>
-      <ul onScroll={onMoviesListScroll} className='max-w-[35rem] h-[72vh] mr-[15vw] overflow-y-auto'>
-        {apiMovies.status === 'pending' 
-          ? <p>Carregando...</p>
-          : apiMovies.data?.map((movie) => {
-              return (
-                <ApiMovieItem
-                  movie={movie}
-                />
-              )
-            })
-        }
-      </ul>
+      <div className='flex gap-4'>
+        <Button size='sm'>Pesquisar</Button>
+        <button onClick={() => setUpcomingMovies(state => !state)} className='flex items-center gap-1 p-1'>
+          <Switch
+            checked={upcomingMovies}
+            tabIndex={-1}
+          />
+          <span>
+            Em breve
+          </span>
+        </button>
+      </div>
+      {upcomingMovies ? <UpcomingMovies /> : <StreamingMovies />}
     </section>
   )
 }

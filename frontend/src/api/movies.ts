@@ -45,6 +45,13 @@ export async function fetchTmdbStreamingMovies({ pageParam }: QueryFunctionConte
   })
 }
 
+export async function fetchTmdbUpcomingMovies({ pageParam }: QueryFunctionContext<QueryKey, number>): Promise<FetchTmdbStreamingMoviesProps> {
+  return await makeRequest(`https://api.themoviedb.org/3/movie/upcoming?language=pt-BR&page=${pageParam}`, { 
+    method: 'GET',
+    headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
+  })
+}
+
 export async function getTmdbMovie({ queryKey }: QueryFunctionContext) {
   return await makeRequest(`https://api.themoviedb.org/3/movie/${queryKey[1]}?language=pt-BR`, { 
     method: 'GET',

@@ -58,6 +58,7 @@ export function useAddMovieForm() {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] })
       queryClient.invalidateQueries({ queryKey: ['apiMovies'] })
+      queryClient.invalidateQueries({ queryKey: ['apiUpcomingMovies'] })
     }
   })
   
