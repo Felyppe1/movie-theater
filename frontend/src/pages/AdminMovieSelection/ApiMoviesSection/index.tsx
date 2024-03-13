@@ -3,11 +3,8 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { ApiMovieItem } from "./ApiMovieItem"
 import { UIEventHandler } from "react"
 
-type ApiMoviesSectionProps = {
-  movieTmdbIds: Set<number>
-}
 
-export function ApiMoviesSection({ movieTmdbIds }: ApiMoviesSectionProps) {
+export function ApiMoviesSection() {
   const apiMovies = useInfiniteQuery({
     queryKey: ['apiMovies'],
     queryFn: fetchTmdbStreamingMovies,
@@ -49,7 +46,6 @@ export function ApiMoviesSection({ movieTmdbIds }: ApiMoviesSectionProps) {
               return (
                 <ApiMovieItem
                   movie={movie}
-                  movieTmdbIds={movieTmdbIds}
                 />
               )
             })

@@ -13,14 +13,14 @@ import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { getTmdbMovie } from "@/api/movies"
+import { useAdminTmdbMovieIdsStore } from "@/store/adminSelectedMovies"
 
 type ApiMoviesSectionProps = {
   movie: TmdbMovie
-  movieTmdbIds: Set<number>
 }
 
 
-export function ApiMovieItem({ movie, movieTmdbIds }: ApiMoviesSectionProps) {
+export function ApiMovieItem({ movie }: ApiMoviesSectionProps) {
   const { status: movieDetailStatus, refetch } = useQuery({
     queryKey: ['apiMovie', movie.id],
     queryFn: getTmdbMovie,
@@ -78,7 +78,7 @@ export function ApiMovieItem({ movie, movieTmdbIds }: ApiMoviesSectionProps) {
             <strong>Sinopse:</strong> {movie?.overview}
           </p>
         </div>
-        {movieTmdbIds.has(movie.id) 
+        {useAdminTmdbMovieIdsStore().tmdbMovieIds.has(movie.id)
           ? (
             <span className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background pointer-events-none bg-success text-success-foreground hover:bg-success/90 w-fit py-[.25rem] px-[1rem] mt-[.25rem]'>
               Selecionado

@@ -1,17 +1,20 @@
 import { fetchMovies } from "@/api/movies"
 import { useQuery } from "@tanstack/react-query"
 import { MovieItem } from "./MovieItem"
+import { useAdminTmdbMovieIdsStore } from "@/store/adminSelectedMovies"
 
-type MoviesSectionProps = {
-  movieTmdbIds: Set<number>
-}
 
-export function MoviesSection({ movieTmdbIds }: MoviesSectionProps) {
+export function MoviesSection() {
   const movies = useQuery({
     queryKey: ['movies'],
     queryFn: fetchMovies,
     select: (data) => {
-      data.forEach(movie => movieTmdbIds.add(movie.tmdb_id))
+      useAdminTmdbMovieIdsStore.getState().reset()
+
+      data.forEach(movie => useAdminTmdbMovieIdsStore.setState((state) => ({
+        tmdbMovieIds: new Set(state.tmdbMovieIds).add(movie.tmdb_id)
+      })))
+      
       return data
     }
   })

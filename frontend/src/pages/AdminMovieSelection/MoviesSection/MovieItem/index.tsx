@@ -24,7 +24,9 @@ export function MovieItem({ movie }: MoviesSectionProps) {
   const deleteMovieMutation = useMutation({
     mutationFn: deleteMovie,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['apiMovies'] })
       queryClient.invalidateQueries({ queryKey: ['movies'] })
+      
       toast({ description: 'Filme removido com sucesso', variant: 'success',  })
     }
   })
