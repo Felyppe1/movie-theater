@@ -187,7 +187,7 @@ export function SearchMovieItem({ movie }: SearchMovieItemProps) {
                               return date < new Date()
                             }}
                             initialFocus
-                            defaultMonth={form.getValues().release_date}
+                            defaultMonth={form.getValues().release_date > new Date() ? form.getValues().release_date : new Date()}
                           />
                         </PopoverContent>
                       </Popover>
