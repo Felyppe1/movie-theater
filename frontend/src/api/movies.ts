@@ -30,6 +30,18 @@ export async function fetchMovies(): Promise<MovieGeneral[]> {
   })
 }
 
+export async function fetchStreamingMovies(): Promise<MovieGeneral[]> {
+  return await makeRequest('/movies?released=true', { 
+    method: 'GET',
+  })
+}
+
+export async function fetchUpcomingMovies(): Promise<MovieGeneral[]> {
+  return await makeRequest('/movies?released=false', { 
+    method: 'GET',
+  })
+}
+
 export async function fetchMoviesUnrelatedToTheater({ queryKey }: QueryFunctionContext): Promise<MovieGeneral[]> {
   return await makeRequest(`/movies/movie-theater/${queryKey[1]}/unrelated`, {
     method: 'GET'

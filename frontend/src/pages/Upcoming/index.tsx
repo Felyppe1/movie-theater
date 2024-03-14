@@ -1,18 +1,18 @@
-import { fetchStreamingMovies } from "@/api/movies"
+import { fetchUpcomingMovies } from "@/api/movies"
 import { ErrorDisplay } from "@/components/ui/ErrorDisplay"
 import { LoadingDisplay } from "@/components/ui/LoadingDisplay"
 import { useQuery } from "@tanstack/react-query"
 
-export function PlayingNow() {
+export function Upcoming() {
   const { data: movies, status } = useQuery({
-    queryKey: ['streamingMovies'],
-    queryFn: fetchStreamingMovies
+    queryKey: ['upcomingMovies'],
+    queryFn: fetchUpcomingMovies
   })
 
   return (
     <>
       <section className='px-[2rem] sm:px-[5rem] xl:px-[10rem] pt-[3rem] pb-[5rem]'>
-        <h1 className='text-2xl sm:text-3xl mb-[2rem] font-semibold'>Em Cartaz - Niterói</h1>
+        <h1 className='text-2xl sm:text-3xl mb-[2rem] font-semibold'>Em Breve - Niterói</h1>
         {status == 'pending'
         ? <LoadingDisplay />
         : status == 'error' 

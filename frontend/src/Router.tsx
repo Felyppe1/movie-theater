@@ -19,6 +19,7 @@ import { useMutation } from "@tanstack/react-query";
 import { LoadingDisplay } from "./components/ui/LoadingDisplay";
 import { useEffect } from "react";
 import { getRefreshToken } from "./api/users";
+import { Upcoming } from "./pages/Upcoming";
 
 export function Router() {
   const refreshToken = useAuthStore(state => state.refreshToken)
@@ -53,6 +54,7 @@ export function Router() {
       <Route path="/" element={<WebLayout />} >
         <Route index element={<Home />} />
         <Route path="em-cartaz/" element={<PlayingNow />} />
+        <Route path="em-breve/" element={<Upcoming />} />
       </Route>
 
       <Route path="/" element={<AuthenticationLayout />}>

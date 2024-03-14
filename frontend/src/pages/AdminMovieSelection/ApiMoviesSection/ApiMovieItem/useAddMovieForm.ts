@@ -16,7 +16,7 @@ const movieSelectionValidationSchema = zod.object({
   original_name: zod.string().min(1),
   synopsis: zod.string().min(1),
   genres: zod.array(genresValidationSchema),
-  duration: zod.number().min(1),
+  duration: zod.number(),
   release_date: zod.date(),
   poster_path: zod.string().min(1),
   max_date: zod.date().nullable().refine((data) => data !== null, {
