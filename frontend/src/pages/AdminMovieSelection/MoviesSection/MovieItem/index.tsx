@@ -25,7 +25,7 @@ export function MovieItem({ movie }: MoviesSectionProps) {
     mutationFn: deleteMovie,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tmdbStreamingMovies'] })
-      queryClient.invalidateQueries({ queryKey: ['apiUpcomingMovies'] })
+      queryClient.invalidateQueries({ queryKey: ['tmdbUpcomingMovies'] })
       queryClient.invalidateQueries({ queryKey: ['movies'] })
       
       toast({ description: 'Filme removido com sucesso', variant: 'success',  })

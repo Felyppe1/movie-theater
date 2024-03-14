@@ -25,8 +25,8 @@ export function ApiMoviesSection() {
     }
   })
 
-  const apiUpcomingMovies = useInfiniteQuery({
-    queryKey: ['apiUpcomingMovies'],
+  const tmdbUpcomingMovies = useInfiniteQuery({
+    queryKey: ['tmdbUpcomingMovies'],
     queryFn: fetchTmdbUpcomingMovies,
     initialPageParam: 1,
     getNextPageParam: (_lastPage, pages) => {
@@ -47,8 +47,8 @@ export function ApiMoviesSection() {
 
     if (distanceToEnd < 400) {
       if (upcomingMovies) {
-        if (apiUpcomingMovies.hasNextPage && !apiUpcomingMovies.isFetchingNextPage) {
-          apiUpcomingMovies.fetchNextPage()
+        if (tmdbUpcomingMovies.hasNextPage && !tmdbUpcomingMovies.isFetchingNextPage) {
+          tmdbUpcomingMovies.fetchNextPage()
         }
       } else {
         if (tmdbStreamingMovies.hasNextPage && !tmdbStreamingMovies.isFetchingNextPage) {
@@ -75,9 +75,9 @@ export function ApiMoviesSection() {
       </div>
       {upcomingMovies 
         ? <ul onScroll={onMoviesListScroll} className='flex overflow-x-auto gap-[.5rem] mt-4 p-1'>
-            {apiUpcomingMovies.status === 'pending'
+            {tmdbUpcomingMovies.status === 'pending'
               ? <p>Carregando...</p>
-              : apiUpcomingMovies.data?.map((movie) => {
+              : tmdbUpcomingMovies.data?.map((movie) => {
                   return (
                     <ApiMovieItem
                       key={movie.id}
