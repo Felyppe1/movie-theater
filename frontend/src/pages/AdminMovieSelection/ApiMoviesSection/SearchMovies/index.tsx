@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ApiMovieItem } from "../ApiMovieItem";
 import { UIEventHandler, useEffect, useState } from "react";
+import { SearchMovieItem } from "./SearchMovieItem";
 
 export function SearchMovies() {
   const [movieName, setMovieName] = useState('')
@@ -47,7 +47,7 @@ export function SearchMovies() {
     const element = e.currentTarget
     const distanceToBottom = element.scrollHeight - (element.scrollTop + element.clientHeight)
 
-    if (distanceToBottom < 300) {
+    if (distanceToBottom < 400) {
       if (movieName !== '') {
         if (tmdbSearchMovies.hasNextPage && !tmdbSearchMovies.isFetchingNextPage) {
           tmdbSearchMovies.fetchNextPage()
@@ -55,7 +55,6 @@ export function SearchMovies() {
       } else {
         if (tmdbDiscoverMovies.hasNextPage && !tmdbDiscoverMovies.isFetchingNextPage) {
           tmdbDiscoverMovies.fetchNextPage()
-          console.log('entrou')
         }
       }
     }
@@ -82,7 +81,7 @@ export function SearchMovies() {
                 ? <p>Carregando...</p>
                 : tmdbSearchMovies.data?.map((movie) => {
                     return (
-                      <ApiMovieItem
+                      <SearchMovieItem
                         movie={movie}
                       />
                     )
@@ -91,7 +90,7 @@ export function SearchMovies() {
                 ? <p>Carregando...</p>
                 : tmdbDiscoverMovies.data?.map((movie) => {
                     return (
-                      <ApiMovieItem
+                      <SearchMovieItem
                         movie={movie}
                       />
                     )

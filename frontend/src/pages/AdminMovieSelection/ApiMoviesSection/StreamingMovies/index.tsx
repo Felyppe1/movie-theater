@@ -26,9 +26,9 @@ export function StreamingMovies() {
 
   const onMoviesListScroll: UIEventHandler<HTMLUListElement> = (e) => {
     const element = e.currentTarget
-    const distanceToBottom = element.scrollHeight - (element.scrollTop + element.clientHeight)
+    const distanceToEnd = element.scrollWidth - (element.scrollLeft + element.clientWidth)
 
-    if (distanceToBottom < 300) {
+    if (distanceToEnd < 400) {
       if (apiMovies.hasNextPage && !apiMovies.isFetchingNextPage) {
         apiMovies.fetchNextPage()
       }
@@ -36,12 +36,13 @@ export function StreamingMovies() {
   }
 
   return (
-    <ul onScroll={onMoviesListScroll} className='max-w-[35rem] h-[72vh] mt-2 mr-[15vw] overflow-y-auto'>
+    <ul onScroll={onMoviesListScroll} className='flex overflow-x-auto gap-[.5rem] mt-4 p-1'>
       {apiMovies.status === 'pending'
         ? <p>Carregando...</p>
         : apiMovies.data?.map((movie) => {
             return (
               <ApiMovieItem
+                key={movie.id}
                 movie={movie}
               />
             )
