@@ -67,7 +67,7 @@ export function AdminMovieDetails({ Trigger, description, movie, BodyBottom, Foo
         <SheetFooter>
           {Footer.map(element => {
             return (
-              <SheetClose asChild>
+              <SheetClose key={Math.random()} asChild>
                 {element}
               </SheetClose>
             )

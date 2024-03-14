@@ -30,7 +30,7 @@ export function MoviesSection() {
           ? <p>Carregando...</p>
           : movies.data?.map((movie) => {
               return (
-                <MovieItem movie={movie} />
+                <MovieItem key={movie.id} movie={movie} />
               )
             })
         }
