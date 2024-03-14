@@ -23,7 +23,7 @@ export function Home() {
         : status == 'error' 
           ? <ErrorDisplay /> 
           : (
-            <ul className='flex gap-[.75rem] sm:gap-[1rem] overflow-hidden'>
+            <ul className='flex gap-[.75rem] sm:gap-[1rem] overflow-hidden relative before:content-[""] before:absolute before:inset-y-0 before:right-0 before:w-[2rem] lg:before:w-[3rem] before:bg-gradient-to-l from-background'>
               {movies?.length === 0 ? (
                 <p>Não há filmes em cartaz</p>
               ) : (

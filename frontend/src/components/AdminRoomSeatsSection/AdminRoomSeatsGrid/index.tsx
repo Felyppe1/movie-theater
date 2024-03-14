@@ -44,7 +44,7 @@ export function AdminRoomSeatsGrid({ roomForm, setSelectedSeatIndexes }: AdminRo
       <TransformComponent>
         <div className='flex flex-col gap-2 origin-top-left'>
           {roomForm.getValues().seats?.map((seatsRow, rowIndex) => (
-            <div className='flex gap-[.25rem]'>
+            <div key={seatsRow[0].row} className='flex gap-[.25rem]'>
               <span className='font-mono mr-4 align-middle'>{String.fromCharCode(65 + rowIndex)}</span>
               {seatsRow.map((seat, colIndex) => (
                 <button

@@ -65,9 +65,9 @@ export function AdminMovieDetails({ Trigger, description, movie, BodyBottom, Foo
         </div>
 
         <SheetFooter>
-          {Footer.map(element => {
+          {Footer.map((element, index) => {
             return (
-              <SheetClose key={Math.random()} asChild>
+              <SheetClose key={index} asChild>
                 {element}
               </SheetClose>
             )

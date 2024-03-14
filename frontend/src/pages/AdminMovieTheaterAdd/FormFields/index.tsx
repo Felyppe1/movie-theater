@@ -23,7 +23,7 @@ export function FormFields({ form }: FormFieldsProps) {
             <FormItem>
               <FormLabel>Nome</FormLabel>
               <FormControl>
-                <Input placeholder="Cinelândia" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 Nome do cinema a ser criado.
@@ -41,7 +41,7 @@ export function FormFields({ form }: FormFieldsProps) {
             <FormItem>
               <FormLabel>Endereço</FormLabel>
               <FormControl>
-                <Input placeholder="Rua de exemplo" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 Endereço onde o cinema está localizado.
@@ -59,7 +59,7 @@ export function FormFields({ form }: FormFieldsProps) {
             <FormItem>
               <FormLabel>Número</FormLabel>
               <FormControl>
-                <Input placeholder="27" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 Número do endereço.

@@ -37,7 +37,6 @@ export function SearchMovies() {
       }
     },
     select: (data) => {
-      console.log(data)
       return data.pages.flatMap((page) => page.results)
     }
   })
