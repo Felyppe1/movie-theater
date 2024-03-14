@@ -159,10 +159,15 @@ export function ApiMovieItem({ movie }: ApiMovieItemProps) {
                             form.setValue('max_date', date!)
                             form.trigger('max_date')
                           }}
-                          disabled={(date) =>
-                            date < new Date()
-                          }
+                          disabled={(date) => {
+                            if (form.getValues().release_date > new Date()) {
+                              return date < form.getValues().release_date
+                            }
+
+                            return date < new Date()
+                          }}
                           initialFocus
+                          defaultMonth={form.getValues().release_date}
                         />
                       </PopoverContent>
                     </Popover>
