@@ -3,11 +3,11 @@ import { HTMLAttributes, forwardRef } from "react"
 
 type AdminMovieCardProps = HTMLAttributes<HTMLButtonElement> & {
   poster_path: string
-  selected: boolean
+  selected?: boolean
 }
 
 export const AdminMovieCard = forwardRef<HTMLButtonElement, AdminMovieCardProps>((props, ref) => {
-  const { poster_path, selected, ...rest } = props
+  const { poster_path, selected = false, ...rest } = props
   
   return (
     <button ref={ref} {...rest} disabled={selected} className={clsx('rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-[6rem] sm:w-[8rem] overflow-hidden relative',
