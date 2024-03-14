@@ -57,7 +57,7 @@ export function useAddMovieForm() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] })
-      queryClient.invalidateQueries({ queryKey: ['apiMovies'] })
+      queryClient.invalidateQueries({ queryKey: ['tmdbStreamingMovies'] })
       queryClient.invalidateQueries({ queryKey: ['apiUpcomingMovies'] })
     }
   })

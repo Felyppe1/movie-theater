@@ -9,8 +9,8 @@ import { ApiMovieItem } from "./ApiMovieItem"
 export function ApiMoviesSection() {
   const [upcomingMovies, setUpcomingMovies] = useState(false)
 
-  const apiMovies = useInfiniteQuery({
-    queryKey: ['apiMovies'],
+  const tmdbStreamingMovies = useInfiniteQuery({
+    queryKey: ['tmdbStreamingMovies'],
     queryFn: fetchTmdbStreamingMovies,
     initialPageParam: 1,
     getNextPageParam: (_lastPage, pages) => {
@@ -51,8 +51,8 @@ export function ApiMoviesSection() {
           apiUpcomingMovies.fetchNextPage()
         }
       } else {
-        if (apiMovies.hasNextPage && !apiMovies.isFetchingNextPage) {
-          apiMovies.fetchNextPage()
+        if (tmdbStreamingMovies.hasNextPage && !tmdbStreamingMovies.isFetchingNextPage) {
+          tmdbStreamingMovies.fetchNextPage()
         }
       }
     }
@@ -88,9 +88,9 @@ export function ApiMoviesSection() {
             }
           </ul>
         : <ul onScroll={onMoviesListScroll} className='flex overflow-x-auto gap-[.5rem] mt-4 p-1'>
-            {apiMovies.status === 'pending'
+            {tmdbStreamingMovies.status === 'pending'
               ? <p>Carregando...</p>
-              : apiMovies.data?.map((movie) => {
+              : tmdbStreamingMovies.data?.map((movie) => {
                   return (
                     <ApiMovieItem
                       key={movie.id}
