@@ -16,12 +16,12 @@ import { getTmdbMovie } from "@/api/movies"
 import { useAdminTmdbMovieIdsStore } from "@/store/adminSelectedMovies"
 import { AdminMovieCard } from "@/components/ui/AdminMovieCard"
 
-type ApiMoviesSectionProps = {
+type ApiMovieItemProps = {
   movie: TmdbMovie
 }
 
 
-export function ApiMovieItem({ movie }: ApiMoviesSectionProps) {
+export function ApiMovieItem({ movie }: ApiMovieItemProps) {
   const { status: movieDetailStatus, refetch } = useQuery({
     queryKey: ['apiMovie', movie.id],
     queryFn: getTmdbMovie,

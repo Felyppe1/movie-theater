@@ -21,7 +21,6 @@ export function SearchMovies() {
       }
     },
     select: (data) => {
-      console.log(data)
       return data.pages.flatMap((page) => page.results)
     }
   })
@@ -82,6 +81,7 @@ export function SearchMovies() {
                 : tmdbSearchMovies.data?.map((movie) => {
                     return (
                       <SearchMovieItem
+                        key={movie.id}
                         movie={movie}
                       />
                     )
@@ -91,6 +91,7 @@ export function SearchMovies() {
                 : tmdbDiscoverMovies.data?.map((movie) => {
                     return (
                       <SearchMovieItem
+                        key={movie.id}
                         movie={movie}
                       />
                     )
