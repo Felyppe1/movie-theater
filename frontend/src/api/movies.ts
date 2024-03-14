@@ -13,6 +13,10 @@ type FetchTmdbStreamingMoviesProps = {
   results: TmdbMovie[]
 }
 
+type FetchTmdbSearchMoviesProps = QueryFunctionContext<QueryKey, number> & {
+  query: string
+}
+
 export async function createMovie(data: CreateMovieProps): Promise<MovieGeneral[]> {
   return await makeRequest('/movies', { 
     method: 'POST',
@@ -47,6 +51,20 @@ export async function fetchTmdbStreamingMovies({ pageParam }: QueryFunctionConte
 
 export async function fetchTmdbUpcomingMovies({ pageParam }: QueryFunctionContext<QueryKey, number>): Promise<FetchTmdbStreamingMoviesProps> {
   return await makeRequest(`https://api.themoviedb.org/3/movie/upcoming?language=pt-BR&page=${pageParam}`, { 
+    method: 'GET',
+    headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
+  })
+}
+
+export async function fetchTmdbDiscoverMovies({ pageParam }: QueryFunctionContext<QueryKey, number>): Promise<FetchTmdbStreamingMoviesProps> {
+  return await makeRequest(`https://api.themoviedb.org/3/discover/movie?include_video=false&language=pt-BR&sort_by=popularity.desc&page=${pageParam}`, { 
+    method: 'GET',
+    headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
+  })
+}
+
+export async function fetchTmdbSearchMovies({ pageParam, query }: FetchTmdbSearchMoviesProps): Promise<FetchTmdbStreamingMoviesProps> {
+  return await makeRequest(`https://api.themoviedb.org/3/search/movie?query=${query}&language=pt-BR&page=${pageParam}`, { 
     method: 'GET',
     headers: {'Authorization': `Bearer ${env.VITE_TMDB_READ_ACCESS_TOKEN}`}
   })
