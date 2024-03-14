@@ -74,7 +74,7 @@ export function SearchMovies() {
         </DialogHeader>
         <div>
           <Input type='text' value={movieName} onChange={e => setMovieName(e.target.value)} placeholder='Digite o nome do filme' />
-          <ul onScroll={onMoviesListScroll} className='h-[60vh] mt-8 overflow-y-auto'>
+          <ul onScroll={onMoviesListScroll} className='flex flex-col gap-4 h-[60vh] mt-8 overflow-y-auto'>
             {movieName !== '' 
               ? tmdbSearchMovies.status === 'pending'
                 ? <p>Carregando...</p>

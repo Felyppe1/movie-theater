@@ -64,7 +64,7 @@ export function SearchMovieItem({ movie }: SearchMovieItemProps) {
   }
 
   return (
-    <li key={movie.id} className='flex gap-2 max-w-[25rem] mt-[1rem] pr-2'>
+    <li key={movie.id} className='flex gap-2 max-w-[25rem] pr-2'>
       <img src={`https://image.tmdb.org/t/p/w185/${movie?.poster_path}`} className='w-[5rem] xs:w-[7rem] sm:w-[8.5rem]' alt="" />
       <div className='flex flex-col justify-between'>
         <div>
