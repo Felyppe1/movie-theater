@@ -35,12 +35,12 @@ export function WebLayout() {
               ${path.includes('/em-cartaz') && 'text-secondary after:absolute'}`}>Em cartaz</Link>
             </li>
             <li className='h-full'>
-              <Link to='/em-cartaz' className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary 
+              <Link to='/em-breve' className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary 
               `
             }>Em breve</Link>
             </li>
             <li className='h-full'>
-              <Link to='/em-cartaz' className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary 
+              <Link to='/cinemas' className={`flex items-center h-full relative hover:text-secondary hover:after:absolute after:inset-x-0 after:bottom-3 after:h-1 after:rounded-t-lg after:bg-secondary 
               `
             }>Cinemas</Link>
             </li>

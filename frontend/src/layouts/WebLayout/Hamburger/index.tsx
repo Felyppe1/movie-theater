@@ -75,7 +75,7 @@ export function Hamburger() {
             <li className='flex'>
               <SheetClose asChild>
                 <Button asChild variant='ghost' size='tiny' className={`flex h-7 pl-5 text-base relative hover:text-secondary hover:after:absolute after:inset-y-0 after:left-0 after:w-1 after:rounded-r-lg after:bg-secondary`}>
-                  <Link to='/em-cartaz'>
+                  <Link to='/em-breve'>
                     Em breve
                   </Link>
                 </Button>
@@ -84,7 +84,7 @@ export function Hamburger() {
             <li className='flex'>
               <SheetClose asChild>
                 <Button asChild variant='ghost' size='tiny' className={`flex h-7 pl-5 text-base relative hover:text-secondary hover:after:absolute after:inset-y-0 after:left-0 after:w-1 after:rounded-r-lg after:bg-secondary`}>
-                  <Link to='/em-cartaz'>
+                  <Link to='/cinemas'>
                     Cinemas
                   </Link>
                 </Button>

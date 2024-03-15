@@ -20,6 +20,7 @@ import { LoadingDisplay } from "./components/ui/LoadingDisplay";
 import { useEffect } from "react";
 import { getRefreshToken } from "./api/users";
 import { Upcoming } from "./pages/Upcoming";
+import { MovieTheaters } from "./pages/MovieTheaters";
 
 export function Router() {
   const refreshToken = useAuthStore(state => state.refreshToken)
@@ -55,6 +56,7 @@ export function Router() {
         <Route index element={<Home />} />
         <Route path="em-cartaz/" element={<PlayingNow />} />
         <Route path="em-breve/" element={<Upcoming />} />
+        <Route path="cinemas/" element={<MovieTheaters />} />
       </Route>
 
       <Route path="/" element={<AuthenticationLayout />}>
