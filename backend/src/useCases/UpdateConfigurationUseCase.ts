@@ -15,6 +15,6 @@ export class UpdateConfigurationUseCase {
   async execute(data: UpdateConfigurationUseCaseDTO) {
     const configuration = await this.configurationsRepository.update(data)
 
-    return configuration[0]
+    return configuration
   }
 }

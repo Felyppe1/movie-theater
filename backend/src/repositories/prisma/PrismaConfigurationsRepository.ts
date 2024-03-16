@@ -1,9 +1,8 @@
-import { Configuration } from "../../@Types/Configuration";
 import { prisma } from "../../lib/prisma";
-import { IConfigurationsRepository } from "../IConfigurationsRepository";
+import { ConfigurationsCreateDTO, ConfigurationsUpdateDTO, IConfigurationsRepository } from "../IConfigurationsRepository";
 
 export class PrismaConfigurationsRepository implements IConfigurationsRepository {
-  async create(data: Configuration) {
+  async create(data: ConfigurationsCreateDTO) {
     const configuration = await prisma.configuration.create({
       data
     })
@@ -17,12 +16,13 @@ export class PrismaConfigurationsRepository implements IConfigurationsRepository
     return configurations
   }
 
-  async update(data: Configuration) {
-    const configurations = await prisma.configuration.updateMany({
+  async update(data: ConfigurationsUpdateDTO) {
+    await prisma.configuration.deleteMany({})
+    const configuration = await prisma.configuration.create({
       data
     })
 
-    return configurations
+    return configuration
   }
 
 }
