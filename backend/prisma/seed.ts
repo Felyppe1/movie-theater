@@ -2341,6 +2341,9 @@ async function main() {
 			"name": "Faroeste"
 		}
 	]
+  const configuration = {
+    admin_accessible: false
+  }
 
   await prisma.city.deleteMany({})
   await prisma.state.deleteMany({})
@@ -2366,6 +2369,10 @@ async function main() {
 
   await prisma.genre.createMany({
     data: genres
+  })
+
+  await prisma.configuration.create({
+    data: configuration
   })
 }
 main()
