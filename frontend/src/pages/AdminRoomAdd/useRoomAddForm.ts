@@ -17,7 +17,7 @@ const seatSchema = zod.object({
 const seatsRowSchema = zod.array(seatSchema).min(1)
 
 const roomAddFormSchema = zod.object({
-  number: zod.string().min(1).max(5),
+  number: zod.string().min(1, 'Esse campo é obrigatório').max(5, 'Máximo de 5 caracteres ultrapassado'),
   technologyIds: zod.array(zod.string().min(1)).min(1),
   seats: zod.array(seatsRowSchema).min(1)
 })

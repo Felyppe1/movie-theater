@@ -42,10 +42,10 @@ export function AdminRoomSeatsGrid({ roomForm, setSelectedSeatIndexes }: AdminRo
     <>
     <TransformWrapper>
       <TransformComponent>
-        <div className='flex flex-col gap-2 origin-top-left'>
+        <div className='flex flex-col gap-1 origin-top-left'>
           {roomForm.getValues().seats?.map((seatsRow, rowIndex) => (
             <div key={seatsRow[0].row} className='flex gap-[.25rem]'>
-              <span className='font-mono mr-4 align-middle'>{String.fromCharCode(65 + rowIndex)}</span>
+              <span className='font-mono mr-2 align-middle'>{String.fromCharCode(65 + rowIndex)}</span>
               {seatsRow.map((seat, colIndex) => (
                 <button
                   key={`${colIndex}${rowIndex}`}
@@ -59,7 +59,7 @@ export function AdminRoomSeatsGrid({ roomForm, setSelectedSeatIndexes }: AdminRo
                     `}
                 ></button>
               ))}
-              <span className='font-mono ml-4 align-middle'>{String.fromCharCode(65 + rowIndex)}</span>
+              <span className='font-mono ml-2 align-middle'>{String.fromCharCode(65 + rowIndex)}</span>
             </div>
           ))}
           {roomForm.getValues().seats?.[0]?.length > 0 && (
