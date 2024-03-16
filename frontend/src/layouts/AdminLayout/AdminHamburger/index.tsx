@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useAuthStore } from "@/store/auth"
 import { useEffect, useRef } from "react"
 import { Link, useLocation } from "react-router-dom"
 
 export function AdminHamburger() {
+  const user = useAuthStore(state => state.user)
+
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   const location = useLocation()
@@ -49,6 +52,13 @@ export function AdminHamburger() {
           </Button>
         </SheetClose>
 
+        {user?.role === 'ADMIN' && (
+          <SheetClose asChild>
+            <Button asChild variant={path.includes('/admin/configuracoes') ? 'secondary' : 'link'} size='sm' className='w-full'>
+              <Link to='/admin/configuracoes'>Configurações</Link>
+            </Button>
+          </SheetClose>
+        )}
         <SheetClose ref={buttonRef}></SheetClose>
       </SheetContent>
     </Sheet>

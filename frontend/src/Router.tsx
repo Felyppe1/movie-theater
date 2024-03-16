@@ -14,42 +14,17 @@ import { AdminMovieSelection } from "./pages/AdminMovieSelection";
 import { AuthenticationLayout } from "./layouts/AuthenticationLayout";
 import { Signup } from "./pages/Signup";
 import { RequireAuth } from "./components/RequireAuth";
-import { useAuthStore } from "./store/auth";
-import { useMutation } from "@tanstack/react-query";
-import { LoadingDisplay } from "./components/ui/LoadingDisplay";
-import { useEffect } from "react";
-import { getRefreshToken } from "./api/users";
 import { Upcoming } from "./pages/Upcoming";
 import { MovieTheaters } from "./pages/MovieTheaters";
+import { AdminConfigurations } from "./pages/AdminConfigurations";
+import { LoadingDisplay } from "./components/ui/LoadingDisplay";
+import { useAppDependencies } from "./hooks/useAppDependencies";
 
 export function Router() {
-  const refreshToken = useAuthStore(state => state.refreshToken)
-  const clearAuthStore = useAuthStore(state => state.clearAuthStore)
+  const { isLoading } = useAppDependencies()
 
-  if (!refreshToken) {
-    clearAuthStore()
-  }
+  if (isLoading) return <LoadingDisplay />
 
-  const mutation = useMutation({
-    mutationFn: getRefreshToken,
-    onError: () => {
-      clearAuthStore()
-    },
-    onSuccess: (response) => {
-      useAuthStore.setState({ accessToken: response.new_token })
-      useAuthStore.setState({ refreshToken: response.new_refresh_token })
-      useAuthStore.setState({ user: response.user})
-    }
-  })
-
-  useEffect(() => {
-    return () => {
-      if (refreshToken) mutation.mutate({ refresh_token: refreshToken })
-    }
-  }, [])
-
-  if (mutation.status == 'pending') return <LoadingDisplay />
-  
   return (
     <Routes>
       <Route path="/" element={<WebLayout />} >
@@ -73,6 +48,9 @@ export function Router() {
           <Route path='movie-theater/:id/room/add/' element={<AdminRoomAdd />} />
           <Route path='movie-theater/room/:id/' element={<AdminRoomDetail />} />
           <Route path='movie-selection/' element={<AdminMovieSelection />} />
+        </Route>
+        <Route element={<RequireAuth allowedRoles={['ADMIN']} forceProtection />}>
+          <Route path='configuracoes/' element={<AdminConfigurations />} />
         </Route>
       </Route>
     </Routes>

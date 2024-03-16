@@ -6,10 +6,12 @@ import { useAuthStore } from "@/store/auth"
 import { LuMapPin } from "react-icons/lu"
 import { FaRegUser } from "react-icons/fa6"
 import { useLogout } from "@/hooks/api/useLogout"
+import { useConfigurationStore } from "@/store/configuration"
 
 
 export function Hamburger() {
   const user = useAuthStore(state => state.user)
+  const configuration = useConfigurationStore(state => state.configuration)
   const { handleLogout } = useLogout()
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -90,7 +92,10 @@ export function Hamburger() {
                 </Button>
               </SheetClose>
             </li>
-            {(user?.role === 'ADMIN' || user?.role === 'MOVIE_CURATOR' || user?.role === 'THEATER_ADMIN') && (
+            {(
+              (user?.role === 'ADMIN' || user?.role === 'MOVIE_CURATOR' || user?.role === 'THEATER_ADMIN') ||
+              configuration?.admin_accessible
+            ) && (
               <li className='flex'>
                 <SheetClose asChild>
                   <Button asChild variant='ghost' size='tiny' className={`flex h-7 pl-5 text-base relative hover:text-secondary hover:after:absolute after:inset-y-0 after:left-0 after:w-1 after:rounded-r-lg after:bg-secondary`}>

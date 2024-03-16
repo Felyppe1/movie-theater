@@ -43,13 +43,10 @@ export const useAuthStore = create<IAuthStore>()(
         })
       },
       clearAuthStore: () => {
-        set((state) => {
-          return {
-            ...state,
-            accessToken: undefined,
-            refreshToken: undefined,
-            user: undefined
-          }
+        set({
+          accessToken: undefined,
+          refreshToken: undefined,
+          user: undefined
         })
       },
     }),

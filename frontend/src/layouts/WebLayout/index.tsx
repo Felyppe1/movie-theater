@@ -6,12 +6,16 @@ import { Logo } from "@/components/ui/Logo"
 import { useAuthStore } from "@/store/auth"
 import { useLogout } from "@/hooks/api/useLogout"
 import { Hamburger } from "./Hamburger"
+import { useConfigurationStore } from "@/store/configuration"
 
 export function WebLayout() {
+  const user = useAuthStore(state => state.user)
+  const configuration = useConfigurationStore(state => state.configuration)
+  
+  const { handleLogout } = useLogout()
+  
   const location = useLocation()
   const path = location.pathname
-  const user = useAuthStore(state => state.user)
-  const { handleLogout } = useLogout()
 
   document.documentElement.className = 'website'
 
@@ -44,7 +48,10 @@ export function WebLayout() {
               `
             }>Cinemas</Link>
             </li>
-            {(user?.role === 'ADMIN' || user?.role === 'MOVIE_CURATOR' || user?.role === 'THEATER_ADMIN') && (
+            {(
+              (user?.role === 'ADMIN' || user?.role === 'MOVIE_CURATOR' || user?.role === 'THEATER_ADMIN') ||
+              configuration?.admin_accessible
+            ) && (
               <li className='h-full'>
                 <Link 
                   to='/admin' 

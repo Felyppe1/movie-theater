@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/toaster"
+import { useAuthStore } from "@/store/auth"
 import { Link, Outlet, useLocation } from "react-router-dom"
 
 export function AdminLayout() {
+  const user = useAuthStore(state => state.user)
   const location = useLocation()
   const path = location.pathname
 
@@ -20,6 +22,11 @@ export function AdminLayout() {
         <Button asChild variant={path.includes('/admin/movie-selection') ? 'secondary' : 'link'} size={"sm"}>
           <Link to='/admin/movie-selection'>Seleção de Filmes</Link>
         </Button>
+        {user?.role === 'ADMIN' && (
+          <Button asChild variant={path.includes('/admin/configuracoes') ? 'secondary' : 'link'} size={"sm"}>
+            <Link to='/admin/configuracoes'>Configurações</Link>
+          </Button>
+        )}
       </nav>
       <main className={'min-h-screen p-[1rem] pb-[5rem] ml-0 lg:ml-[18rem] bg-background max-w-[55rem]'}>
         <Toaster />
