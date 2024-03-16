@@ -19,6 +19,6 @@ usersRoutes.post('/refresh-token', (request, response) => {
   return makeRefreshTokenController().handle(request, response)
 })
 
-usersRoutes.post('/logout/:refresh_token', (request, response) => {
+usersRoutes.delete('/logout/:refresh_token', (request, response) => {
   return makeLogoutController().handle(request, response)
 })
