@@ -37,7 +37,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
             render={({ field }) => (
               <>
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className='after:content-["*"] after:pl-1'>Email</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -52,7 +52,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
             render={({ field }) => (
               <>
                 <FormItem>
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel className='after:content-["*"] after:pl-1'>Senha</FormLabel>
                   <FormControl>
                     <Input {...field} type='password' />
                   </FormControl>
@@ -67,7 +67,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
             render={({ field }) => (
               <>
                 <FormItem>
-                  <FormLabel>Nome completo</FormLabel>
+                  <FormLabel className='after:content-["*"] after:pl-1'>Nome completo</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -98,7 +98,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
               return (
                 <>
                   <FormItem>
-                    <FormLabel>Data de nascimento</FormLabel>
+                    <FormLabel className='after:content-["*"] after:pl-1'>Data de nascimento</FormLabel>
                     <FormControl>
                       <Input {...field} type='date' />
                     </FormControl>
@@ -114,7 +114,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
             render={({ field }) => (
               <>
                 <FormItem className="space-y-3">
-                  <FormLabel>Gênero</FormLabel>
+                  <FormLabel className='after:content-["*"] after:pl-1'>Gênero</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -150,7 +150,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
             render={({ field }) => (
               <>
                 <FormItem>
-                  <FormLabel>CPF (apenas números)</FormLabel>
+                  <FormLabel className='after:content-["*"] after:pl-1'>CPF (apenas números)</FormLabel>
                   <FormControl>
                     <Input {...field} maxLength={11} />
                   </FormControl>
@@ -165,7 +165,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
             render={({ field }) => (
               <>
                 <FormItem>
-                  <FormLabel>Estado</FormLabel>
+                  <FormLabel className='after:content-["*"] after:pl-1'>Estado</FormLabel>
                     <Select 
                       onValueChange={(value) => {
                         handleStateChange(value)
@@ -199,7 +199,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
             render={({ field }) => (
               <>
                 <FormItem>
-                  <FormLabel>Cidade</FormLabel>
+                  <FormLabel className='after:content-["*"] after:pl-1'>Cidade</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -228,7 +228,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
               render={({ field }) => (
                 <>
                   <FormItem>
-                    <FormLabel>DDD</FormLabel>
+                    <FormLabel className='after:content-["*"] after:pl-1'>DDD</FormLabel>
                     <FormControl>
                       <Input {...field} maxLength={2} className='mt-1' />
                     </FormControl>
@@ -242,7 +242,7 @@ export function SignupForm({ ...props }: SignupFormProps) {
               render={({ field }) => (
                 <>
                   <FormItem>
-                    <FormLabel>Celular</FormLabel>
+                    <FormLabel className='after:content-["*"] after:pl-1'>Celular</FormLabel>
                     <FormControl>
                       <Input {...field} maxLength={9} className='mt-1' />
                     </FormControl>

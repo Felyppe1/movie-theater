@@ -14,9 +14,11 @@ const cellphoneScheme = zod.object({
 const signupFormScheme = zod.object({
   email: zod.string().email('Email inválido'),
   password: zod.string().min(8, 'A senha deve conter pelo menos 8 caracteres'),
-  full_name: zod.string().min(1, 'O nome deve conter pelo menos 1 caractere'),
+  full_name: zod.string().min(1, 'Esse campo é obrigatório'),
   social_name: zod.string(),
-  cpf: zod.string().length(11, 'O CPF deve conter 11 números'),
+  cpf: zod.string().length(11, 'O CPF deve conter 11 números').refine(value => /^\d+$/.test(value), {
+    message: 'O CPF deve conter apenas números'
+  }),
   sex: zod.enum(['M', 'F']),
   date_of_birth: zod.string()
     // .refine(value => {
@@ -35,7 +37,18 @@ const signupFormScheme = zod.object({
         date.getMonth() === month - 1 &&
         date.getFullYear() === year
       )
-    }, 'Data de nascimento inválida'),
+    }, 'Data de nascimento inválida')
+      .refine(value => {
+        const [year, month, day] = value.split("-").map(Number)
+
+        const date = new Date(year, month - 1, day)
+        const ageDifferenceMilliseconds = Date.now() - date.getTime()
+        const ageDate = new Date(ageDifferenceMilliseconds)
+
+        const age = ageDate.getUTCFullYear() - 1970
+
+        return age >= 18
+      }, 'É necessário ser maior de 18 anos para se cadastrar'),
   // date_of_birth: zod.string()
   //   .refine((value) => {
   //     const dateFormatRegex = /^\d{2}\/\d{2}\/\d{4}$/
