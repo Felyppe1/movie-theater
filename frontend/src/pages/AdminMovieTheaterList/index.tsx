@@ -6,6 +6,7 @@ import { LoadingDisplay } from "@/components/ui/LoadingDisplay";
 import { Button } from "@/components/ui/button"
 import { useFetchMovieTheaters } from "@/hooks/api/useFetchMovieTheaters";
 import { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns";
 import { FaArrowRightArrowLeft, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
@@ -41,7 +42,10 @@ const columns: ColumnDef<MovieTheaterAdditional>[] = [
   },
   {
     accessorKey: 'updated_at',
-    header: 'Modificado em'
+    header: 'Modificado em',
+    cell: ({ row }) => {
+      return format(row.original.updated_at, "dd/MM/yyyy HH:mm:ss")
+    }
   }
 ]
 
