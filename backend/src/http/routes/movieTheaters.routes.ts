@@ -7,6 +7,7 @@ import { makeRemoveMovieFromTheaterController } from "../controllers/factories/m
 import { ensureAuthenticated } from "../../middlewares/ensureAuthenticated";
 import { ROLE } from "@prisma/client";
 import { verifyUserAuthorization } from "../../middlewares/verifyUserAuthorization";
+import { makeDeleteMovieTheaterController } from "../controllers/factories/makeDeleteMovieTheaterController";
 
 export const movieTheatersRoutes = Router()
 
@@ -14,6 +15,13 @@ movieTheatersRoutes.post('/',
   ensureAuthenticated, verifyUserAuthorization([ROLE.THEATER_ADMIN, ROLE.MOVIE_CURATOR, ROLE.ADMIN]),
   (request, response) => {
     return makeCreateMovieTheaterController().handle(request, response)
+  }
+)
+
+movieTheatersRoutes.delete('/:id',
+  ensureAuthenticated, verifyUserAuthorization([ROLE.THEATER_ADMIN, ROLE.MOVIE_CURATOR, ROLE.ADMIN]),
+  (request, response) => {
+    return makeDeleteMovieTheaterController().handle(request, response)
   }
 )
 

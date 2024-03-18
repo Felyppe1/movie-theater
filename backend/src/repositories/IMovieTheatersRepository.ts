@@ -10,6 +10,8 @@ export type MovieTheatersFindByIdDTO = Pick<MovieTheater, 'id'>
 
 export type MovieTheatersFindByNameDTO = Pick<MovieTheater, 'name'>
 
+export type MovieTheatersDeleteDTO = Pick<MovieTheater, 'id'>
+
 export type MovieTheatersAddMovieDTO = Pick<MovieTheater, 'id'> & {
   movieId: Movie['id']
 }
@@ -30,6 +32,7 @@ export interface IMovieTheatersRepository {
   getAll(): Promise<MovieTheaterAdditional[]>
   findById(data: MovieTheatersFindByIdDTO): Promise<MovieTheaterFullEdited | null>
   findByName(data: MovieTheatersFindByNameDTO): Promise<MovieTheater | null>
+  delete(data: MovieTheatersDeleteDTO): Promise<void>
   addMovie(data: MovieTheatersAddMovieDTO): Promise<MovieTheaterGeneral>
   removeMovie(data: MovieTheatersRemoveMovieDTO): Promise<MovieTheaterGeneral>
 }

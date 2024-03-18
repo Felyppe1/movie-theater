@@ -1,5 +1,5 @@
 import { MovieTheater, Prisma } from "@prisma/client";
-import { IMovieTheatersRepository, MovieTheatersAddMovieDTO, MovieTheatersCreateDTO, MovieTheatersFindByIdDTO, MovieTheatersFindByNameDTO, MovieTheatersRemoveMovieDTO } from "../IMovieTheatersRepository";
+import { IMovieTheatersRepository, MovieTheatersAddMovieDTO, MovieTheatersCreateDTO, MovieTheatersDeleteDTO, MovieTheatersFindByIdDTO, MovieTheatersFindByNameDTO, MovieTheatersRemoveMovieDTO } from "../IMovieTheatersRepository";
 import { prisma } from "../../lib/prisma";
 
 export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
@@ -66,6 +66,14 @@ export class PrismaMovieTheatersRepository implements IMovieTheatersRepository {
     })
 
     return movieTheater
+  }
+
+  async delete({ id }: MovieTheatersDeleteDTO) {
+    await prisma.movieTheater.delete({
+      where: {
+        id
+      }
+    })
   }
 
   async addMovie({ id, movieId }: MovieTheatersAddMovieDTO) {

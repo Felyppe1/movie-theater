@@ -292,6 +292,51 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": ["Movie Theater"],
+        "summary": "Delete a movie theater",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie theater ID",
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "$ref": "#/components/schemas/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/schemas/ForbiddenError"
+          },
+          "404": {
+            "description": "Movie theater not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cinema não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/movie-theaters/:id/movie": {
