@@ -32,7 +32,7 @@ export function AdminMovieTheaterDetail() {
 
       <RoomsList rooms={movieTheater?.rooms} id={id} />
 
-      <section className='mt-[2rem]'>
+      <section className='mt-[2rem] pb-[2rem] border-b'>
         <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>
           Selecionados
         </h2>

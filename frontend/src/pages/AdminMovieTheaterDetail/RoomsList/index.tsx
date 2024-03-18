@@ -15,14 +15,17 @@ type RoomsListProps = {
 
 export function RoomsList({ rooms, id }: RoomsListProps) {
   return (
-    <>
-      <Button asChild>
+    <section className='mt-[1.5rem] pb-[2rem] border-b'>
+      <h2 className='text-2xl font-semibold text-secondary-foreground'>
+        Salas
+      </h2>
+      <Button size='sm' asChild>
         <Link to={`/admin/movie-theater/${id}/room/add/`} className='mt-[1rem]'>
           Adicionar sala
         </Link>
       </Button>
       
-      <Table className='w-[17rem]'>
+      <Table className='w-[17rem] mt-1'>
         <TableCaption>Lista de salas</TableCaption>
         <TableHeader>
           <TableRow>
@@ -47,7 +50,7 @@ export function RoomsList({ rooms, id }: RoomsListProps) {
           })}
         </TableBody>
       </Table>
-    </>
+    </section>
     
   )
 }
