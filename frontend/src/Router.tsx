@@ -19,6 +19,7 @@ import { MovieTheaters } from "./pages/MovieTheaters";
 import { AdminConfigurations } from "./pages/AdminConfigurations";
 import { LoadingDisplay } from "./components/ui/LoadingDisplay";
 import { useAppDependencies } from "./hooks/useAppDependencies";
+import { PageInProgress } from "./pages/PageInProgress";
 
 export function Router() {
   const { isLoading } = useAppDependencies()
@@ -32,6 +33,7 @@ export function Router() {
         <Route path="em-cartaz/" element={<PlayingNow />} />
         <Route path="em-breve/" element={<Upcoming />} />
         <Route path="cinemas/" element={<MovieTheaters />} />
+        <Route path="sessoes/" element={<PageInProgress />} />
       </Route>
 
       <Route path="/" element={<AuthenticationLayout />}>
