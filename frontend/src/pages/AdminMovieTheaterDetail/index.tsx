@@ -6,6 +6,7 @@ import { DatabaseMovie } from "./DatabaseMovie"
 import { SelectedMovie } from "./SelectedMovie"
 import { fetchMoviesUnrelatedToTheater } from "@/api/movies"
 import { getMovieTheater } from "@/api/movieTheaters"
+import { AdvancedSection } from "./AdvancedSection"
 
 export function AdminMovieTheaterDetail() {
   const { id } = useParams()
@@ -34,7 +35,7 @@ export function AdminMovieTheaterDetail() {
 
       <section className='mt-[2rem] pb-[2rem] border-b'>
         <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>
-          Selecionados
+          Filmes selecionados
         </h2>
 
         {movieTheater.movies?.length == 0 ? (
@@ -51,9 +52,9 @@ export function AdminMovieTheaterDetail() {
         }
       </section>
 
-      <section className='mt-[2rem]'>
+      <section className='py-[2rem] border-b'>
         <h2 className='text-2xl font-semibold text-secondary-foreground pb-[1rem]'>
-          Disponíveis
+          Filmes disponíveis
         </h2>
         {movieStatus === 'pending' ? (
           <p>Carregando...</p>
@@ -73,6 +74,8 @@ export function AdminMovieTheaterDetail() {
           )
         )}
       </section>
+
+      <AdvancedSection id={movieTheater.id} />
     </>
   )
 }

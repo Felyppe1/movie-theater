@@ -1,6 +1,7 @@
 import { MovieTheaterAdditional, MovieTheaterGeneral } from "@/@types/MovieTheater"
 import { Room } from "@/@types/Room"
 import { MovieTheaterAddForm } from "@/pages/AdminMovieTheaterAdd/useMovieTheaterAddForm"
+import { useAuthStore } from "@/store/auth"
 import { makeRequest } from "@/utils/makeRequest"
 import { QueryFunctionContext } from "@tanstack/react-query"
 
@@ -10,6 +11,10 @@ type GetMovieTheaterResponse = MovieTheaterGeneral & {
       seats: number
     }
   })[]
+}
+
+type DeleteMovieTheaterProps = {
+  id: string
 }
 
 type AddMovieToTheaterProps = {
@@ -33,6 +38,17 @@ export const createMovieTheater = async (data: MovieTheaterAddForm): Promise<Mov
 
 export const fetchMovieTheaters = async (): Promise<MovieTheaterAdditional[]> => {
   return await makeRequest('/movie-theaters', { method: 'GET' })
+}
+
+export const deleteMovieTheater = async ({ id }: DeleteMovieTheaterProps) => {
+  const accessToken = useAuthStore.getState().accessToken
+  
+  return await makeRequest(`/movie-theaters/${id}`, { 
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  })
 }
 
 export const addMovieToTheater = async ({ movieTheaterId, movieId }: AddMovieToTheaterProps): Promise<MovieTheaterGeneral> => {
